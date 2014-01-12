@@ -1,0 +1,75 @@
+﻿<Window x:Class="WooScripter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="653" Width="943" Unloaded="Window_Unloaded" KeyDown="Window_KeyDown" MouseLeftButtonUp="Window_MouseLeftButtonUp">
+<!--
+    <Window.Resources>
+        <Style x:Key="NoChromeButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="Chrome" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#ADADAD"/>
+                                <Setter Property="Opacity" TargetName="Chrome" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    -->
+    <Grid>
+        <Button Style="{DynamicResource NoChromeButton}" Height="270" Width="480" Margin="0,0,441,344" PreviewMouseLeftButtonDown="image1_MouseLeftButtonDown" PreviewMouseMove="Window_MouseMove" PreviewMouseLeftButtonUp="image1_MouseLeftButtonUp">
+            <Image Name="image1" Stretch="None" Height="270" VerticalAlignment="Top" StretchDirection="UpOnly" HorizontalAlignment="Left" Width="480" Focusable="True" Panel.ZIndex="0" GotFocus="image1_GotFocus" />
+        </Button>
+        <Button Content="Compile" Height="23" HorizontalAlignment="Left" Margin="486,591,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
+        <Button Content="Preview" Height="23" HorizontalAlignment="Left" Margin="405,276,0,0" Name="button2" VerticalAlignment="Top" Width="75" Click="button2_Click" />
+        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding Path=_FocusDistance}" Margin="97,276,0,0" Name="focusDistance" VerticalAlignment="Top" Width="97" IsReadOnly="True" />
+        <Label Content="Focus Distance" Height="23" HorizontalAlignment="Left" Margin="0,276,0,0" Name="label1" VerticalAlignment="Top" Width="91" />
+        <Button Content="HQ Preview" Height="23" HorizontalAlignment="Left" Margin="307,276,0,0" Name="button3" VerticalAlignment="Top" Width="92" Click="button3_Click" />
+        <Button Content="Final Render" Height="23" HorizontalAlignment="Left" Margin="0,425,0,0" Name="button4" VerticalAlignment="Top" Width="483" Click="button4_Click" />
+        <Label Content="Background" Height="23" HorizontalAlignment="Left" Margin="567,591,0,0" Name="backgroundStatus" VerticalAlignment="Top" Width="112" Background="Lime" Padding="2" HorizontalContentAlignment="Center" />
+        <Label Background="Lime" Content="Scene" Height="23" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="688,591,0,0" Name="sceneStatus" Padding="2" VerticalAlignment="Top" Width="112" />
+        <Label Background="Lime" Content="Lighting" Height="23" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Margin="809,591,0,0" Name="lightingStatus" Padding="2" VerticalAlignment="Top" Width="112" />
+        <TabControl Height="582" HorizontalAlignment="Left" Margin="486,3,0,0" Name="tabControl1" VerticalAlignment="Top" Width="435">
+            <TabItem Header="Background" Name="tabItem1" IsSelected="False">
+                <Grid>
+                    <TextBox Height="521" HorizontalAlignment="Left" Name="backgroundDesc" VerticalAlignment="Top" Width="425" AcceptsReturn="True" AutoWordSelection="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsManipulationEnabled="True" Margin="0,29,0,0" />
+                    <Button Content="Load Script" Height="23" HorizontalAlignment="Left" Margin="200,0,0,0" Name="loadBackground" VerticalAlignment="Top" Width="109" Click="loadBackground_Click" />
+                    <Button Content="Save Script" Height="23" HorizontalAlignment="Right" Name="saveBackground" VerticalAlignment="Top" Width="109" Click="saveBackground_Click" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Scene" Name="tabItem2" IsSelected="True">
+                <Grid>
+                    <TextBox Height="521" HorizontalAlignment="Left" Name="sceneDesc" VerticalAlignment="Top" Width="425" AcceptsReturn="True" AutoWordSelection="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsManipulationEnabled="True" Margin="0,29,0,0" />
+                    <Button Content="Load Script" Height="23" HorizontalAlignment="Left" Margin="200,0,0,0" Name="loadScene" VerticalAlignment="Top" Width="109" Click="loadScene_Click" />
+                    <Button Content="Save Script" Height="23" HorizontalAlignment="Right" Name="saveScene" VerticalAlignment="Top" Width="109" Click="saveScene_Click" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Lighting" Name="tabItem3">
+                <Grid>
+                    <TextBox Height="521" HorizontalAlignment="Left" Name="lightingDesc" VerticalAlignment="Top" Width="425" AcceptsReturn="True" AutoWordSelection="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsManipulationEnabled="True" Margin="0,29,0,0" />
+                    <Button Content="Load Script" Height="23" HorizontalAlignment="Left" Margin="200,0,0,0" Name="loadLighting" VerticalAlignment="Top" Width="109" Click="loadLighting_Click" />
+                    <Button Content="Save Script" Height="23" HorizontalAlignment="Right" Name="saveLighting" VerticalAlignment="Top" Width="109" Click="saveLighting_Click" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Label Content="Background Colour" Height="28" HorizontalAlignment="Left" Margin="0,334,0,0" Name="label2" VerticalAlignment="Top" Width="124" />
+        <TextBox Height="24" HorizontalAlignment="Left" Text="{Binding Path=_BackgroundRed}" Margin="130,334,0,0" Name="textBox1" VerticalAlignment="Top" Width="51" />
+        <TextBox Height="24" HorizontalAlignment="Left" Text="{Binding Path=_BackgroundGreen}" Margin="187,334,0,0" Name="textBox2" VerticalAlignment="Top" Width="51" />
+        <TextBox Height="24" HorizontalAlignment="Left" Text="{Binding Path=_BackgroundBlue}" Margin="244,334,0,0" Name="textBox3" VerticalAlignment="Top" Width="51" />
+        <Label Content="Aperture Size" Height="29" HorizontalAlignment="Left" Margin="0,307,0,0" Name="label3" VerticalAlignment="Top" Width="93" />
+        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding Path=_ApertureSize}" Margin="98,306,0,0" Name="textBox4" VerticalAlignment="Top" Width="96" />
+    </Grid>
+</Window>
