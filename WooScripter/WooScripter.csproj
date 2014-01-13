@@ -163,6 +163,13 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>IF EXIST c:\dev\rays\bin\coretracer.dll (
+xcopy /Y c:\dev\rays\bin\coretracer.dll $(ProjectDir)bin
+)
+xcopy /Y $(ProjectDir)bin $(ProjectDir)bin\$(ConfigurationName)
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
