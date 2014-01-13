@@ -39,25 +39,25 @@ namespace WooScripter
         public Colour _MinColour { get; set; }
         public Colour _MaxColour { get; set; }
 
-        [DllImport(@"c:\dev\rays\bin\coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void StartRender();
 
-        [DllImport(@"c:\dev\rays\bin\coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void StopRender();
 
-        [DllImport(@"c:\dev\rays\bin\coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void CopyBuffer(float[] buffer);
 
-        [DllImport(@"c:\dev\rays\bin\coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SyncRender(float[] buffer);
 
-        [DllImport(@"c:\dev\rays\bin\coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitialiseRender(string description);
 
-        [DllImport(@"c:\dev\rays\bin\coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetCamera(string description);
 
-        [DllImport(@"c:\dev\rays\bin\coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetViewport(string description);
 
         public ImageRenderer(System.Windows.Controls.Image image, string xml, int renderWidth, int renderHeight, bool continuous)

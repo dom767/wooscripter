@@ -323,7 +323,7 @@ namespace WooScripter
             MessageBox.Show("GotFocus");
         }
 
-        [DllImport(@"c:\dev\rays\bin\coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void GetDepth(ref float depth, int x, int y);
 
         bool _ImageDrag = false;
