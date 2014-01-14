@@ -1,0 +1,11 @@
+Wooscripter, started by Dom Penfold, now up and open to the general public. Note that coretracer.dll is my own raytracer which is not currently available on github. A release version is included in this project's bin folder.
+
+Changelog:
+
+14th January 2014
+NSIS Installer script + executable added
+
+Please note that wooscript is my own language and while I'm happy for people to use and extend this application (and hence this language), please make me aware if you'd like to build other applications utilising the syntax etc.
+
+Ta,
+Dom
