@@ -47,6 +47,14 @@ Section "WooScripter (required)"
   ; Put file there
   File /oname=coretracer.dll "..\bin\coretracer.dll"
   File /oname=wooscripter.exe "..\bin\Release\wooscripter.exe"
+
+  SetOutPath $DOCUMENTS
+
+  ; examples
+  File /oname=WooScripter\Scripts\Background\scratch.woo "..\Scripts\Background\plain_white_circle.woo"
+  File /oname=WooScripter\Scripts\Lighting\scratch.woo "..\Scripts\Lighting\examples.woo"
+  File /oname=WooScripter\Scripts\Scene\scratch.woo "..\Scripts\Scene\simplebox.woo"
+
   
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\WooScripter "Install_Dir" "$INSTDIR"
@@ -82,6 +90,9 @@ Section "Uninstall"
   ; Remove files and uninstaller
   Delete $INSTDIR\coretracer.dll
   Delete $INSTDIR\uninstall.exe
+
+  ; Remove Scripts
+;  Delete $DOCUMENTS\WooScripter\Scripts
 
   ; Remove shortcuts, if any
   Delete "$SMPROGRAMS\WooScripter\*.*"
