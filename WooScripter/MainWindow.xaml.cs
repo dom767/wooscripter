@@ -17,6 +17,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Microsoft.Win32;
 
 namespace WooScripter
 {
@@ -455,6 +456,31 @@ namespace WooScripter
         {
             _LightingScript.LoadUserInput("lighting");
             lightingDesc.Text = _LightingScript._Program;
+        }
+
+        private void button5_Click(object sender, RoutedEventArgs e)
+        {
+            string XML = BuildXML(false);
+
+            string store = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WooScripter\\XML";
+            if (!System.IO.Directory.Exists(store))
+            {
+                System.IO.Directory.CreateDirectory(store);
+            }
+
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.InitialDirectory = store;
+            saveFileDialog1.Filter = "Scene XML (*.xml)|*.xml";
+            saveFileDialog1.FilterIndex = 1;
+
+            if (saveFileDialog1.ShowDialog() == true)
+            {
+                // Save document
+                string filename = saveFileDialog1.FileName;
+                StreamWriter sw = new StreamWriter(filename);
+                sw.Write(XML);
+                sw.Close();
+            }
         }
     }
 }
