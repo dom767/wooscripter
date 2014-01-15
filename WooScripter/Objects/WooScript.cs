@@ -616,6 +616,7 @@ namespace WooScripter.Objects.WooScript
             _NullFunctions.Add(new PointLightFunction());
             _NullFunctions.Add(new WorldLightFunction());
             _NullFunctions.Add(new AmbientLightFunction());
+            _NullFunctions.Add(new BackgroundFunction());
 
             _VecFunctions.Add(new VectorConstructorFunction());
             _VecFunctions.Add(new VectorNormaliseFunction());

@@ -168,4 +168,37 @@ namespace WooScripter.Objects.WooScript
             return new WorldLightFunction();
         }
     }
+
+    class BackgroundFunction : NullFunction
+    {
+        Expression _ColourExpr;
+
+        public void Parse(ref string[] program)
+        {
+            _ColourExpr = ExpressionBuilder.Parse(ref program);
+            if (_ColourExpr.GetExpressionType() != VarType.varVector)
+                throw new ParseException("malformed background function");
+        }
+
+        public void Execute(ref WooState state)
+        {
+            Vector3 colourVec = _ColourExpr.EvaluateVector(ref state);
+            Colour colour = new Colour(colourVec.x, colourVec.y, colourVec.z);
+
+            Background background = new Background();
+            background._BackgroundColour = colour;
+            background._Simple = true;
+            background.CreateElement(state._Parent);
+        }
+
+        public string GetSymbol()
+        {
+            return "background";
+        }
+
+        public Function CreateNew()
+        {
+            return new BackgroundFunction();
+        }
+    }
 }

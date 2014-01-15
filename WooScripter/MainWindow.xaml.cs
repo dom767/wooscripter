@@ -52,36 +52,6 @@ namespace WooScripter
         public static readonly DependencyProperty _ApertureSizeProperty =
             DependencyProperty.Register("_ApertureSize", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)1.0));
 
-        public double _BackgroundRed
-        {
-            get { return (double)GetValue(BackgroundRedProperty); }
-            set { SetValue(BackgroundRedProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for BackgroundRed.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BackgroundRedProperty =
-            DependencyProperty.Register("BackgroundRed", typeof(double), typeof(MainWindow), new UIPropertyMetadata(0.0));
-
-        public double _BackgroundGreen
-        {
-            get { return (double)GetValue(BackgroundGreenProperty); }
-            set { SetValue(BackgroundGreenProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for BackgroundGreen.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BackgroundGreenProperty =
-            DependencyProperty.Register("BackgroundGreen", typeof(double), typeof(MainWindow), new UIPropertyMetadata(0.0));
-
-        public double _BackgroundBlue
-        {
-            get { return (double)GetValue(BackgroundBlueProperty); }
-            set { SetValue(BackgroundBlueProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for BackgroundBlue.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BackgroundBlueProperty =
-            DependencyProperty.Register("BackgroundBlue", typeof(double), typeof(MainWindow), new UIPropertyMetadata(0.0));
-
         private void InitialiseCamera()
         {
             _Camera = new Camera(new Vector3(-10, 20, -20), new Vector3(0, 0, 0), 40);
@@ -118,8 +88,6 @@ namespace WooScripter
 
             _Scene._PathTracer = false;
 
-            _Scene.GetBackground()._BackgroundColour = new Colour(_BackgroundRed, _BackgroundGreen, _BackgroundBlue);
-
             string XML = @"
 <VIEWPORT width=" + image1.Width + @" height=" + image1.Height + @"/>";
 
@@ -139,20 +107,10 @@ namespace WooScripter
         {
             Matrix3 identity = new Matrix3();
             identity.MakeIdentity();
-//            _Scene.AddRenderObject(new Circle(new Vector3(0, -1, 0), 20, new Vector3(0,1,0)));
-//            _Scene.AddRenderObject(new Cube(new Vector3(0, 5, 0), new Vector3(10, 10, 10), identity));
+
             _Scene.AddRenderObject(_BackgroundScript);
             _Scene.AddRenderObject(_SceneScript);
             _Scene.AddRenderObject(_LightingScript);
-//            Light light1 = new Light();
- //           light1._Position = new Vector3(20, 20, 20);
-  //          PointLight pl = light1._LightInstance as PointLight;
-   //         pl._Position = new Vector3(20, 20, 20);
-     //       pl._Colour = new Colour(100, 80, 30);
-       //     _Scene.AddLight(new Light());
-            _BackgroundRed = 0.6;
-            _BackgroundGreen = 0.5;
-            _BackgroundBlue = 0.4;
         }
 
         public MainWindow()

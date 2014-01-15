@@ -38,7 +38,7 @@ namespace WooScripter
                 renderObject.CreateElement(preview, ret);
             }
 
-            _Background.CreateElement(ret);
+//            _Background.CreateElement(ret);
 
             return ret;
         }
