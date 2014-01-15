@@ -28,8 +28,8 @@ namespace WooScripter
             _AAEnabled = false;
             _FocusDepth = 1;
             _ApertureSize = 1;
-            _MinSamples = 32;
-            _MaxSamples = 128;
+            _MinSamples = 1;
+            _MaxSamples = 1;
         }
 
         public XElement CreateElement()
