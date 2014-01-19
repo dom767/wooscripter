@@ -231,10 +231,10 @@ namespace WooScripter
                     _Velocity.z -= 0.1 * _FocusDistance;
                     e.Handled = true;
                 }
-            }
 
-            if (!_Timer.IsEnabled)
-                _Timer.Start();
+                if (!_Timer.IsEnabled)
+                    _Timer.Start();
+            }
         }
         DispatcherTimer _Timer;
         void timer_Tick(object sender, EventArgs e)
@@ -373,6 +373,8 @@ namespace WooScripter
 
             ownedWindow.Owner = Window.GetWindow(this);
             ownedWindow.ShowDialog();
+
+            BuildXML(true);
         }
 
         private void image1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
