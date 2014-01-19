@@ -19,7 +19,7 @@ namespace WooScripter.Objects.WooScript
 
         public override void Execute(ref WooState state)
         {
-            Circle newCircle = new Circle(new Vector3(state._Position.x, state._Position.y, state._Position.z), state._Scale, state._Rotation);
+            Circle newCircle = new Circle(new Vector3(state._Position.x, state._Position.y, state._Position.z), state._Scale*0.5, state._Rotation);
             newCircle._Material = GenerateMaterial(state);
             newCircle.CreateElement(state._Preview, state._Parent);
         }
