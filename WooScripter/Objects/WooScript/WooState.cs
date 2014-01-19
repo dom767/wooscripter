@@ -152,9 +152,9 @@ namespace WooScripter.Objects.WooScript
             else
             {
                 if (target.Equals("pos", StringComparison.Ordinal))
-                    return _Position;
+                    return new Vector3(_Position);
                 if (target.Equals("scale", StringComparison.Ordinal))
-                    return _Scale;
+                    return new Vector3(_Scale);
                 if (target.Equals("diff", StringComparison.Ordinal))
                     return new Vector3(_Diff);
                 if (target.Equals("refl", StringComparison.Ordinal))
