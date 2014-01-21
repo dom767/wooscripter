@@ -164,6 +164,7 @@ namespace WooScripter
         }
 
         ImageRenderer _ImageRenderer;
+        bool _ImageRendering;
         DispatcherTimer _Timer;
 
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -189,6 +190,7 @@ namespace WooScripter
                 height = _ImageHeight;
             }
             _ImageRenderer = new ImageRenderer(image1, _XML, width, height, true);
+            _ImageRendering = true;
             _ImageRenderer.Render();
 
             // set up animation thread for the camera movement
@@ -200,6 +202,13 @@ namespace WooScripter
 
         void timer_Tick(object sender, EventArgs e)
         {
+            updateRender();
+        }
+
+        void updateRender()
+        {
+            if (_ImageRenderer == null)
+                return;
             if (radioButton2.IsChecked.Value)
                 _ImageRenderer._TransferType = ImageRenderer.Transfer.Exposure;
             else
@@ -220,6 +229,7 @@ namespace WooScripter
         {
             _ImageRenderer.Stop();
             _Timer.Stop();
+            _ImageRendering = false;
         }
 
         private void checkBox1_Checked(object sender, RoutedEventArgs e)
@@ -273,6 +283,22 @@ namespace WooScripter
         {
             _ImageRenderer.Stop();
             _Timer.Stop();
+        }
+
+        private void refreshRender(object sender, RoutedEventArgs e)
+        {
+            if (!_ImageRendering)
+            {
+                updateRender();
+            }
+        }
+
+        private void refreshRender(object sender, TextChangedEventArgs e)
+        {
+            if (!_ImageRendering)
+            {
+                updateRender();
+            }
         }
     }
 }
