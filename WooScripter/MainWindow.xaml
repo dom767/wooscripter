@@ -68,5 +68,6 @@
         <Label Content="Aperture Size" Height="29" HorizontalAlignment="Left" Margin="0,307,0,0" Name="label3" VerticalAlignment="Top" Width="93" />
         <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding Path=_ApertureSize}" Margin="98,306,0,0" Name="textBox4" VerticalAlignment="Top" Width="96" />
         <Button Content="Save XML" Height="23" HorizontalAlignment="Left" Margin="379,308,0,0" Name="button5" VerticalAlignment="Top" Width="101" Click="button5_Click" />
+        <Button Content="Help" Height="23" HorizontalAlignment="Left" Margin="324,589,0,0" Name="button6" VerticalAlignment="Top" Width="75" Click="button6_Click" />
     </Grid>
 </Window>

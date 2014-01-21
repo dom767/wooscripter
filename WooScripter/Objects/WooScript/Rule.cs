@@ -142,6 +142,11 @@ namespace WooScripter.Objects.WooScript
             }
         }
 
+        public virtual string GetHelpText()
+        {
+            return _Name;
+        }
+
         protected Material GenerateMaterial(WooState state)
         {
             Material ret = new Material();

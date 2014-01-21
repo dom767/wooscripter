@@ -39,9 +39,6 @@
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SceneDesigner">
-      <HintPath>..\..\SceneDesigner\SceneDesigner\bin\Release\SceneDesigner.exe</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -74,6 +71,9 @@
     </ApplicationDefinition>
     <Compile Include="FinalRender.xaml.cs">
       <DependentUpon>FinalRender.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HelpWindow.xaml.cs">
+      <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Objects\Background.cs" />
     <Compile Include="Objects\Circle.cs" />
@@ -111,10 +111,17 @@
     <Compile Include="Objects\WooScript\TanFloatFunction.cs" />
     <Compile Include="Objects\WooScript\VecAssignStatement.cs" />
     <Compile Include="Objects\WooScript\WooState.cs" />
+    <Compile Include="Splash.xaml.cs">
+      <DependentUpon>Splash.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Colour.cs" />
     <Compile Include="Utils\ColourFunction.cs" />
     <Compile Include="Utils\ImageRenderer.cs" />
     <Page Include="FinalRender.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HelpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -130,6 +137,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Splash.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Maths\Matrix3.cs" />

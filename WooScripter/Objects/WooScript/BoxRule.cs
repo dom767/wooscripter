@@ -12,6 +12,11 @@ namespace WooScripter.Objects.WooScript
         {
         }
 
+        public override string GetHelpText()
+        {
+            return "box - Create a cube";
+        }
+
         public override bool CanRecurse()
         {
             return false;

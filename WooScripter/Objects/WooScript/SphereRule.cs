@@ -12,6 +12,11 @@ namespace WooScripter.Objects.WooScript
         {
         }
 
+        public override string GetHelpText()
+        {
+            return "sphere - Create a sphere";
+        }
+
         public override bool CanRecurse()
         {
             return false;

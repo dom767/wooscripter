@@ -650,9 +650,66 @@ namespace WooScripter.Objects.WooScript
             _Rules.Add(sphereLightRule);
         }
 
+        public string GetHelpText()
+        {
+            AddStandardRules();
+
+            StringBuilder strbuilder = new StringBuilder();
+
+            strbuilder.AppendLine("Rules : ");
+            foreach (Rule rule in _Rules)
+            {
+                strbuilder.AppendLine(rule.GetHelpText());
+            }
+            strbuilder.AppendLine("");
+
+            strbuilder.AppendLine("Vector variables : ");
+            foreach (string vv in _VecVariables)
+            {
+                strbuilder.AppendLine(vv);
+            }
+            strbuilder.AppendLine("");
+
+            strbuilder.AppendLine("Float variables : ");
+            foreach (string fv in _FloatVariables)
+            {
+                strbuilder.AppendLine(fv);
+            }
+            strbuilder.AppendLine("");
+
+            strbuilder.AppendLine("Functions (null return) : ");
+            foreach (NullFunction nf in _NullFunctions)
+            {
+                strbuilder.AppendLine(nf.GetSymbol());
+            }
+            strbuilder.AppendLine("");
+
+            strbuilder.AppendLine("Functions (float return) : ");
+            foreach (FloatFunction ff in _FloatFunctions)
+            {
+                strbuilder.AppendLine(ff.GetSymbol());
+            }
+            strbuilder.AppendLine("");
+
+            strbuilder.AppendLine("Functions (vector return) : ");
+            foreach (VecFunction vf in _VecFunctions)
+            {
+                strbuilder.AppendLine(vf.GetSymbol());
+            }
+
+            return strbuilder.ToString();
+        }
+
         public void Reset()
         {
             _Rules.Clear();
+            _Operators.Clear();
+            _AssignOperators.Clear();
+            _VecVariables.Clear();
+            _FloatVariables.Clear();
+            _NullFunctions.Clear();
+            _VecFunctions.Clear();
+            _FloatFunctions.Clear();
             AddStandardRules();
             AddOperators();
             AddVariables();

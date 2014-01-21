@@ -12,6 +12,11 @@ namespace WooScripter.Objects.WooScript
         {
         }
 
+        public override string GetHelpText()
+        {
+            return "sphereLight - Create a spherical light (used as light source)";
+        }
+
         public override bool CanRecurse()
         {
             return false;

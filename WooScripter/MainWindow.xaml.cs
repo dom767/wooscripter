@@ -442,5 +442,13 @@ namespace WooScripter
                 sw.Close();
             }
         }
+
+        private void button6_Click(object sender, RoutedEventArgs e)
+        {
+            HelpWindow helpWindow = new HelpWindow();
+
+            helpWindow.Owner = Window.GetWindow(this);
+            helpWindow.Show();            
+        }
     }
 }

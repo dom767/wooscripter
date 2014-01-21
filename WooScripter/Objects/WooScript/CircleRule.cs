@@ -12,6 +12,11 @@ namespace WooScripter.Objects.WooScript
         {
         }
 
+        public override string GetHelpText()
+        {
+            return "circle - Create a circle";
+        }
+
         public override bool CanRecurse()
         {
             return false;
