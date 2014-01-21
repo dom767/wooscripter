@@ -191,10 +191,15 @@ namespace WooScripter
             
             if (success)
             {
-                _Scale = 0.33f;
-                _ImageRenderer = new ImageRenderer(image1, BuildXML(true), (int)((float)_Scale * 480), (int)((float)_Scale * 270), false);
-                Preview(true);
+                TriggerPreview();
             }
+        }
+
+        private void TriggerPreview()
+        {
+            _Scale = getPreviewResolution();
+            _ImageRenderer = new ImageRenderer(image1, BuildXML(true), (int)((float)_Scale * 480), (int)((float)_Scale * 270), false);
+            Preview(true);
         }
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
@@ -295,7 +300,7 @@ namespace WooScripter
             Debug.WriteLine("LMBDown");
             float depth = 0;
             Point mousePos = e.GetPosition(image1);
-            _Scale = 0.33f;
+
             GetDepth(ref depth, (int)(_Scale * mousePos.X), (int)(_Scale * mousePos.Y));
             if (depth>0)
                 _FocusDistance = (double)depth;
@@ -362,7 +367,7 @@ namespace WooScripter
 
         private void button3_Click(object sender, RoutedEventArgs e)
         {
-            Preview(false);
+            TriggerPreview();
         }
 
         private void button4_Click(object sender, RoutedEventArgs e)
@@ -449,6 +454,33 @@ namespace WooScripter
 
             helpWindow.Owner = Window.GetWindow(this);
             helpWindow.Show();            
+        }
+
+        private float getPreviewResolution()
+        {
+            if (radioButton1.IsChecked.HasValue && radioButton1.IsChecked.Value)
+            {
+                return 1.0f;
+            }
+            else if (radioButton2.IsChecked.HasValue && radioButton2.IsChecked.Value)
+            {
+                return 0.5f;
+            }
+            else if (radioButton3.IsChecked.HasValue && radioButton3.IsChecked.Value)
+            {
+                return 0.33333f;
+            }
+            else if (radioButton4.IsChecked.HasValue && radioButton4.IsChecked.Value)
+            {
+                return 0.25f;
+            }
+            return 0.1f;
+        }
+
+        private void radioButton1_Checked(object sender, RoutedEventArgs e)
+        {
+            if (this.IsLoaded)
+                TriggerPreview();
         }
     }
 }

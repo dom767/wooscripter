@@ -67,7 +67,15 @@
         </TabControl>
         <Label Content="Aperture Size" Height="29" HorizontalAlignment="Left" Margin="0,307,0,0" Name="label3" VerticalAlignment="Top" Width="93" />
         <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding Path=_ApertureSize}" Margin="98,306,0,0" Name="textBox4" VerticalAlignment="Top" Width="96" />
-        <Button Content="Save XML" Height="23" HorizontalAlignment="Left" Margin="379,308,0,0" Name="button5" VerticalAlignment="Top" Width="101" Click="button5_Click" />
-        <Button Content="Help" Height="23" HorizontalAlignment="Left" Margin="324,589,0,0" Name="button6" VerticalAlignment="Top" Width="75" Click="button6_Click" />
+        <Button Content="Save XML" Height="23" HorizontalAlignment="Left" Margin="379,557,0,0" Name="button5" VerticalAlignment="Top" Width="101" Click="button5_Click" />
+        <Button Content="Help" Height="23" HorizontalAlignment="Left" Margin="298,557,0,0" Name="button6" VerticalAlignment="Top" Width="75" Click="button6_Click" />
+        <GroupBox Header="previewResolution" Height="119" HorizontalAlignment="Left" Margin="359,311,0,0" Name="groupBox1" VerticalAlignment="Top" Width="120">
+            <Grid>
+                <RadioButton Content="1x" GroupName="previewResolution" Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Name="radioButton1" VerticalAlignment="Top" Checked="radioButton1_Checked" />
+                <RadioButton Content="0.5x" GroupName="previewResolution" Height="16" HorizontalAlignment="Left" Margin="6,28,0,0" Name="radioButton2" VerticalAlignment="Top" Checked="radioButton1_Checked" />
+                <RadioButton Content="0.33x" GroupName="previewResolution" Height="16" HorizontalAlignment="Left" Margin="6,50,0,0" Name="radioButton3" VerticalAlignment="Top" IsChecked="True" Checked="radioButton1_Checked" />
+                <RadioButton Content="0.25x" GroupName="previewResolution" Height="16" HorizontalAlignment="Left" Margin="6,72,0,0" Name="radioButton4" VerticalAlignment="Top" />
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>
