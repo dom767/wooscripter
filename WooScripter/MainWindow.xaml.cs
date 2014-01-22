@@ -216,25 +216,47 @@ namespace WooScripter
             Button source = e.Source as Button;
             if (source != null)
             {
+                double Multiplier = 0.1;
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                {
+                    Multiplier = 0.01;
+                }
+
                 if (e.Key == Key.Left)
                 {
-                    _Velocity.x -= 0.1 * _FocusDistance;
+                    _Velocity.x -= Multiplier * _FocusDistance;
                     e.Handled = true;
                 }
                 else if (e.Key == Key.Right)
                 {
-                    _Velocity.x += 0.1 * _FocusDistance;
+                    _Velocity.x += Multiplier * _FocusDistance;
                     e.Handled = true;
                 }
                 else if (e.Key == Key.Up)
                 {
-                    _Velocity.z += 0.1 * _FocusDistance;
-                    e.Handled = true;
+                    if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        _Velocity.z += Multiplier * _FocusDistance;
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        _Velocity.y += Multiplier * _FocusDistance;
+                        e.Handled = true;
+                    }
                 }
                 else if (e.Key == Key.Down)
                 {
-                    _Velocity.z -= 0.1 * _FocusDistance;
-                    e.Handled = true;
+                    if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        _Velocity.z -= Multiplier * _FocusDistance;
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        _Velocity.y -= Multiplier * _FocusDistance;
+                        e.Handled = true;
+                    }
                 }
 
                 if (!_Timer.IsEnabled)
@@ -255,14 +277,16 @@ namespace WooScripter
 
             right.Mul(_Velocity.x);
             to.Mul(_Velocity.z);
-            newup.Mul(_Velocity.z);
+            newup.Mul(_Velocity.y);
 
 //            if (!Keyboard.IsKeyDown(Key.LeftShift) && !Keyboard.IsKeyDown(Key.RightShift))
             {
                 _Camera._Position.Add(right);
                 _Camera._Position.Add(to);
+                _Camera._Position.Add(newup);
                 _Camera._Target.Add(right);
                 _Camera._Target.Add(to);
+                _Camera._Target.Add(newup);
             }
   /*          else
             {
@@ -278,7 +302,7 @@ namespace WooScripter
                 _ImageRenderer.UpdateCamera(_Camera.CreateElement().ToString());
                 Preview(true);
             }
-            if (_Velocity.MagnitudeSquared()<0.001)
+            if (_Velocity.MagnitudeSquared()<0.0001)
                 _Timer.Stop();
         }
 
