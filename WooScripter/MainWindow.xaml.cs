@@ -54,7 +54,7 @@ namespace WooScripter
 
         private void InitialiseCamera()
         {
-            _Camera = new Camera(new Vector3(-10, 20, -20), new Vector3(0, 0, 0), 40);
+            _Camera = new Camera(new Vector3(-2, 4, -4), new Vector3(0, 0, 0), 40);
             _FocusDistance = (_Camera._Target - _Camera._Position).Magnitude();
             _ApertureSize = _Camera._ApertureSize;
 
