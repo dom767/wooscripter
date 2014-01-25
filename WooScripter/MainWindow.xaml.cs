@@ -404,7 +404,7 @@ namespace WooScripter
             ownedWindow.Owner = Window.GetWindow(this);
             ownedWindow.ShowDialog();
 
-            BuildXML(true);
+            TriggerPreview();
         }
 
         private void image1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
