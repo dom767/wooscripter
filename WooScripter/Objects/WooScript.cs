@@ -4,162 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.IO;
+using System.Windows;
 
 namespace WooScripter.Objects.WooScript
-{/*
-    class AdjustOp : Op
-    {
-        public string _Value;
-        public Number _Number;
-        public Number _Number2;
-        public Number _Number3;
-        public int _ArgCount;
-
-        public void Parse(ref string[] program)
-        {/*
-            _Value = ParseUtils.GetToken(ref data);
-            log.AddMsg("Adjusting value : " + _Value);
-            _Number = new Number();
-            _Number.Parse(ParseUtils.GetToken(ref data), log);
-            _ArgCount = 1;
-            int pos = data.IndexOf(',');
-            if (data.IndexOf(',') >= 0)
-            {
-                _Number2 = new Number();
-                _Number2.Parse(ParseUtils.GetToken(ref data), log);
-                _ArgCount++;
-            }
-            if (data.IndexOf(',') >= 0)
-            {
-                _Number3 = new Number();
-                _Number3.Parse(ParseUtils.GetToken(ref data), log);
-                _ArgCount++;
-            }*//*
-        }
-        
-        public void Execute(ref WooState state)
-        {/*
-            Vector3 vec = new Vector3(0, 0, 0);
-            if (_Value.Equals("x", StringComparison.InvariantCultureIgnoreCase))
-                vec.x = _Number.GetNewNumber(state._X, state._Random);
-            if (_Value.Equals("y", StringComparison.InvariantCultureIgnoreCase))
-                vec.y = _Number.GetNewNumber(state._Y, state._Random);
-            if (_Value.Equals("z", StringComparison.InvariantCultureIgnoreCase))
-                vec.z = _Number.GetNewNumber(state._Z, state._Random);
-
-            vec.x = vec.x * state._Scale.x;
-            vec.y = vec.y * state._Scale.y;
-            vec.z = vec.z * state._Scale.z;
-            
-            vec.Mul(state._Rotation);
-            state._X += vec.x;
-            state._Y += vec.y;
-            state._Z += vec.z;
-
-            if (_Value.Equals("rx", StringComparison.InvariantCultureIgnoreCase))
-            {
-                double delta = _Number.GetNewNumber(state._rX, state._Random);
-                state._rX += delta;
-                Matrix3 rotMatrix = new Matrix3();
-                rotMatrix.MakeFromRPY(delta * 2 * 3.141592 / 360, 0, 0);
-                rotMatrix.Mul(state._Rotation);
-                state._Rotation = rotMatrix;
-            }
-            if (_Value.Equals("ry", StringComparison.InvariantCultureIgnoreCase))
-            {
-                double delta = _Number.GetNewNumber(state._rY, state._Random);
-                state._rY += delta;
-                Matrix3 rotMatrix = new Matrix3();
-                rotMatrix.MakeFromRPY(0, delta * 2 * 3.141592 / 360, 0);
-                rotMatrix.Mul(state._Rotation);
-                state._Rotation = rotMatrix;
-            } 
-            if (_Value.Equals("rz", StringComparison.InvariantCultureIgnoreCase))
-            {
-                double delta = _Number.GetNewNumber(state._rZ, state._Random);
-                state._rZ += delta;
-                Matrix3 rotMatrix = new Matrix3();
-                rotMatrix.MakeFromRPY(0, 0, delta * 2 * 3.141592 / 360);
-                rotMatrix.Mul(state._Rotation);
-                state._Rotation = rotMatrix;
-            }
-
-            if (_Value.Equals("diff", StringComparison.InvariantCultureIgnoreCase))
-            {
-                state._Diff._Red += _Number.GetNewNumber(state._Diff._Red, state._Random);
-                state._Diff._Green += _Number2.GetNewNumber(state._Diff._Green, state._Random);
-                state._Diff._Blue += _Number3.GetNewNumber(state._Diff._Blue, state._Random);
-            }
-            if (_Value.Equals("diffR", StringComparison.InvariantCultureIgnoreCase))
-                state._Diff._Red += _Number.GetNewNumber(state._Diff._Red, state._Random);
-            if (_Value.Equals("diffG", StringComparison.InvariantCultureIgnoreCase))
-                state._Diff._Green += _Number.GetNewNumber(state._Diff._Green, state._Random);
-            if (_Value.Equals("diffB", StringComparison.InvariantCultureIgnoreCase))
-                state._Diff._Blue += _Number.GetNewNumber(state._Diff._Blue, state._Random);
-
-            if (_Value.Equals("refl", StringComparison.InvariantCultureIgnoreCase))
-            {
-                state._Refl._Red += _Number.GetNewNumber(state._Refl._Red, state._Random);
-                state._Refl._Green += _Number2.GetNewNumber(state._Refl._Green, state._Random);
-                state._Refl._Blue += _Number3.GetNewNumber(state._Refl._Blue, state._Random);
-            }
-            if (_Value.Equals("reflR", StringComparison.InvariantCultureIgnoreCase))
-                state._Refl._Red += _Number.GetNewNumber(state._Refl._Red, state._Random);
-            if (_Value.Equals("reflG", StringComparison.InvariantCultureIgnoreCase))
-                state._Refl._Green += _Number.GetNewNumber(state._Refl._Green, state._Random);
-            if (_Value.Equals("reflB", StringComparison.InvariantCultureIgnoreCase))
-                state._Refl._Blue += _Number.GetNewNumber(state._Refl._Blue, state._Random);
-
-            if (_Value.Equals("emi", StringComparison.InvariantCultureIgnoreCase))
-            {
-                state._Emi._Red += _Number.GetNewNumber(state._Emi._Red, state._Random);
-                state._Emi._Green += _Number2.GetNewNumber(state._Emi._Green, state._Random);
-                state._Emi._Blue += _Number3.GetNewNumber(state._Emi._Blue, state._Random);
-            }
-            if (_Value.Equals("emiR", StringComparison.InvariantCultureIgnoreCase))
-                state._Emi._Red += _Number.GetNewNumber(state._Emi._Red, state._Random);
-            if (_Value.Equals("emiG", StringComparison.InvariantCultureIgnoreCase))
-                state._Emi._Green += _Number.GetNewNumber(state._Emi._Green, state._Random);
-            if (_Value.Equals("emiB", StringComparison.InvariantCultureIgnoreCase))
-                state._Emi._Blue += _Number.GetNewNumber(state._Emi._Blue, state._Random);
-
-            if (_Value.Equals("spec", StringComparison.InvariantCultureIgnoreCase))
-            {
-                state._Spec._Red += _Number.GetNewNumber(state._Spec._Red, state._Random);
-                state._Spec._Green += _Number2.GetNewNumber(state._Spec._Green, state._Random);
-                state._Spec._Blue += _Number3.GetNewNumber(state._Spec._Blue, state._Random);
-            }
-            if (_Value.Equals("specR", StringComparison.InvariantCultureIgnoreCase))
-                state._Spec._Red += _Number.GetNewNumber(state._Spec._Red, state._Random);
-            if (_Value.Equals("specG", StringComparison.InvariantCultureIgnoreCase))
-                state._Spec._Green += _Number.GetNewNumber(state._Spec._Green, state._Random);
-            if (_Value.Equals("specB", StringComparison.InvariantCultureIgnoreCase))
-                state._Spec._Blue += _Number.GetNewNumber(state._Spec._Blue, state._Random);
-
-            if (_Value.Equals("power", StringComparison.InvariantCultureIgnoreCase))
-                state._Power += (float)_Number.GetNewNumber((double)state._Power, state._Random);
-
-            if (_Value.Equals("scale", StringComparison.InvariantCultureIgnoreCase))
-            {
-                state._Scale.x += _Number.GetNewNumber(state._Scale.x, state._Random);
-                state._Scale.y += _Number2.GetNewNumber(state._Scale.y, state._Random);
-                state._Scale.z += _Number3.GetNewNumber(state._Scale.z, state._Random);
-            }
-            if (_Value.Equals("scaleX", StringComparison.InvariantCultureIgnoreCase))
-                state._Scale.x += _Number.GetNewNumber(state._Scale.x, state._Random);
-            if (_Value.Equals("scaleY", StringComparison.InvariantCultureIgnoreCase))
-                state._Scale.y += _Number.GetNewNumber(state._Scale.y, state._Random);
-            if (_Value.Equals("scaleZ", StringComparison.InvariantCultureIgnoreCase))
-                state._Scale.z += _Number.GetNewNumber(state._Scale.z, state._Random);
-
-            if (_Value.Equals("recursions", StringComparison.InvariantCultureIgnoreCase))
-                state._Recursions += (int)(0.5+_Number.GetNewNumber((double)state._Recursions, state._Random));
-        *//*}
-    }
-    */
-
-
-
+{
     public enum VarType
     {
         varFloat,
@@ -756,17 +604,19 @@ namespace WooScripter.Objects.WooScript
 
         bool _ParseSuccessful = false;
 
-        public bool Parse(ref string Log)
+        public bool Parse(ref string Log, ref string Error)
         {
             Reset();
 
+            string programData = _Program.Clone() as string;
+
+            string[] seperator = new string[] {"\r\n"};
+            string[] programLines = programData.Split(seperator, StringSplitOptions.None);
+
+            int initialLines = programLines.Length;
+
             try
             {
-                string programData = _Program.Clone() as string;
-
-                string[] seperator = new string[] {"\r\n"};
-                string[] programLines = programData.Split(seperator, StringSplitOptions.None);
-                
                 ParseProgram(ref programLines);
 
                 _ParseSuccessful = true;
@@ -776,8 +626,7 @@ namespace WooScripter.Objects.WooScript
             catch (ParseException e)
             {
                 _ParseSuccessful = false;
-                _Log.AddMsg("*ERROR* Parse exception : " + e._WooMessage);
-                Log = _Log.GetLog();
+                Error = "*ERROR* Line : " + (initialLines - programLines.Length) + " : " + e._WooMessage;
                 return false;
             }
             return true;
@@ -788,17 +637,24 @@ namespace WooScripter.Objects.WooScript
             if (!_ParseSuccessful)
                 return;
 
-            foreach (Rule r in _Rules)
+            try
             {
-                if (r._Name.Equals("main", StringComparison.InvariantCultureIgnoreCase))
+                foreach (Rule r in _Rules)
                 {
-                    WooState state = new WooState();
-                    state._Rules = _Rules;
-                    state._Random = new Random(10);//_Seed);
-                    state._Parent = parent;
-                    state._Preview = preview;
-                    r.Execute(ref state);
+                    if (r._Name.Equals("main", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        WooState state = new WooState();
+                        state._Rules = _Rules;
+                        state._Random = new Random(10);//_Seed);
+                        state._Parent = parent;
+                        state._Preview = preview;
+                        r.Execute(ref state);
+                    }
                 }
+            }
+            catch (EvaluateException e)
+            {
+                MessageBox.Show(e._WooMessage);
             }
         }
     }

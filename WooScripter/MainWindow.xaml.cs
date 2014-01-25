@@ -161,7 +161,8 @@ namespace WooScripter
         private bool CompileSingle(ref WooScript script, ref Label status)
         {
             string log = "";
-            bool success = script.Parse(ref log);
+            string error = "";
+            bool success = script.Parse(ref log, ref error);
             if (success)
             {
                 status.Background = Brushes.LightGreen;
@@ -170,7 +171,7 @@ namespace WooScripter
             else
             {
                 status.Background = Brushes.Red;
-                MessageBox.Show(log);
+                MessageBox.Show(error);
                 return false;
             }
         }
@@ -189,7 +190,7 @@ namespace WooScripter
             success &= CompileSingle(ref _SceneScript, ref sceneStatus);
             success &= CompileSingle(ref _LightingScript, ref lightingStatus);
             
-            if (success)
+//            if (success)
             {
                 TriggerPreview();
             }

@@ -42,7 +42,7 @@ namespace WooScripter.Objects.WooScript
                     return r;
                 }
             }
-            throw new Exception("Tried to call a rule that doesn't exist...");
+            throw new EvaluateException("Tried to call rule " + name + ", but it doesn't exist...");
         }
         public Random _Random;
         public XElement _Parent;

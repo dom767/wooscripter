@@ -21,8 +21,10 @@ namespace WooScripter.Objects.WooScript
 
     public class EvaluateException : System.ApplicationException
     {
+        public string _WooMessage;
+
         public EvaluateException() { }
-        public EvaluateException(string message) { }
+        public EvaluateException(string message) { _WooMessage = message; }
         public EvaluateException(string message, System.Exception inner) { }
 
         // Constructor needed for serialization 
