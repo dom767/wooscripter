@@ -648,6 +648,8 @@ namespace WooScripter.Objects.WooScript
             _Rules.Add(circleRule);
             Rule sphereLightRule = new SphereLightRule("spherelight");
             _Rules.Add(sphereLightRule);
+            Rule cylinderRule = new CylinderRule("cylinder");
+            _Rules.Add(cylinderRule);
         }
 
         public string GetHelpText()

@@ -78,6 +78,7 @@
     <Compile Include="Objects\Background.cs" />
     <Compile Include="Objects\Circle.cs" />
     <Compile Include="Objects\Cube.cs" />
+    <Compile Include="Objects\Cylinder.cs" />
     <Compile Include="Objects\Light.cs" />
     <Compile Include="Objects\Material.cs" />
     <Compile Include="Objects\RenderObject.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Objects\WooScript\CallFunction.cs" />
     <Compile Include="Objects\WooScript\CircleRule.cs" />
     <Compile Include="Objects\WooScript\CosFloatFunction.cs" />
+    <Compile Include="Objects\WooScript\CylinderRule.cs" />
     <Compile Include="Objects\WooScript\DivOp.cs" />
     <Compile Include="Objects\WooScript\Exception.cs" />
     <Compile Include="Objects\WooScript\Expression.cs" />

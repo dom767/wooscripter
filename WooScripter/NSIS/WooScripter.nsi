@@ -50,6 +50,10 @@ Section "WooScripter (required)"
 
   SetOutPath $DOCUMENTS
 
+  CreateDirectory $DOCUMENTS\WooScripter\Scripts\Background
+  CreateDirectory $DOCUMENTS\WooScripter\Scripts\Lighting
+  CreateDirectory $DOCUMENTS\WooScripter\Scripts\Scene
+
   ; examples
   File /oname=WooScripter\Scripts\Background\scratch.woo "..\Scripts\Background\plain_white_circle.woo"
   File /oname=WooScripter\Scripts\Lighting\scratch.woo "..\Scripts\Lighting\examples.woo"
