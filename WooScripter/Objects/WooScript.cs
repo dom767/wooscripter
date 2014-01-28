@@ -439,6 +439,19 @@ namespace WooScripter.Objects.WooScript
             throw new ParseException("No matching assign operation found \"" + token + "\"");
         }
 
+        public static int GetNumOps()
+        {
+            return _Operators.Count + _AssignOperators.Count;
+        }
+
+        public static string GetOp(int op)
+        {
+            if (op >= _Operators.Count)
+                return _AssignOperators[op - _Operators.Count].GetSymbol();
+            else
+                return _Operators[op].GetSymbol();
+        }
+
         public static Op GetOp(string token)
         {
             foreach (Op Op in _Operators)

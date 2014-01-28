@@ -15,6 +15,11 @@ namespace WooScripter.Objects.WooScript
             {
                 string rulename = ParseUtils.GetToken(ref program);
                 _Rule.Add(rulename);
+
+                string comma = ParseUtils.GetToken(ref program);
+                if (!comma.Equals(",", StringComparison.Ordinal))
+                    throw new ParseException("Expected \",\"");
+
                 WooScript._Log.AddMsg("Rule1 : " + rulename);
                 string weightstr = ParseUtils.GetToken(ref program);
                 float weight;
@@ -28,6 +33,10 @@ namespace WooScripter.Objects.WooScript
                 }
                 _Weight.Add(weight);
                 WooScript._Log.AddMsg("Weight : " + weight);
+
+                comma = ParseUtils.GetToken(ref program);
+                if (!comma.Equals(",", StringComparison.Ordinal))
+                    throw new ParseException("Expected \",\"");
             }
         }
         public void Execute(ref WooState state)

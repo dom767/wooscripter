@@ -9,8 +9,10 @@ namespace WooScripter.Objects.WooScript
     {
         public static string GetToken(ref string[] lines)
         {
-            char[] whitespace = new char[] { ' ', ',' };
-            char[] specialChars = new char[] { '(', ')', '{', '}' };
+            char[] whitespace = new char[] { ' ' };
+            char[] specialChars = new char[] { ',', '(', ')', '{', '}' };
+            char[] opChars = new char[] { '/', '*', '-', '+', '=' };
+
             do
             {
                 if (lines[0].Length == 0 || lines[0].IndexOf("//") == 0)
@@ -29,19 +31,38 @@ namespace WooScripter.Objects.WooScript
 
             int tokenEnd = lines[0].IndexOfAny(whitespace);
             int tokenSpecial = lines[0].IndexOfAny(specialChars);
-            if (tokenSpecial != 0)
-            {
-                if (tokenEnd == -1)
-                    tokenEnd = tokenSpecial;
-                else if ((tokenEnd > tokenSpecial) && (tokenSpecial!=-1))
-                    tokenEnd = tokenSpecial;
-            }
-            else
+            int tokenOp = lines[0].IndexOfAny(opChars);
+
+            if (tokenEnd == -1) tokenEnd = lines[0].Length;
+            if (tokenSpecial == -1) tokenSpecial = lines[0].Length;
+            if (tokenOp == -1) tokenOp = lines[0].Length;
+
+            if (tokenSpecial == 0)
             {
                 tokenEnd = 1;
             }
+            else if (tokenOp == 0)
+            {
+                int length = 0;
+                for (int i = 0; i < WooScript.GetNumOps(); i++)
+                {
+                    string opName = WooScript.GetOp(i);
+                    if (lines[0].IndexOf(opName) == 0)
+                    {
+                        if (opName.Length > length)
+                            length = opName.Length;
+                    }
+                }
+                // nah
+                tokenEnd = length;
+            }
+            else
+            {
+                if (tokenSpecial < tokenEnd) tokenEnd = tokenSpecial;
+                if (tokenOp < tokenEnd) tokenEnd = tokenOp;
+            }
 
-            if (tokenEnd == -1)
+            if (tokenEnd == lines[0].Length)
             {
                 token = lines[0];
                 lines[0] = "";

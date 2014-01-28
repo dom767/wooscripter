@@ -13,6 +13,11 @@ namespace WooScripter.Objects.WooScript
         {
             _Callee = ParseUtils.GetToken(ref program);
             WooScript._Log.AddMsg("Callee : " + _Callee);
+
+            string comma = ParseUtils.GetToken(ref program);
+            if (!comma.Equals(",", StringComparison.Ordinal))
+                throw new ParseException("Expected \",\"");
+
             string token = ParseUtils.GetToken(ref program);
             try
             {

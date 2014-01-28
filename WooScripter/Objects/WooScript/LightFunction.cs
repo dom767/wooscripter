@@ -18,14 +18,26 @@ namespace WooScripter.Objects.WooScript
             if (_ColourExpr.GetExpressionType() != VarType.varVector)
                 throw new ParseException("malformed directional light colour");
 
+            string comma = ParseUtils.GetToken(ref program);
+            if (!comma.Equals(",", StringComparison.Ordinal))
+                throw new ParseException("Expected \",\"");
+            
             _DirectionExpr = ExpressionBuilder.Parse(ref program);
             if (_DirectionExpr.GetExpressionType() != VarType.varVector)
                 throw new ParseException("malformed directional light direction");
 
+            comma = ParseUtils.GetToken(ref program);
+            if (!comma.Equals(",", StringComparison.Ordinal))
+                throw new ParseException("Expected \",\"");
+            
             _AreaExpr = ExpressionBuilder.Parse(ref program);
             if (_AreaExpr.GetExpressionType() != VarType.varFloat)
                 throw new ParseException("malformed directional light area");
 
+            comma = ParseUtils.GetToken(ref program);
+            if (!comma.Equals(",", StringComparison.Ordinal))
+                throw new ParseException("Expected \",\"");
+            
             _SamplesExpr = ExpressionBuilder.Parse(ref program);
             if (_SamplesExpr.GetExpressionType() != VarType.varFloat)
                 throw new ParseException("malformed directional light samples");
@@ -72,6 +84,10 @@ namespace WooScripter.Objects.WooScript
             if (_ColourExpr.GetExpressionType() != VarType.varVector)
                 throw new ParseException("malformed point light colour");
 
+            string comma = ParseUtils.GetToken(ref program);
+            if (!comma.Equals(",", StringComparison.Ordinal))
+                throw new ParseException("Expected \",\"");
+            
             _PositionExpr = ExpressionBuilder.Parse(ref program);
             if (_PositionExpr.GetExpressionType() != VarType.varVector)
                 throw new ParseException("malformed point light position");
@@ -141,6 +157,10 @@ namespace WooScripter.Objects.WooScript
             if (_ColourExpr.GetExpressionType() != VarType.varVector)
                 throw new ParseException("malformed world light colour");
 
+            string comma = ParseUtils.GetToken(ref program);
+            if (!comma.Equals(",", StringComparison.Ordinal))
+                throw new ParseException("Expected \",\"");
+            
             _SamplesExpr = ExpressionBuilder.Parse(ref program);
             if (_SamplesExpr.GetExpressionType() != VarType.varFloat)
                 throw new ParseException("malformed world light samples");

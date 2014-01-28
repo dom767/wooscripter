@@ -43,9 +43,17 @@ namespace WooScripter.Objects.WooScript
             if (_XExpr.GetExpressionType() != VarType.varFloat)
                 throw new ParseException("parameter one to vec() is not a float");
 
+            string comma = ParseUtils.GetToken(ref program);
+            if (!comma.Equals(",", StringComparison.Ordinal))
+                throw new ParseException("Expected \",\"");
+
             _YExpr = ExpressionBuilder.Parse(ref program);
             if (_YExpr.GetExpressionType() != VarType.varFloat)
                 throw new ParseException("parameter two to vec() is not a float");
+
+            comma = ParseUtils.GetToken(ref program);
+            if (!comma.Equals(",", StringComparison.Ordinal))
+                throw new ParseException("Expected \",\"");
 
             _ZExpr = ExpressionBuilder.Parse(ref program);
             if (_ZExpr.GetExpressionType() != VarType.varFloat)

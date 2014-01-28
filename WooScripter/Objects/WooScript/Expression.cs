@@ -39,6 +39,12 @@ namespace WooScripter.Objects.WooScript
                 ret = new FloatFunctionExpr();
                 ret.Parse(ref program);
             }
+            else if (type1 == TokenType.Op)
+            {
+                //deal with -8 type numbers
+                ret = new FloatNumber();
+                ret.Parse(ref program);
+            }
             else
                 throw new ParseException("Unrecognised expression \"" + token1 + "\"");
 /*            if (type1 == TokenType.floatFunction)
@@ -196,6 +202,13 @@ namespace WooScripter.Objects.WooScript
         public void Parse(ref string[] program)
         {
             string data = ParseUtils.GetToken(ref program);
+            
+            // deal with -ve numbers (bit hacky, but keeps the token parser state free)
+            if (data.Length == 1 && data[0] == '-')
+            {
+                data += ParseUtils.GetToken(ref program);
+            }
+
             if (data.IndexOf(':') > 0)
             {
                 _RangeType = RangeTypeT.Continuous;
