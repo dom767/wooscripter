@@ -8,7 +8,7 @@ namespace WooScripter.Objects.WooScript
     class RepeatFunction : NullFunction
     {
         public string _Callee;
-        public int _Repeats;
+        public Expression _Expr;
         public void Parse(ref string[] program)
         {
             _Callee = ParseUtils.GetToken(ref program);
@@ -18,16 +18,11 @@ namespace WooScripter.Objects.WooScript
             if (!comma.Equals(",", StringComparison.Ordinal))
                 throw new ParseException("Expected \",\"");
 
-            string token = ParseUtils.GetToken(ref program);
-            try
-            {
-                _Repeats = int.Parse(token);
-            }
-            catch (FormatException /*e*/)
-            {
-                throw new ParseException("Failed to convert second parameter to Repeat method : " + token);
-            }
-            WooScript._Log.AddMsg("Repeats : " + _Repeats.ToString());
+            _Expr = ExpressionBuilder.Parse(ref program);
+            if (_Expr.GetExpressionType() != VarType.varFloat)
+                throw new ParseException("Failed to convert repeat number to float");
+
+            WooScript._Log.AddMsg("Repeats : " + _Expr.ToString());
         }
 
         public void Execute(ref WooState state)
@@ -36,7 +31,7 @@ namespace WooScripter.Objects.WooScript
             if (state._Recursions > 0 || !state.GetRule(_Callee).CanRecurse())
             {
                 state._Recursions--;
-                for (int i = 0; i < _Repeats; i++)
+                for (int i = 0; i < (int)(_Expr.EvaluateFloat(ref state)+0.5); i++)
                 {
                     state.GetRule(_Callee).Execute(ref state);
                 }
