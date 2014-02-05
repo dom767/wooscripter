@@ -1,0 +1,9 @@
+rule main {
+call(box)
+pos.x += 2
+call(sphere)
+pos.z += 2
+call(cylinder)
+pos.y += 2
+call(spherelight)
+}

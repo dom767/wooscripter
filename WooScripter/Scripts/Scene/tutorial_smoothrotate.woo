@@ -1,0 +1,47 @@
+rule main {
+pos.y += 1
+call(rxtest)
+pos.z += 3
+call(rytest)
+pos.z += 3
+call(rztest)
+}
+
+rule rxtest {
+//red boxes show rx impact
+diff = vec(1,0,0)
+repeat(rxstep, 50)
+}
+
+rule rxstep {
+//move along and rotate
+pos.x += 0.2
+rx += 3 // angles in degrees
+call(box)
+}
+
+rule rytest {
+//green boxes show ry
+diff = vec(0,1,0)
+repeat(rystep, 50)
+}
+
+rule rystep {
+//move along and rotate
+pos.x += 0.2
+ry += 3 // angles in degrees
+call(box)
+}
+
+rule rztest {
+//blue boxes show rz
+diff = vec(0,0,1)
+repeat(rzstep, 50)
+}
+
+rule rzstep {
+//move along and rotate
+pos.x += 0.2
+rz -= 3 // angles in degrees
+call(box)
+}
