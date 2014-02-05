@@ -1,9 +1,30 @@
 Wooscripter, started by Dom Penfold, now up and open to the general public. Note that coretracer.dll is my own raytracer which is not currently available on github. A release version is included in this project's bin folder.
 
-Changelog:
+v0.94
+- Lots more safety on the wootracer, shouldn't crash easily anymore...
+- Modified the help panel to point to the language reference article
+- Added various tutorials to the distribution
+- Updated branch and repeat to allow expressions (i.e. "repeat(box, (7*2)+v0.x)")
 
-14th January 2014
-NSIS Installer script + executable added
+v0.93
+- Improved the token parser to allow no whitespace expressions i.e. diff=vec(1,1,1) now works
+- FinalRender window improved so it's easier to use
+
+v0.92
+- Added cylinder primitive to wootracer and scripting language
+
+v0.91
+- Ability to Save Scene XML for debugging purpuses
+- Sample code for installation
+- Background colour now a scriptable value
+- Circle's default to diamter 1, not radius 1
+- Buffer transfer settings now immediately impact preview render
+- Help window added
+- Add resolution selector for preview window
+- Improved camera control and initial settings (Shift moves slowly, Ctrl changes up/down to vertical axis)
+
+v0.9
+- Initial Release
 
 Please note that wooscript is my own language and while I'm happy for people to use and extend this application (and hence this language), please make me aware if you'd like to build other applications utilising the syntax etc.
 
