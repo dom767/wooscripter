@@ -56,10 +56,24 @@ Section "WooScripter (required)"
 
   ; examples
   File /oname=WooScripter\Scripts\Background\scratch.woo "..\Scripts\Background\plain_white_circle.woo"
-  File /oname=WooScripter\Scripts\Lighting\scratch.woo "..\Scripts\Lighting\examples.woo"
-  File /oname=WooScripter\Scripts\Scene\scratch.woo "..\Scripts\Scene\simplebox.woo"
 
-  
+  File /oname=WooScripter\Scripts\Lighting\scratch.woo "..\Scripts\Lighting\examples.woo"
+  File /oname=WooScripter\Scripts\Lighting\examples.woo "..\Scripts\Lighting\examples.woo"
+  File /oname=WooScripter\Scripts\Lighting\bigsphere.woo "..\Scripts\Lighting\bigsphere.woo"
+  File /oname=WooScripter\Scripts\Lighting\daylight.woo "..\Scripts\Lighting\daylight.woo"
+  File /oname=WooScripter\Scripts\Lighting\plaindirectional.woo "..\Scripts\Lighting\plaindirectional.woo"
+  File /oname=WooScripter\Scripts\Lighting\ringoflight.woo "..\Scripts\Lighting\ringoflight.woo"
+  File /oname=WooScripter\Scripts\Lighting\sunset.woo "..\Scripts\Lighting\sunset.woo"
+
+  File /oname=WooScripter\Scripts\Scene\scratch.woo "..\Scripts\Scene\simplebox.woo"
+  File /oname=WooScripter\Scripts\Scene\simplebox.woo "..\Scripts\Scene\simplebox.woo"
+  File /oname=WooScripter\Scripts\Scene\hairyball.woo "..\Scripts\Scene\hairyball.woo"
+  File /oname=WooScripter\Scripts\Scene\spiral.woo "..\Scripts\Scene\spiral.woo"
+  File /oname=WooScripter\Scripts\Scene\tutorial_pos.woo "..\Scripts\Scene\tutorial_pos.woo"
+  File /oname=WooScripter\Scripts\Scene\tutorial_rotate.woo "..\Scripts\Scene\tutorial_rotate.woo"
+  File /oname=WooScripter\Scripts\Scene\tutorial_scale.woo "..\Scripts\Scene\tutorial_scale.woo"
+  File /oname=WooScripter\Scripts\Scene\tutorial_smoothrotate.woo "..\Scripts\Scene\tutorial_smoothrotate.woo"
+
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\WooScripter "Install_Dir" "$INSTDIR"
   
