@@ -397,6 +397,7 @@ namespace WooScripter
 
         private void button4_Click(object sender, RoutedEventArgs e)
         {
+            _Velocity = new Vector3(0, 0, 0);
             _Camera._FocusDepth = (float)_FocusDistance;
             _Camera._ApertureSize = (float)_ApertureSize;
             FinalRender ownedWindow = new FinalRender(ref _Scene, ref _Camera);
