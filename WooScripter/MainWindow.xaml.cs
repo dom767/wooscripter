@@ -498,7 +498,7 @@ namespace WooScripter
             }
             else if (radioButton4.IsChecked.HasValue && radioButton4.IsChecked.Value)
             {
-                return 0.25f;
+                return 0.1f;
             }
             return 0.1f;
         }

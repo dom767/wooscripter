@@ -74,7 +74,7 @@
                 <RadioButton Content="1x" GroupName="previewResolution" Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Name="radioButton1" VerticalAlignment="Top" Checked="radioButton1_Checked" />
                 <RadioButton Content="0.5x" GroupName="previewResolution" Height="16" HorizontalAlignment="Left" Margin="6,28,0,0" Name="radioButton2" VerticalAlignment="Top" Checked="radioButton1_Checked" />
                 <RadioButton Content="0.33x" GroupName="previewResolution" Height="16" HorizontalAlignment="Left" Margin="6,50,0,0" Name="radioButton3" VerticalAlignment="Top" IsChecked="True" Checked="radioButton1_Checked" />
-                <RadioButton Content="0.25x" GroupName="previewResolution" Height="16" HorizontalAlignment="Left" Margin="6,72,0,0" Name="radioButton4" VerticalAlignment="Top" />
+                <RadioButton Content="0.1x" GroupName="previewResolution" Height="16" HorizontalAlignment="Left" Margin="6,72,0,0" Name="radioButton4" VerticalAlignment="Top" Checked="radioButton1_Checked" />
             </Grid>
         </GroupBox>
     </Grid>

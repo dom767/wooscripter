@@ -1,5 +1,9 @@
 Wooscripter, started by Dom Penfold, now up and open to the general public. Note that coretracer.dll is my own raytracer which is not currently available on github. A release version is included in this project's bin folder.
 
+v0.95
+- Fixed a major memory leak in the raytracer, stability seems far better now
+- Added nanoblock script sample to the installer
+
 v0.94
 - Lots more safety on the wootracer, shouldn't crash easily anymore...
 - Modified the help panel to point to the language reference article

@@ -73,6 +73,7 @@ Section "WooScripter (required)"
   File /oname=WooScripter\Scripts\Scene\tutorial_rotate.woo "..\Scripts\Scene\tutorial_rotate.woo"
   File /oname=WooScripter\Scripts\Scene\tutorial_scale.woo "..\Scripts\Scene\tutorial_scale.woo"
   File /oname=WooScripter\Scripts\Scene\tutorial_smoothrotate.woo "..\Scripts\Scene\tutorial_smoothrotate.woo"
+  File /oname=WooScripter\Scripts\Scene\nanoblock_babyduck.woo "..\Scripts\Scene\nanoblock_babyduck.woo"
 
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\WooScripter "Install_Dir" "$INSTDIR"
