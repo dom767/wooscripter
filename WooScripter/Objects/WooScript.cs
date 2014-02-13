@@ -95,7 +95,7 @@ namespace WooScripter.Objects.WooScript
 
         public void LoadUserInput(string subfolder)
         {
-            string store = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\WooScripter\\Scripts\\" + subfolder;
+            string store = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WooScripter\\Scripts\\" + subfolder;
 
             // Configure open file dialog box
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -103,7 +103,7 @@ namespace WooScripter.Objects.WooScript
             dlg.DefaultExt = ".woo"; // Default file extension
             dlg.Filter = "WooScript|*.woo"; // Filter files by extension
             dlg.InitialDirectory = store;
-
+            
             // Show open file dialog box
             Nullable<bool> result = dlg.ShowDialog();
 
