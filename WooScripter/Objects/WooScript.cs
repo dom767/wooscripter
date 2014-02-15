@@ -385,6 +385,7 @@ namespace WooScripter.Objects.WooScript
             _FloatVariables.Add("rx");
             _FloatVariables.Add("ry");
             _FloatVariables.Add("rz");
+            _FloatVariables.Add("mengeriterations");
         }
 
         public static NullFunction GetNullFunction(string name)
@@ -478,6 +479,7 @@ namespace WooScripter.Objects.WooScript
             _NullFunctions.Add(new WorldLightFunction());
             _NullFunctions.Add(new AmbientLightFunction());
             _NullFunctions.Add(new BackgroundFunction());
+            _NullFunctions.Add(new MengerPatternFunction());
 
             _VecFunctions.Add(new VectorConstructorFunction());
             _VecFunctions.Add(new VectorNormaliseFunction());
@@ -511,6 +513,8 @@ namespace WooScripter.Objects.WooScript
             _Rules.Add(sphereLightRule);
             Rule cylinderRule = new CylinderRule("cylinder");
             _Rules.Add(cylinderRule);
+            Rule mengerRule = new MengerRule("menger");
+            _Rules.Add(mengerRule);
         }
 
         public string GetHelpText()

@@ -28,10 +28,43 @@ namespace WooScripter.Objects.WooScript
         public int _Recursions = 10;
         public WooState _PreviousState;
         public bool _Preview = false;
+        public int _MengerIterations = 4;
+        public int[] _MengerPattern = new int[27];
+
         public WooState()
         {
             _Rotation = new Matrix3();
             _Rotation.MakeIdentity();
+            int idx = 0;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 0;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 1;
+
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 0;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 0;
+            _MengerPattern[idx++] = 0;
+            _MengerPattern[idx++] = 0;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 0;
+            _MengerPattern[idx++] = 1;
+
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 0;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 1;
+            _MengerPattern[idx++] = 1;
         }
         public Rule GetRule(string name)
         {
@@ -71,6 +104,9 @@ namespace WooScripter.Objects.WooScript
             clone._Recursions = this._Recursions;
             clone._PreviousState = this._PreviousState;
             clone._Preview = this._Preview;
+            clone._MengerIterations = this._MengerIterations;
+            for (int i = 0; i < 27; i++)
+                clone._MengerPattern[i] = this._MengerPattern[i];
             return clone;
         }
         void SetSelectedValue(ref Vector3 target, string selector, double value)
@@ -134,6 +170,8 @@ namespace WooScripter.Objects.WooScript
                     return _Gloss;
                 if (target.Equals("recursions", StringComparison.Ordinal))
                     return _Recursions;
+                if (target.Equals("mengeriterations", StringComparison.Ordinal))
+                    return _MengerIterations;
             }
             throw new ParseException("no matching target for \"" + target + "\"");
         }
@@ -251,6 +289,10 @@ namespace WooScripter.Objects.WooScript
                 if (target.Equals("recursions", StringComparison.Ordinal))
                 {
                     _Recursions = (int)(value + 0.5);
+                }
+                if (target.Equals("mengeriterations", StringComparison.Ordinal))
+                {
+                    _MengerIterations = (int)(value + 0.5);
                 }
             }
         }

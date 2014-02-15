@@ -81,6 +81,7 @@
     <Compile Include="Objects\Cylinder.cs" />
     <Compile Include="Objects\Light.cs" />
     <Compile Include="Objects\Material.cs" />
+    <Compile Include="Objects\Menger.cs" />
     <Compile Include="Objects\RenderObject.cs" />
     <Compile Include="Objects\Scene.cs" />
     <Compile Include="Objects\Sphere.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Objects\WooScript\FinalCallFunction.cs" />
     <Compile Include="Objects\WooScript\Function.cs" />
     <Compile Include="Objects\WooScript\LightFunction.cs" />
+    <Compile Include="Objects\WooScript\MengerRule.cs" />
     <Compile Include="Objects\WooScript\MulOp.cs" />
     <Compile Include="Objects\WooScript\PushPopFunction.cs" />
     <Compile Include="Objects\WooScript\RepeatFunction.cs" />
