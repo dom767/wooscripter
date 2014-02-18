@@ -480,6 +480,7 @@ namespace WooScripter.Objects.WooScript
             _NullFunctions.Add(new AmbientLightFunction());
             _NullFunctions.Add(new BackgroundFunction());
             _NullFunctions.Add(new MengerPatternFunction());
+            _NullFunctions.Add(new DistanceFunctionFunction());
 
             _VecFunctions.Add(new VectorConstructorFunction());
             _VecFunctions.Add(new VectorNormaliseFunction());
@@ -515,6 +516,8 @@ namespace WooScripter.Objects.WooScript
             _Rules.Add(cylinderRule);
             Rule mengerRule = new MengerRule("menger");
             _Rules.Add(mengerRule);
+            Rule distanceRule = new DistanceRule("distance");
+            _Rules.Add(distanceRule);
         }
 
         public string GetHelpText()

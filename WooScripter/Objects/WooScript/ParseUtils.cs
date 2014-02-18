@@ -37,29 +37,37 @@ namespace WooScripter.Objects.WooScript
             if (tokenSpecial == -1) tokenSpecial = lines[0].Length;
             if (tokenOp == -1) tokenOp = lines[0].Length;
 
-            if (tokenSpecial == 0)
+            int tokenquote = lines[0].IndexOf("\"");
+            if (tokenquote == 0)
             {
-                tokenEnd = 1;
-            }
-            else if (tokenOp == 0)
-            {
-                int length = 0;
-                for (int i = 0; i < WooScript.GetNumOps(); i++)
-                {
-                    string opName = WooScript.GetOp(i);
-                    if (lines[0].IndexOf(opName) == 0)
-                    {
-                        if (opName.Length > length)
-                            length = opName.Length;
-                    }
-                }
-                // nah
-                tokenEnd = length;
+                tokenEnd = 1+lines[0].IndexOf("\"", 1);
             }
             else
             {
-                if (tokenSpecial < tokenEnd) tokenEnd = tokenSpecial;
-                if (tokenOp < tokenEnd) tokenEnd = tokenOp;
+                if (tokenSpecial == 0)
+                {
+                    tokenEnd = 1;
+                }
+                else if (tokenOp == 0)
+                {
+                    int length = 0;
+                    for (int i = 0; i < WooScript.GetNumOps(); i++)
+                    {
+                        string opName = WooScript.GetOp(i);
+                        if (lines[0].IndexOf(opName) == 0)
+                        {
+                            if (opName.Length > length)
+                                length = opName.Length;
+                        }
+                    }
+                    // nah
+                    tokenEnd = length;
+                }
+                else
+                {
+                    if (tokenSpecial < tokenEnd) tokenEnd = tokenSpecial;
+                    if (tokenOp < tokenEnd) tokenEnd = tokenOp;
+                }
             }
 
             if (tokenEnd == lines[0].Length)
@@ -72,6 +80,9 @@ namespace WooScripter.Objects.WooScript
                 token = lines[0].Substring(0, tokenEnd);
                 lines[0] = lines[0].Substring(tokenEnd);
             }
+
+            if (tokenquote == 0)
+                token = token.Substring(1, token.Length - 2);
 
             return token;
         }

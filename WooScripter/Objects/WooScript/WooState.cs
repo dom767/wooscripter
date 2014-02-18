@@ -30,6 +30,7 @@ namespace WooScripter.Objects.WooScript
         public bool _Preview = false;
         public int _MengerIterations = 4;
         public int[] _MengerPattern = new int[27];
+        public string _DistanceFunction = "sphere(pos, vec(0,0,0), 1)";
 
         public WooState()
         {
@@ -107,6 +108,7 @@ namespace WooScripter.Objects.WooScript
             clone._MengerIterations = this._MengerIterations;
             for (int i = 0; i < 27; i++)
                 clone._MengerPattern[i] = this._MengerPattern[i];
+            clone._DistanceFunction = this._DistanceFunction;
             return clone;
         }
         void SetSelectedValue(ref Vector3 target, string selector, double value)
