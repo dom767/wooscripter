@@ -31,6 +31,7 @@ namespace WooScripter.Objects.WooScript
         public int _MengerIterations = 4;
         public int[] _MengerPattern = new int[27];
         public string _DistanceFunction = "sphere(pos, vec(0,0,0), 1)";
+        public double _DistanceMinimum = 0.01f;
 
         public WooState()
         {
@@ -109,6 +110,7 @@ namespace WooScripter.Objects.WooScript
             for (int i = 0; i < 27; i++)
                 clone._MengerPattern[i] = this._MengerPattern[i];
             clone._DistanceFunction = this._DistanceFunction;
+            clone._DistanceMinimum = this._DistanceMinimum;
             return clone;
         }
         void SetSelectedValue(ref Vector3 target, string selector, double value)
@@ -174,6 +176,8 @@ namespace WooScripter.Objects.WooScript
                     return _Recursions;
                 if (target.Equals("mengeriterations", StringComparison.Ordinal))
                     return _MengerIterations;
+                if (target.Equals("distanceminimum", StringComparison.Ordinal))
+                    return _DistanceMinimum;
             }
             throw new ParseException("no matching target for \"" + target + "\"");
         }
@@ -295,6 +299,10 @@ namespace WooScripter.Objects.WooScript
                 if (target.Equals("mengeriterations", StringComparison.Ordinal))
                 {
                     _MengerIterations = (int)(value + 0.5);
+                }
+                if (target.Equals("distanceminimum", StringComparison.Ordinal))
+                {
+                    _DistanceMinimum = value;
                 }
             }
         }

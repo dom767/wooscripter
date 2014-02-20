@@ -56,7 +56,8 @@ namespace WooScripter.Objects.WooScript
             Distance newDistance = new Distance(new Vector3(state._Position.x + val.x, state._Position.y + val.y, state._Position.z + val.z),
                 state._Scale * 0.5,
                 state._Rotation,
-                state._DistanceFunction);
+                state._DistanceFunction,
+                state._DistanceMinimum);
             newDistance._Material = GenerateMaterial(state);
             newDistance.CreateElement(state._Preview, state._Parent);
         }

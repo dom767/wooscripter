@@ -386,6 +386,7 @@ namespace WooScripter.Objects.WooScript
             _FloatVariables.Add("ry");
             _FloatVariables.Add("rz");
             _FloatVariables.Add("mengeriterations");
+            _FloatVariables.Add("distanceminimum");
         }
 
         public static NullFunction GetNullFunction(string name)
