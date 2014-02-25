@@ -5,6 +5,8 @@ using System.Text;
 using System.Xml.Linq;
 using System.IO;
 using System.Windows;
+using System.Runtime.InteropServices;
+using System.Xml;
 
 namespace WooScripter.Objects.WooScript
 {
@@ -378,6 +380,7 @@ namespace WooScripter.Objects.WooScript
             _VecVariables.Add("v1");
             _VecVariables.Add("v2");
             _VecVariables.Add("v3");
+            _VecVariables.Add("distanceoffset");
 
             _FloatVariables.Add("gloss");
             _FloatVariables.Add("power");
@@ -387,6 +390,8 @@ namespace WooScripter.Objects.WooScript
             _FloatVariables.Add("rz");
             _FloatVariables.Add("mengeriterations");
             _FloatVariables.Add("distanceminimum");
+            _FloatVariables.Add("distancescale");
+            _FloatVariables.Add("distanceiterations");
         }
 
         public static NullFunction GetNullFunction(string name)

@@ -12,6 +12,7 @@ namespace WooScripter.Objects.WooScript
         public void Parse(ref string[] program)
         {
             _DistanceFunction = ParseUtils.GetToken(ref program);
+            Distance.ValidateEstimator(_DistanceFunction);
         }
 
         public void Execute(ref WooState state)
@@ -57,7 +58,10 @@ namespace WooScripter.Objects.WooScript
                 state._Scale * 0.5,
                 state._Rotation,
                 state._DistanceFunction,
-                state._DistanceMinimum);
+                state._DistanceMinimum,
+                state._DistanceScale,
+                state._DistanceOffset,
+                state._DistanceIterations);
             newDistance._Material = GenerateMaterial(state);
             newDistance.CreateElement(state._Preview, state._Parent);
         }

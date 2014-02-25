@@ -32,6 +32,9 @@ namespace WooScripter.Objects.WooScript
         public int[] _MengerPattern = new int[27];
         public string _DistanceFunction = "sphere(pos, vec(0,0,0), 1)";
         public double _DistanceMinimum = 0.01f;
+        public double _DistanceScale = 1.0f;
+        public Vector3 _DistanceOffset = new Vector3(0,0,0);
+        public int _DistanceIterations = 200;
 
         public WooState()
         {
@@ -111,6 +114,9 @@ namespace WooScripter.Objects.WooScript
                 clone._MengerPattern[i] = this._MengerPattern[i];
             clone._DistanceFunction = this._DistanceFunction;
             clone._DistanceMinimum = this._DistanceMinimum;
+            clone._DistanceScale = this._DistanceScale;
+            clone._DistanceOffset = this._DistanceOffset.Clone();
+            clone._DistanceIterations = this._DistanceIterations;
             return clone;
         }
         void SetSelectedValue(ref Vector3 target, string selector, double value)
@@ -178,6 +184,10 @@ namespace WooScripter.Objects.WooScript
                     return _MengerIterations;
                 if (target.Equals("distanceminimum", StringComparison.Ordinal))
                     return _DistanceMinimum;
+                if (target.Equals("distanceiterations", StringComparison.Ordinal))
+                    return _DistanceIterations;
+                if (target.Equals("distancescale", StringComparison.Ordinal))
+                    return _DistanceScale;
             }
             throw new ParseException("no matching target for \"" + target + "\"");
         }
@@ -215,6 +225,8 @@ namespace WooScripter.Objects.WooScript
                     return new Vector3(_v2);
                 if (target.Equals("v3", StringComparison.Ordinal))
                     return new Vector3(_v3);
+                if (target.Equals("distanceoffset", StringComparison.Ordinal))
+                    return new Vector3(_DistanceOffset);
             }
             throw new ParseException("no matching target for \"" + target + "\"");
         }
@@ -254,6 +266,8 @@ namespace WooScripter.Objects.WooScript
                     SetValueInternal(new Vector3(_v2), varname, selector, value);
                 else if (varname.Equals("v3", StringComparison.Ordinal))
                     SetValueInternal(new Vector3(_v3), varname, selector, value);
+                else if (varname.Equals("distanceoffset", StringComparison.Ordinal))
+                    SetValueInternal(new Vector3(_DistanceOffset), varname, selector, value);
             }
             else
             {
@@ -303,6 +317,14 @@ namespace WooScripter.Objects.WooScript
                 if (target.Equals("distanceminimum", StringComparison.Ordinal))
                 {
                     _DistanceMinimum = value;
+                }
+                if (target.Equals("distancescale", StringComparison.Ordinal))
+                {
+                    _DistanceScale = value;
+                }
+                if (target.Equals("distanceiterations", StringComparison.Ordinal))
+                {
+                    _DistanceIterations = (int)(value+0.5);
                 }
             }
         }
@@ -390,6 +412,12 @@ namespace WooScripter.Objects.WooScript
                 _v3.x = arg.x;
                 _v3.y = arg.y;
                 _v3.z = arg.z;
+            }
+            if (varname.Equals("distanceoffset", StringComparison.Ordinal))
+            {
+                _DistanceOffset.x = arg.x;
+                _DistanceOffset.y = arg.y;
+                _DistanceOffset.z = arg.z;
             }
         }
     };

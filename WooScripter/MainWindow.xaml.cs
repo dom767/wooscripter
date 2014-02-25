@@ -18,6 +18,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Win32;
+using WooScripter.Objects;
 
 namespace WooScripter
 {
@@ -130,9 +131,12 @@ namespace WooScripter
 
             InitialiseTestScene();
 
+            Distance.ReadDistanceSchema();
+
             Compile();
         }
 
+        string _DistanceSchema;
         ImageRenderer _ImageRenderer;
         private void button2_Click(object sender, RoutedEventArgs e)
         {
