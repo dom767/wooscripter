@@ -167,6 +167,8 @@ namespace WooScripter.Objects
                 }
             }
 
+            if (token == "-")
+                token = "-" + ParseUtils.GetToken(ref lines);
             float rawfloat;
             if (float.TryParse(token, out rawfloat) == true)
             {
