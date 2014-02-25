@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using WooScripter.Objects.WooScript;
 using System.Windows.Navigation;
 using System.Diagnostics;
+using WooScripter.Objects;
 
 namespace WooScripter
 {
@@ -29,6 +30,11 @@ namespace WooScripter
 
             WooScript helpScript = new WooScript();
             helpText = helpScript.GetHelpText();
+
+            string distanceHelpText;
+
+            distanceHelpText = Distance.GetHelpText();
+            helpText += System.Environment.NewLine + "Distance Estimation primitives : " + System.Environment.NewLine + distanceHelpText;
 
             textBox1.Text = helpText;
         }

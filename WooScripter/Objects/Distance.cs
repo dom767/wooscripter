@@ -88,6 +88,26 @@ namespace WooScripter.Objects
         };
         public static List<DistFunc> _DistFunc = new List<DistFunc>();
 
+        public static string GetHelpText()
+        {
+            string ret = "";
+
+            for (int i = 0; i < _DistFunc.Count(); i++)
+            {
+                ret += _DistFunc[i]._Name;
+                ret += "(";
+                for (int p = 0; p < _DistFunc[i]._DistParams.Count(); p++)
+                {
+                    ret += _DistFunc[i]._DistParams[p]._Name;
+                    if (p != _DistFunc[i]._DistParams.Count() - 1)
+                        ret += ", ";
+                }
+                ret += ")" + System.Environment.NewLine;
+            }
+
+            return ret;
+        }
+
         public static void ReadDistanceSchema()
         {
             // Get the Schema for distance functions from the DLL
