@@ -265,6 +265,7 @@ namespace WooScripter
             if (saveFileDialog1.ShowDialog() == true)
             {
                 bmp.Save(saveFileDialog1.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                bmp.Save(saveFileDialog1.FileName.Replace(".png", ".jpg"), System.Drawing.Imaging.ImageFormat.Jpeg);
             }
         }
     }
