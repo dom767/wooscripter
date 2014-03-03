@@ -1,0 +1,28 @@
+rule main {
+diff = vec(1.0, 1.0, 1.0)
+refl = vec(0.4, 0.4, 0.4)
+gloss = 0.97
+pos.y -= 3
+scale = vec(380, 1, 380)
+call(box)
+
+scale = vec(1, 1, 1)
+pos.y -= 2
+
+pos = vec (-9*20, -4, -9*20)
+repeat (rowx, 19)
+}
+
+rule rowx {
+push()
+repeat (rowz, 19)
+pop()
+pos.x += 20
+}
+
+rule rowz {
+scale = vec(14, 4, 14)
+call (box)
+scale = vec(1,1,1)
+pos.z += 20
+}

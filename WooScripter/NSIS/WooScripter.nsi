@@ -56,8 +56,10 @@ Section "WooScripter (required)"
 
   ; examples
   File /oname=WooScripter\Scripts\Background\scratch.woo "..\Scripts\Background\plain_white_circle.woo"
+  File /oname=WooScripter\Scripts\Background\plain_white_circle.woo "..\Scripts\Background\plain_white_circle.woo"
+  File /oname=WooScripter\Scripts\Background\boxes.woo "..\Scripts\Background\boxes.woo"
 
-  File /oname=WooScripter\Scripts\Lighting\scratch.woo "..\Scripts\Lighting\examples.woo"
+  File /oname=WooScripter\Scripts\Lighting\scratch.woo "..\Scripts\Lighting\daylight.woo"
   File /oname=WooScripter\Scripts\Lighting\examples.woo "..\Scripts\Lighting\examples.woo"
   File /oname=WooScripter\Scripts\Lighting\bigsphere.woo "..\Scripts\Lighting\bigsphere.woo"
   File /oname=WooScripter\Scripts\Lighting\daylight.woo "..\Scripts\Lighting\daylight.woo"
@@ -74,6 +76,8 @@ Section "WooScripter (required)"
   File /oname=WooScripter\Scripts\Scene\tutorial_scale.woo "..\Scripts\Scene\tutorial_scale.woo"
   File /oname=WooScripter\Scripts\Scene\tutorial_smoothrotate.woo "..\Scripts\Scene\tutorial_smoothrotate.woo"
   File /oname=WooScripter\Scripts\Scene\nanoblock_babyduck.woo "..\Scripts\Scene\nanoblock_babyduck.woo"
+  File /oname=WooScripter\Scripts\Scene\distance.woo "..\Scripts\Scene\distance.woo"
+  File /oname=WooScripter\Scripts\Scene\menger.woo "..\Scripts\Scene\menger.woo"
 
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\WooScripter "Install_Dir" "$INSTDIR"
