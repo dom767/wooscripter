@@ -11,14 +11,14 @@ namespace WooScripter.Objects.WooScript
         {
             double value = expression.EvaluateFloat(ref state);
             //            state.GetValue(floatVar);
-            state.SetValue(varName, value);
+            state.SetValueOverride(varName, value);
         }
 
         public void ExecuteVector(ref WooState state, string varName, Expression expression)
         {
             Vector3 value = expression.EvaluateVector(ref state);
             //            state.GetValue(floatVar);
-            state.SetValue(varName, value);
+            state.SetValueOverride(varName, value);
         }
 
         public string GetSymbol()

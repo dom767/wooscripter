@@ -231,14 +231,24 @@ namespace WooScripter.Objects.WooScript
             throw new ParseException("no matching target for \"" + target + "\"");
         }
 
-        private void SetValueInternal(Vector3 vec, string varname, string selector, double value)
+        private void SetValueInternal(Vector3 vec, string varname, string selector, double value, bool overrideState)
         {
             Vector3 newval = new Vector3(vec);
             SetSelectedValue(ref newval, selector, value);
-            SetValue(varname, newval);
+            SetValue3arg(varname, newval, overrideState);
         }
 
         public void SetValue(string target, double value)
+        {
+            SetValue3arg(target, value, false);
+        }
+
+        public void SetValueOverride(string target, double value)
+        {
+            SetValue3arg(target, value, true);
+        }
+
+        private void SetValue3arg(string target, double value, bool overrideState)
         {
             int dotindex = target.IndexOf('.');
             if (dotindex >= 0)
@@ -247,27 +257,27 @@ namespace WooScripter.Objects.WooScript
                 string varname = target.Substring(0, dotindex);
                 string selector = target.Substring(dotindex + 1);
                 if (varname.Equals("pos", StringComparison.Ordinal))
-                    SetValueInternal(_Position, varname, selector, value);
+                    SetValueInternal(_Position, varname, selector, value, overrideState);
                 else if (varname.Equals("scale", StringComparison.Ordinal))
-                    SetValueInternal(_Scale, varname, selector, value);
+                    SetValueInternal(_Scale, varname, selector, value, overrideState);
                 else if (varname.Equals("diff", StringComparison.Ordinal))
-                    SetValueInternal(new Vector3(_Diff), varname, selector, value);
+                    SetValueInternal(new Vector3(_Diff), varname, selector, value, overrideState);
                 else if (varname.Equals("refl", StringComparison.Ordinal))
-                    SetValueInternal(new Vector3(_Refl), varname, selector, value);
+                    SetValueInternal(new Vector3(_Refl), varname, selector, value, overrideState);
                 else if (varname.Equals("emi", StringComparison.Ordinal))
-                    SetValueInternal(new Vector3(_Emi), varname, selector, value);
+                    SetValueInternal(new Vector3(_Emi), varname, selector, value, overrideState);
                 else if (varname.Equals("spec", StringComparison.Ordinal))
-                    SetValueInternal(new Vector3(_Spec), varname, selector, value);
+                    SetValueInternal(new Vector3(_Spec), varname, selector, value, overrideState);
                 else if (varname.Equals("v0", StringComparison.Ordinal))
-                    SetValueInternal(new Vector3(_v0), varname, selector, value);
+                    SetValueInternal(new Vector3(_v0), varname, selector, value, overrideState);
                 else if (varname.Equals("v1", StringComparison.Ordinal))
-                    SetValueInternal(new Vector3(_v1), varname, selector, value);
+                    SetValueInternal(new Vector3(_v1), varname, selector, value, overrideState);
                 else if (varname.Equals("v2", StringComparison.Ordinal))
-                    SetValueInternal(new Vector3(_v2), varname, selector, value);
+                    SetValueInternal(new Vector3(_v2), varname, selector, value, overrideState);
                 else if (varname.Equals("v3", StringComparison.Ordinal))
-                    SetValueInternal(new Vector3(_v3), varname, selector, value);
+                    SetValueInternal(new Vector3(_v3), varname, selector, value, overrideState);
                 else if (varname.Equals("distanceoffset", StringComparison.Ordinal))
-                    SetValueInternal(new Vector3(_DistanceOffset), varname, selector, value);
+                    SetValueInternal(new Vector3(_DistanceOffset), varname, selector, value, overrideState);
             }
             else
             {
@@ -330,6 +340,14 @@ namespace WooScripter.Objects.WooScript
         }
         public void SetValue(string target, Vector3 arg)
         {
+            SetValue3arg(target, arg, false);
+        }
+        public void SetValueOverride(string target, Vector3 arg)
+        {
+            SetValue3arg(target, arg, true);
+        }
+        private void SetValue3arg(string target, Vector3 arg, bool overrideState)
+        {
             string varname = target;
             int dotindex = target.IndexOf('.');
             if (dotindex >= 0)
@@ -341,18 +359,25 @@ namespace WooScripter.Objects.WooScript
 
             if (varname.Equals("pos", StringComparison.Ordinal))
             {
-                Vector3 newval = arg;
-                Vector3 vec = new Vector3();
-                vec.x = newval.x - _Position.x;
-                vec.y = newval.y - _Position.y;
-                vec.z = newval.z - _Position.z;
-                vec.x = vec.x * _Scale.x;
-                vec.y = vec.y * _Scale.y;
-                vec.z = vec.z * _Scale.z;
-                vec.Mul(_Rotation);
-                _Position.x += vec.x;
-                _Position.y += vec.y;
-                _Position.z += vec.z;
+                if (overrideState)
+                {
+                    _Position = arg;
+                }
+                else
+                {
+                    Vector3 newval = arg;
+                    Vector3 vec = new Vector3();
+                    vec.x = newval.x - _Position.x;
+                    vec.y = newval.y - _Position.y;
+                    vec.z = newval.z - _Position.z;
+                    vec.x = vec.x * _Scale.x;
+                    vec.y = vec.y * _Scale.y;
+                    vec.z = vec.z * _Scale.z;
+                    vec.Mul(_Rotation);
+                    _Position.x += vec.x;
+                    _Position.y += vec.y;
+                    _Position.z += vec.z;
+                }
             }
 
             if (varname.Equals("scale", StringComparison.Ordinal))
