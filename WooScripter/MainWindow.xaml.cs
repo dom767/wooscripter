@@ -53,11 +53,22 @@ namespace WooScripter
         public static readonly DependencyProperty _ApertureSizeProperty =
             DependencyProperty.Register("_ApertureSize", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)1.0));
 
+        public double _FOV
+        {
+            get { return (double)GetValue(_FOVProperty); }
+            set { SetValue(_FOVProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _Depth.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _FOVProperty =
+            DependencyProperty.Register("_FOV", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)40));
+
         private void InitialiseCamera()
         {
             _Camera = new Camera(_AppSettings._CameraFrom, _AppSettings._CameraTo, _AppSettings._FOV);
             _FocusDistance = (_Camera._Target - _Camera._Position).Magnitude();
             _ApertureSize = _AppSettings._ApertureSize;
+            _FOV = _AppSettings._FOV;
 
             // set up animation thread for the camera movement
             _Timer = new DispatcherTimer();
@@ -297,6 +308,7 @@ namespace WooScripter
             }
             */
             _FocusDistance = (_Camera._Target - _Camera._Position).Magnitude();
+            _Camera._FOV = _FOV;
 
             _Velocity *= 0.6;
             if (_ImageRenderer != null)
@@ -403,6 +415,7 @@ namespace WooScripter
             _Velocity = new Vector3(0, 0, 0);
             _Camera._FocusDepth = (float)_FocusDistance;
             _Camera._ApertureSize = (float)_ApertureSize;
+            _Camera._FOV = (float)_FOV;
             FinalRender ownedWindow = new FinalRender(ref _Scene, ref _Camera);
 
             ownedWindow.Owner = Window.GetWindow(this);
@@ -523,6 +536,13 @@ namespace WooScripter
         private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
         {
             SaveStatus();
+        }
+
+        private void RefreshRender(object sender, TextChangedEventArgs e)
+        {
+            if (!_Timer.IsEnabled)
+                _Timer.Start();
+
         }
     }
 }
