@@ -55,9 +55,9 @@ namespace WooScripter
 
         private void InitialiseCamera()
         {
-            _Camera = new Camera(new Vector3(-2, 4, -4), new Vector3(0, 0, 0), 40);
+            _Camera = new Camera(_AppSettings._CameraFrom, _AppSettings._CameraTo, _AppSettings._FOV);
             _FocusDistance = (_Camera._Target - _Camera._Position).Magnitude();
-            _ApertureSize = _Camera._ApertureSize;
+            _ApertureSize = _AppSettings._ApertureSize;
 
             // set up animation thread for the camera movement
             _Timer = new DispatcherTimer();
@@ -114,11 +114,17 @@ namespace WooScripter
             _Scene.AddRenderObject(_LightingScript);
         }
 
+        string _SettingsLocation;
+        AppSettings _AppSettings;
+
         public MainWindow()
         {
             InitializeComponent();
 
             DataContext = this;
+
+            _SettingsLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WooScripter\\Settings.xml";
+            _AppSettings = AppSettings.Load(_SettingsLocation);
 
             // starting camera settings
             InitialiseCamera();
@@ -186,9 +192,7 @@ namespace WooScripter
             _SceneScript._Program = sceneDesc.Text;
             _LightingScript._Program = lightingDesc.Text;
 
-            _BackgroundScript.Save("background", "scratch");
-            _SceneScript.Save("scene", "scratch");
-            _LightingScript.Save("lighting", "scratch");
+            SaveStatus();
 
             bool success = CompileSingle(ref _BackgroundScript, ref backgroundStatus);
             success &= CompileSingle(ref _SceneScript, ref sceneStatus);
@@ -205,13 +209,6 @@ namespace WooScripter
             _Scale = getPreviewResolution();
             _ImageRenderer = new ImageRenderer(image1, BuildXML(true), (int)((float)_Scale * 480), (int)((float)_Scale * 270), false);
             Preview(true);
-        }
-
-        private void Window_Unloaded(object sender, RoutedEventArgs e)
-        {
-            _BackgroundScript.Save("background", "scratch");
-            _SceneScript.Save("scene", "scratch");
-            _LightingScript.Save("lighting", "scratch");
         }
 
         Vector3 _Velocity = new Vector3(0,0,0);
@@ -401,6 +398,8 @@ namespace WooScripter
 
         private void button4_Click(object sender, RoutedEventArgs e)
         {
+            SaveStatus(); 
+
             _Velocity = new Vector3(0, 0, 0);
             _Camera._FocusDepth = (float)_FocusDistance;
             _Camera._ApertureSize = (float)_ApertureSize;
@@ -511,6 +510,19 @@ namespace WooScripter
         {
             if (this.IsLoaded)
                 TriggerPreview();
+        }
+
+        private void SaveStatus()
+        {
+            _BackgroundScript.Save("background", "scratch");
+            _SceneScript.Save("scene", "scratch");
+            _LightingScript.Save("lighting", "scratch");
+            _AppSettings.Save(_SettingsLocation, _Camera);
+        }
+
+        private void Window_Closing_1(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SaveStatus();
         }
     }
 }

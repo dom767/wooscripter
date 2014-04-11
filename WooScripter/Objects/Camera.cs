@@ -11,15 +11,15 @@ namespace WooScripter
     {
         public Vector3 _Position;
         public Vector3 _Target;
-        public float _FOV;
+        public double _FOV;
         public bool _DOFEnabled;
         public bool _AAEnabled;
-        public float _FocusDepth;
-        public float _ApertureSize;
+        public double _FocusDepth;
+        public double _ApertureSize;
         public int _MinSamples;
         public int _MaxSamples;
 
-        public Camera(Vector3 position, Vector3 target, float fov)
+        public Camera(Vector3 position, Vector3 target, double fov)
         {
             _Position = position;
             _Target = target;

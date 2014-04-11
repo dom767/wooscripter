@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WooScripter.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="653" Width="943" Unloaded="Window_Unloaded" KeyDown="Window_KeyDown" MouseLeftButtonUp="Window_MouseLeftButtonUp">
+        Title="MainWindow" Height="653" Width="943" KeyDown="Window_KeyDown" MouseLeftButtonUp="Window_MouseLeftButtonUp" Closing="Window_Closing_1">
 <!--
     <Window.Resources>
         <Style x:Key="NoChromeButton" TargetType="{x:Type Button}">
