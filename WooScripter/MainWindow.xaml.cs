@@ -63,12 +63,23 @@ namespace WooScripter
         public static readonly DependencyProperty _FOVProperty =
             DependencyProperty.Register("_FOV", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)40));
 
+        public double _Spherical
+        {
+            get { return (double)GetValue(_SphericalProperty); }
+            set { SetValue(_SphericalProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _Depth.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _SphericalProperty =
+            DependencyProperty.Register("_Spherical", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)0));
+
         private void InitialiseCamera()
         {
-            _Camera = new Camera(_AppSettings._CameraFrom, _AppSettings._CameraTo, _AppSettings._FOV);
+            _Camera = new Camera(_AppSettings._CameraFrom, _AppSettings._CameraTo, _AppSettings._FOV, _AppSettings._Spherical);
             _FocusDistance = (_Camera._Target - _Camera._Position).Magnitude();
             _ApertureSize = _AppSettings._ApertureSize;
             _FOV = _AppSettings._FOV;
+            _Spherical = _AppSettings._Spherical;
 
             // set up animation thread for the camera movement
             _Timer = new DispatcherTimer();
@@ -103,7 +114,7 @@ namespace WooScripter
             string XML = @"
 <VIEWPORT width=" + image1.Width + @" height=" + image1.Height + @"/>";
 
-            Camera previewCamera = new Camera(_Camera._Position, _Camera._Target, _Camera._FOV);
+            Camera previewCamera = new Camera(_Camera._Position, _Camera._Target, _Camera._FOV, _Camera._Spherical);
             previewCamera._AAEnabled = false;
             previewCamera._DOFEnabled = false;
 
@@ -309,6 +320,7 @@ namespace WooScripter
             */
             _FocusDistance = (_Camera._Target - _Camera._Position).Magnitude();
             _Camera._FOV = _FOV;
+            _Camera._Spherical = _Spherical;
 
             _Velocity *= 0.6;
             if (_ImageRenderer != null)
@@ -416,6 +428,7 @@ namespace WooScripter
             _Camera._FocusDepth = (float)_FocusDistance;
             _Camera._ApertureSize = (float)_ApertureSize;
             _Camera._FOV = (float)_FOV;
+            _Camera._Spherical = (float)_Spherical;
             FinalRender ownedWindow = new FinalRender(ref _Scene, ref _Camera);
 
             ownedWindow.Owner = Window.GetWindow(this);

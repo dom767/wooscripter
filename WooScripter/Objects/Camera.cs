@@ -18,8 +18,9 @@ namespace WooScripter
         public double _ApertureSize;
         public int _MinSamples;
         public int _MaxSamples;
+        public double _Spherical;
 
-        public Camera(Vector3 position, Vector3 target, double fov)
+        public Camera(Vector3 position, Vector3 target, double fov, double spherical)
         {
             _Position = position;
             _Target = target;
@@ -30,6 +31,7 @@ namespace WooScripter
             _ApertureSize = 1;
             _MinSamples = 1;
             _MaxSamples = 1;
+            _Spherical = spherical;
         }
 
         public XElement CreateElement()
@@ -44,7 +46,8 @@ namespace WooScripter
                 new XAttribute("focusDepth", _FocusDepth),
                 new XAttribute("apertureSize", _ApertureSize),
                 new XAttribute("minSamples", _MinSamples),
-                new XAttribute("maxSamples", _MaxSamples));
+                new XAttribute("maxSamples", _MaxSamples),
+                new XAttribute("spherical", _Spherical));
         }
     }
 }

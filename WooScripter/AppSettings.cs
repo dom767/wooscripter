@@ -13,6 +13,7 @@ namespace WooScripter
         public Vector3 _CameraTo;
         public double _FOV;
         public double _ApertureSize;
+        public double _Spherical;
 
         public AppSettings()
         {
@@ -20,6 +21,7 @@ namespace WooScripter
             _CameraTo = new Vector3(0, 0, 0);
             _FOV = 40;
             _ApertureSize = 0.1;
+            _Spherical = 0.0;
         }
 
         public void Save(string filename, Camera camera)
@@ -32,6 +34,7 @@ namespace WooScripter
                     _CameraTo = camera._Target;
                     _FOV = camera._FOV;
                     _ApertureSize = camera._ApertureSize;
+                    _Spherical = camera._Spherical;
 
                     XmlSerializer xmls = new XmlSerializer(typeof(AppSettings));
                     xmls.Serialize(sw, this);

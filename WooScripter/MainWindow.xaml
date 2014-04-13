@@ -79,5 +79,7 @@
         </GroupBox>
         <Label Content="Field of View" Height="29" HorizontalAlignment="Left" Margin="0,342,0,0" x:Name="label3_Copy" VerticalAlignment="Top" Width="93" />
         <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _FOV, UpdateSourceTrigger=PropertyChanged}" Margin="98,348,0,0" x:Name="textBox4_Copy" VerticalAlignment="Top" Width="96" TextChanged="RefreshRender" />
+        <Label Content="Spherical" Height="29" HorizontalAlignment="Left" Margin="0,372,0,0" x:Name="label3_Copy2" VerticalAlignment="Top" Width="93" />
+        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _Spherical, UpdateSourceTrigger=PropertyChanged}" Margin="98,378,0,0" x:Name="textBox4_Copy2" VerticalAlignment="Top" Width="96" TextChanged="RefreshRender" />
     </Grid>
 </Window>
