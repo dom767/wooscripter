@@ -100,6 +100,36 @@ namespace WooScripter
         public static readonly DependencyProperty _FactorProperty =
             DependencyProperty.Register("_Factor", typeof(double), typeof(FinalRender), new UIPropertyMetadata((double)0));
 
+        public double _ToneFactor
+        {
+            get { return (double)GetValue(_ToneFactorProperty); }
+            set { SetValue(_ToneFactorProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _ToneFactor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _ToneFactorProperty =
+            DependencyProperty.Register("_ToneFactor", typeof(double), typeof(FinalRender), new UIPropertyMetadata((double)0));
+
+        public double _GammaFactor
+        {
+            get { return (double)GetValue(_GammaFactorProperty); }
+            set { SetValue(_GammaFactorProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _GammaFactor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _GammaFactorProperty =
+            DependencyProperty.Register("_GammaFactor", typeof(double), typeof(FinalRender), new UIPropertyMetadata((double)0));
+
+        public double _GammaContrast
+        {
+            get { return (double)GetValue(_GammaContrastProperty); }
+            set { SetValue(_GammaContrastProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _GammaContrast.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _GammaContrastProperty =
+            DependencyProperty.Register("_GammaContrast", typeof(double), typeof(FinalRender), new UIPropertyMetadata((double)0));
+
         public int _ImageWidth
         {
             get { return (int)GetValue(_ImageWidthProperty); }
@@ -151,6 +181,9 @@ namespace WooScripter
             InitializeComponent();
             _MaxValue = 3;
             _Factor = 1;
+            _ToneFactor = 1;
+            _GammaFactor = 1;
+            _GammaContrast = 1;
 
             if (_Camera._AAEnabled)
                 checkBox1.IsChecked = true;
@@ -211,11 +244,18 @@ namespace WooScripter
                 return;
             if (radioButton2.IsChecked.Value)
                 _ImageRenderer._TransferType = ImageRenderer.Transfer.Exposure;
+            else if (radioButton8.IsChecked.Value)
+                _ImageRenderer._TransferType = ImageRenderer.Transfer.Gamma;
+            else if (radioButton9.IsChecked.Value)
+                _ImageRenderer._TransferType = ImageRenderer.Transfer.Tone;
             else
                 _ImageRenderer._TransferType = ImageRenderer.Transfer.Ramp;
 
             _ImageRenderer._MaxValue = _MaxValue;
             _ImageRenderer._ExposureFactor = _Factor;
+            _ImageRenderer._ToneFactor = (float)_ToneFactor;
+            _ImageRenderer._GammaFactor = (float)_GammaFactor;
+            _ImageRenderer._GammaContrast = (float)_GammaContrast;
 
             _ImageRenderer.TransferLatest();
 

@@ -99,10 +99,13 @@ namespace WooScripter
             }
         }
 
-        public enum Transfer { Ramp, Exposure };
+        public enum Transfer { Ramp, Exposure, Tone, Gamma };
         public Transfer _TransferType;
         public double _MaxValue;
         public double _ExposureFactor;
+        public float _ToneFactor;
+        public float _GammaFactor;
+        public float _GammaContrast;
 
         public void TransferFloatToInt(byte[] pixels, int width, int height)
         {
@@ -113,15 +116,39 @@ namespace WooScripter
                     int red, green, blue;
                     if (_TransferType == Transfer.Ramp)
                     {
-                        red = (int)(_Buffer[(x + y * width) * 3] * 255 / _MaxValue);
-                        green = (int)(_Buffer[(x + y * width) * 3 + 1] * 255 / _MaxValue);
-                        blue = (int)(_Buffer[(x + y * width) * 3 + 2] * 255 / _MaxValue);
+                        red = (int)(_Buffer[(x + y * width) * 3] * 255.99f / _MaxValue);
+                        green = (int)(_Buffer[(x + y * width) * 3 + 1] * 255.99f / _MaxValue);
+                        blue = (int)(_Buffer[(x + y * width) * 3 + 2] * 255.99f / _MaxValue);
                     }
-                    else
+                    else if (_TransferType == Transfer.Exposure)
                     {
-                        red = (int)((1 - Math.Exp(-_Buffer[(x + y * width) * 3] * _ExposureFactor)) * 255);
-                        green = (int)((1 - Math.Exp(-_Buffer[(x + y * width) * 3 + 1] * _ExposureFactor)) * 255);
-                        blue = (int)((1 - Math.Exp(-_Buffer[(x + y * width) * 3 + 2] * _ExposureFactor)) * 255);
+                        red = (int)((1 - Math.Exp(-_Buffer[(x + y * width) * 3] * _ExposureFactor)) * 255.99f);
+                        green = (int)((1 - Math.Exp(-_Buffer[(x + y * width) * 3 + 1] * _ExposureFactor)) * 255.99f);
+                        blue = (int)((1 - Math.Exp(-_Buffer[(x + y * width) * 3 + 2] * _ExposureFactor)) * 255.99f);
+                    }
+                    else if (_TransferType == Transfer.Gamma)
+                    {
+                        float redIn = _Buffer[(x + y * width) * 3] * _ToneFactor;
+                        float greenIn = _Buffer[(x + y * width) * 3 + 1] * _ToneFactor;
+                        float blueIn = _Buffer[(x + y * width) * 3 + 2] * _ToneFactor;
+                        float luminance = redIn * 0.2126f + greenIn * 0.7152f + blueIn * 0.0722f;
+                        float luminanceOut = _GammaFactor * (float)Math.Pow((double)luminance, (double)_GammaContrast);
+                        float multiplier = luminanceOut / luminance;
+                        red = (int)(redIn * multiplier * 255.99f);
+                        green = (int)(greenIn * multiplier * 255.99f);
+                        blue = (int)(blueIn * multiplier * 255.99f);
+                    }
+                    else // Tone
+                    {
+                        float redIn = _Buffer[(x + y * width) * 3] * _ToneFactor;
+                        float greenIn = _Buffer[(x + y * width) * 3 + 1] * _ToneFactor;
+                        float blueIn = _Buffer[(x + y * width) * 3 + 2] * _ToneFactor;
+                        float luminance = redIn * 0.2126f + greenIn * 0.7152f + blueIn * 0.0722f;
+                        float luminanceOut = luminance / (1.0f + luminance);
+                        float multiplier = luminanceOut/luminance;
+                        red = (int)(redIn * multiplier * 255.99f);
+                        green = (int)(greenIn * multiplier * 255.99f);
+                        blue = (int)(blueIn * multiplier * 255.99f);
                     }
 
                     red = Math.Min(red, 255);
