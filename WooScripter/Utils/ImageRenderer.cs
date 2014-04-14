@@ -152,14 +152,35 @@ namespace WooScripter
 
         public void ZoomCopy(float[] srcBuffer, int srcWidth, int srcHeight, float[] destBuffer, int destWidth, int destHeight)
         {
+            // lets work out if we're 1:1 on ratio
+            float srcRatio = (float)srcWidth/(float)srcHeight;
+            float dstRatio = (float)destWidth/(float)destHeight;
+            int dstXStart = 0;
+            int dstYStart = 0;
+            int dstXWidth = destWidth;
+            int dstYHeight = destHeight;
+            if (Math.Abs(srcRatio-dstRatio)>0.05)
+            {
+                if (dstRatio>srcRatio)
+                {
+                    dstXWidth = destHeight*srcWidth/srcHeight;
+                    dstXStart = (int)(((float)destWidth - dstXWidth) * 0.5f);
+                }
+                else
+                {
+                    dstYHeight = destWidth * srcHeight / srcWidth;
+                    dstYStart = (int)(((float)destHeight - dstYHeight) * 0.5f);
+                }
+            }
+
             float srcPosX = 0;
             float srcPosY = 0;
-            float srcDeltaX = ((float)(srcWidth - 1)) / ((float)(destWidth - 1));
-            float srcDeltaY = ((float)(srcHeight - 1)) / ((float)(destHeight - 1)); 
+            float srcDeltaX = ((float)(srcWidth - 1)) / ((float)(dstXWidth - 1));
+            float srcDeltaY = ((float)(srcHeight - 1)) / ((float)(dstYHeight - 1)); 
 
-            for (int y = 0; y < destHeight; y++)
+            for (int y = dstYStart; y < dstYStart+dstYHeight; y++)
             {
-                for (int x = 0; x < destWidth; x++)
+                for (int x = dstXStart; x < dstXStart+dstXWidth; x++)
                 {
                     destBuffer[3 * (y * destWidth + x)] = srcBuffer[3 * (((int)srcPosY * srcWidth) + (int)srcPosX)];
                     destBuffer[3 * (y * destWidth + x) + 1] = srcBuffer[3 * (((int)srcPosY * srcWidth) + (int)srcPosX) + 1];
