@@ -20,65 +20,25 @@ namespace WooScripter
     /// </summary>
     public partial class FinalRender : Window
     {
-        public double _MinR
+        public double _Min
         {
-            get { return (double)GetValue(_MinRProperty); }
-            set { SetValue(_MinRProperty, value); }
+            get { return (double)GetValue(_MinProperty); }
+            set { SetValue(_MinProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for _MinR.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty _MinRProperty =
-            DependencyProperty.Register("_MinR", typeof(double), typeof(FinalRender), new UIPropertyMetadata((double)0));
+        // Using a DependencyProperty as the backing store for _Min.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _MinProperty =
+            DependencyProperty.Register("_Min", typeof(double), typeof(FinalRender), new UIPropertyMetadata((double)0));
 
-        public double _MinG
+        public double _Max
         {
-            get { return (double)GetValue(_MinGProperty); }
-            set { SetValue(_MinGProperty, value); }
+            get { return (double)GetValue(_MaxProperty); }
+            set { SetValue(_MaxProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for _MinG.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty _MinGProperty =
-            DependencyProperty.Register("_MinG", typeof(double), typeof(FinalRender), new UIPropertyMetadata((double)0));
-
-        public double _MinB
-        {
-            get { return (double)GetValue(_MinBProperty); }
-            set { SetValue(_MinBProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for _MinB.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty _MinBProperty =
-            DependencyProperty.Register("_MinB", typeof(double), typeof(FinalRender), new UIPropertyMetadata((double)0));
-
-        public double _MaxR
-        {
-            get { return (double)GetValue(_MaxRProperty); }
-            set { SetValue(_MaxRProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for _MaxR.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty _MaxRProperty =
-            DependencyProperty.Register("_MaxR", typeof(double), typeof(FinalRender), new UIPropertyMetadata((double)0));
-
-        public double _MaxG
-        {
-            get { return (double)GetValue(_MaxGProperty); }
-            set { SetValue(_MaxGProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for _MaxG.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty _MaxGProperty =
-            DependencyProperty.Register("_MaxG", typeof(double), typeof(FinalRender), new UIPropertyMetadata((double)0));
-
-        public double _MaxB
-        {
-            get { return (double)GetValue(_MaxBProperty); }
-            set { SetValue(_MaxBProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for _MaxB.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty _MaxBProperty =
-            DependencyProperty.Register("_MaxB", typeof(double), typeof(FinalRender), new UIPropertyMetadata((double)0));
+        // Using a DependencyProperty as the backing store for _Max.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _MaxProperty =
+            DependencyProperty.Register("_Max", typeof(double), typeof(FinalRender), new UIPropertyMetadata((double)0));
 
         public double _MaxValue
         {
@@ -159,8 +119,47 @@ namespace WooScripter
         // Using a DependencyProperty as the backing store for _SamplesPerPixel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty _SamplesPerPixelProperty =
             DependencyProperty.Register("_SamplesPerPixel", typeof(int), typeof(FinalRender), new UIPropertyMetadata(0));
-
         
+        public int _Iterations
+        {
+            get { return (int)GetValue(_IterationsProperty); }
+            set { SetValue(_IterationsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _Iterations.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _IterationsProperty =
+            DependencyProperty.Register("_Iterations", typeof(int), typeof(FinalRender), new UIPropertyMetadata(1));
+
+        public double _BoostPower
+        {
+            get { return (double)GetValue(_BoostPowerProperty); }
+            set { SetValue(_BoostPowerProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _BoostPower.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _BoostPowerProperty =
+            DependencyProperty.Register("_BoostPower", typeof(double), typeof(FinalRender), new UIPropertyMetadata(1.0));
+
+        public double _SourceWeight
+        {
+            get { return (double)GetValue(_SourceWeightProperty); }
+            set { SetValue(_SourceWeightProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _SourceWeight.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _SourceWeightProperty =
+            DependencyProperty.Register("_SourceWeight", typeof(double), typeof(FinalRender), new UIPropertyMetadata(0.0));
+
+        public double _TargetWeight
+        {
+            get { return (double)GetValue(_TargetWeightProperty); }
+            set { SetValue(_TargetWeightProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _TargetWeight.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _TargetWeightProperty =
+            DependencyProperty.Register("_TargetWeight", typeof(double), typeof(FinalRender), new UIPropertyMetadata(1.0));
+
         string _XML = @"";
         Scene _Scene;
         Camera _Camera;
@@ -179,11 +178,11 @@ namespace WooScripter
 
             DataContext = this;
             InitializeComponent();
-            _MaxValue = 3;
+            _MaxValue = 1;
             _Factor = 1;
-            _ToneFactor = 1;
-            _GammaFactor = 1;
-            _GammaContrast = 1;
+            _ToneFactor = 1.4;
+            _GammaFactor = 0.7;
+            _GammaContrast = 0.7;
 
             if (_Camera._AAEnabled)
                 checkBox1.IsChecked = true;
@@ -192,6 +191,8 @@ namespace WooScripter
             if (_Scene._PathTracer)
                 checkBox3.IsChecked = true;
             _SamplesPerPixel = _Camera._MinSamples;
+
+            SetGaussian();
 
             BuildXML();
         }
@@ -224,6 +225,8 @@ namespace WooScripter
             }
             _ImageRenderer = new ImageRenderer(image1, _XML, width, height, true);
             _ImageRendering = true;
+            UpdateKernel();
+            _ImageRenderer.SetPostProcess(_Iterations, (float)_BoostPower, (float)_SourceWeight, (float)_TargetWeight);
             _ImageRenderer.Render();
 
             // set up animation thread for the camera movement
@@ -238,10 +241,17 @@ namespace WooScripter
             updateRender();
         }
 
+        bool _RefreshingRender = false;
+
         void updateRender()
         {
             if (_ImageRenderer == null)
                 return;
+            if (_RefreshingRender == true)
+                return;
+
+            _RefreshingRender = true;
+
             if (radioButton2.IsChecked.Value)
                 _ImageRenderer._TransferType = ImageRenderer.Transfer.Exposure;
             else if (radioButton8.IsChecked.Value)
@@ -257,19 +267,25 @@ namespace WooScripter
             _ImageRenderer._GammaFactor = (float)_GammaFactor;
             _ImageRenderer._GammaContrast = (float)_GammaContrast;
 
-            _ImageRenderer.TransferLatest();
+            UpdateKernel();
+            _ImageRenderer.SetPostProcess(_Iterations, (float)_BoostPower, (float)_SourceWeight, (float)_TargetWeight);
+
+            _ImageRenderer.TransferLatest(!_ImageRendering);
 
             Colour minColour = _ImageRenderer._MinColour;
-            _MinR = minColour._Red; _MinG = minColour._Green; _MinB = minColour._Blue;
+            _Min = Math.Min(minColour._Red, Math.Min(minColour._Green, minColour._Blue));
             Colour maxColour = _ImageRenderer._MaxColour;
-            _MaxR = maxColour._Red; _MaxG = maxColour._Green; _MaxB = maxColour._Blue;
+            _Max = Math.Max(maxColour._Red, Math.Max(maxColour._Green, maxColour._Blue));
+
+            _RefreshingRender = false;
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            _ImageRenderer.Stop();
+            _ImageRenderer.Stop(); // synchronous?
             _Timer.Stop();
             _ImageRendering = false;
+            _ImageRenderer.TransferLatest(true);
         }
 
         private void checkBox1_Checked(object sender, RoutedEventArgs e)
@@ -339,6 +355,99 @@ namespace WooScripter
             {
                 updateRender();
             }
+        }
+
+        bool _KernelUpdating = false;
+        private void refreshRenderk(object sender, TextChangedEventArgs e)
+        {
+            if (!_ImageRendering && !_KernelUpdating)
+            {
+                updateRender();
+            }
+        }
+
+        private void UpdateKernel()
+        {
+            float[] kernel = new float[25];
+            int kidx = 0;
+            kernel[kidx++] = float.Parse(g11.Text);
+            kernel[kidx++] = float.Parse(g12.Text);
+            kernel[kidx++] = float.Parse(g13.Text);
+            kernel[kidx++] = float.Parse(g14.Text);
+            kernel[kidx++] = float.Parse(g15.Text);
+            kernel[kidx++] = float.Parse(g21.Text);
+            kernel[kidx++] = float.Parse(g22.Text);
+            kernel[kidx++] = float.Parse(g23.Text);
+            kernel[kidx++] = float.Parse(g24.Text);
+            kernel[kidx++] = float.Parse(g25.Text);
+            kernel[kidx++] = float.Parse(g31.Text);
+            kernel[kidx++] = float.Parse(g32.Text);
+            kernel[kidx++] = float.Parse(g33.Text);
+            kernel[kidx++] = float.Parse(g34.Text);
+            kernel[kidx++] = float.Parse(g35.Text);
+            kernel[kidx++] = float.Parse(g41.Text);
+            kernel[kidx++] = float.Parse(g42.Text);
+            kernel[kidx++] = float.Parse(g43.Text);
+            kernel[kidx++] = float.Parse(g44.Text);
+            kernel[kidx++] = float.Parse(g45.Text);
+            kernel[kidx++] = float.Parse(g51.Text);
+            kernel[kidx++] = float.Parse(g52.Text);
+            kernel[kidx++] = float.Parse(g53.Text);
+            kernel[kidx++] = float.Parse(g54.Text);
+            kernel[kidx++] = float.Parse(g55.Text);
+
+            if (_ImageRenderer != null)
+                _ImageRenderer.SetKernel(kernel);
+        }
+
+        private void SetGaussian()
+        {
+            _KernelUpdating = true;
+            g11.Text = "1"; g12.Text = "4"; g13.Text = "7"; g14.Text = "4"; g15.Text = "1";
+            g21.Text = "4"; g22.Text = "16"; g23.Text = "26"; g24.Text = "16"; g25.Text = "4";
+            g31.Text = "7"; g32.Text = "26"; g33.Text = "41"; g34.Text = "26"; g35.Text = "7";
+            g41.Text = "4"; g42.Text = "16"; g43.Text = "26"; g44.Text = "16"; g45.Text = "4";
+            g51.Text = "1"; g52.Text = "4"; g53.Text = "7"; g54.Text = "4"; g55.Text = "1";
+            _KernelUpdating = false;
+
+            UpdateKernel();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            SetGaussian();
+
+            refreshRender(sender, e);
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            _KernelUpdating = true;
+            g11.Text = "0"; g12.Text = "0"; g13.Text = "0"; g14.Text = "0"; g15.Text = "0";
+            g21.Text = "0"; g22.Text = "0"; g23.Text = "0"; g24.Text = "0"; g25.Text = "0";
+            g31.Text = "1"; g32.Text = "4"; g33.Text = "7"; g34.Text = "4"; g35.Text = "1";
+            g41.Text = "0"; g42.Text = "0"; g43.Text = "0"; g44.Text = "0"; g45.Text = "0";
+            g51.Text = "0"; g52.Text = "0"; g53.Text = "0"; g54.Text = "0"; g55.Text = "0";
+            _KernelUpdating = false;
+
+            UpdateKernel();
+
+            refreshRender(sender, e);
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            _KernelUpdating = true;
+            g11.Text = "1"; g12.Text = "0"; g13.Text = "0"; g14.Text = "0"; g15.Text = "1";
+            g21.Text = "0"; g22.Text = "4"; g23.Text = "0"; g24.Text = "4"; g25.Text = "0";
+            g31.Text = "0"; g32.Text = "0"; g33.Text = "7"; g34.Text = "0"; g35.Text = "0";
+            g41.Text = "0"; g42.Text = "4"; g43.Text = "0"; g44.Text = "4"; g45.Text = "0";
+            g51.Text = "1"; g52.Text = "0"; g53.Text = "0"; g54.Text = "0"; g55.Text = "1";
+            _KernelUpdating = false;
+
+            UpdateKernel();
+
+            refreshRender(sender, e);
         }
     }
 }

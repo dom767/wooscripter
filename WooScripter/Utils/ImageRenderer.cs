@@ -67,7 +67,8 @@ namespace WooScripter
             _RenderWidth = renderWidth;
             _RenderHeight = renderHeight;
             _Continuous = continuous;
-
+            _Kernel = new float[25];
+            SetGaussianKernel();
             InitialiseRender(_XML);
         }
 
@@ -128,9 +129,9 @@ namespace WooScripter
                     }
                     else if (_TransferType == Transfer.Gamma)
                     {
-                        float redIn = _Buffer[(x + y * width) * 3] * _ToneFactor;
-                        float greenIn = _Buffer[(x + y * width) * 3 + 1] * _ToneFactor;
-                        float blueIn = _Buffer[(x + y * width) * 3 + 2] * _ToneFactor;
+                        float redIn = _Buffer[(x + y * width) * 3];
+                        float greenIn = _Buffer[(x + y * width) * 3 + 1];
+                        float blueIn = _Buffer[(x + y * width) * 3 + 2];
                         float luminance = redIn * 0.2126f + greenIn * 0.7152f + blueIn * 0.0722f;
                         float luminanceOut = _GammaFactor * (float)Math.Pow((double)luminance, (double)_GammaContrast);
                         float multiplier = luminanceOut / luminance;
@@ -222,10 +223,108 @@ namespace WooScripter
 
         int idx = 0;
 
-        public void TransferLatest()
+        public void PostProcess(float[] targetBuffer, float[] sourceBuffer, float[] boostBuffer, float[] kernel, float boostPower, float kernelweighting, float sourceweighting, int iterations, int width, int height)
+        {
+            if (boostPower != 1)
+            {
+                for (int by = 0; by < height; by++)
+                {
+                    for (int bx = 0; bx < width; bx++)
+                    {
+                        boostBuffer[(by * width + bx) * 3] = (float)Math.Pow(sourceBuffer[(by * width + bx) * 3], _BoostPower);
+                        boostBuffer[(by * width + bx) * 3 + 1] = (float)Math.Pow(sourceBuffer[(by * width + bx) * 3 + 1], _BoostPower);
+                        boostBuffer[(by * width + bx) * 3 + 2] = (float)Math.Pow(sourceBuffer[(by * width + bx) * 3 + 2], _BoostPower);
+                    }
+                }
+            }
+            else
+            {
+                boostBuffer = sourceBuffer;
+            }
+
+            for (int iter = 0; iter < _Iterations; iter++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        int patchStartX = x - 2;
+                        patchStartX = Math.Max(0, patchStartX) - (x - 2);
+                        int patchEndX = x + 2;
+                        patchEndX = Math.Min(patchEndX, width - 1) - (x - 2);
+                        int patchStartY = y - 2;
+                        patchStartY = Math.Max(0, patchStartY) - (y - 2);
+                        int patchEndY = y + 2;
+                        patchEndY = Math.Min(patchEndY, height - 1) - (y - 2);
+
+                        // iterate over a patch
+                        float totalr = 0;
+                        float totalg = 0;
+                        float totalb = 0;
+                        float totalweighting = 0;
+                        for (int py = patchStartY; py < patchEndY; py++)
+                        {
+                            for (int px = patchStartX; px < patchEndX; px++)
+                            {
+                                int rx = px + (x - 2);
+                                int ry = py + (y - 2);
+                                totalr += boostBuffer[(ry * width + rx) * 3] * kernel[py * 5 + px];
+                                totalg += boostBuffer[(ry * width + rx) * 3 + 1] * kernel[py * 5 + px];
+                                totalb += boostBuffer[(ry * width + rx) * 3 + 2] * kernel[py * 5 + px];
+                                totalweighting += kernel[py * 5 + px];
+                            }
+                        }
+
+                        // divide through
+                        targetBuffer[(x + y * width) * 3] = totalr / totalweighting;
+                        targetBuffer[(x + y * width) * 3 + 1] = totalg / totalweighting;
+                        targetBuffer[(x + y * width) * 3 + 2] = totalb / totalweighting;
+                    }
+                }
+                float[] temp = boostBuffer;
+                boostBuffer = targetBuffer;
+                targetBuffer = temp;
+            }
+
+            // divide through
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    targetBuffer[(x + y * width) * 3] = _TargetWeight * targetBuffer[(x + y * width) * 3] + _SourceWeight * sourceBuffer[(x + y * width) * 3];
+                    targetBuffer[(x + y * width) * 3 + 1] = _TargetWeight * targetBuffer[(x + y * width) * 3 + 1] + _SourceWeight * sourceBuffer[(x + y * width) * 3 + 1];
+                    targetBuffer[(x + y * width) * 3 + 2] = _TargetWeight * targetBuffer[(x + y * width) * 3 + 2] + _SourceWeight * sourceBuffer[(x + y * width) * 3 + 2];
+                }
+            }
+        }
+
+        public void SetPostProcess(int iterations, float boostPower, float sourceWeight, float targetWeight)
+        {
+            _Iterations = iterations;
+            _BoostPower = boostPower;
+            _SourceWeight = sourceWeight;
+            _TargetWeight = targetWeight;
+        }
+
+        float[] _Kernel;
+        int _Iterations;
+        float _BoostPower;
+        float _SourceWeight;
+        float _TargetWeight;
+
+        public void TransferLatest(bool highQuality)
         {
             float[] renderBuffer = new float[_RenderHeight * _RenderWidth * 3];
             CopyBuffer(renderBuffer);
+
+            if (highQuality)
+            {
+                float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
+
+                float[] boostBuffer = new float[_RenderHeight * _RenderWidth * 3];
+                PostProcess(targetBuffer, renderBuffer, boostBuffer, _Kernel, 2.0f, 0.8f, 0.2f, 5, _RenderWidth, _RenderHeight);
+                renderBuffer = targetBuffer;
+            }
 
             ZoomCopy(renderBuffer, _RenderWidth, _RenderHeight, _Buffer, _Width, _Height);
 
@@ -237,6 +336,21 @@ namespace WooScripter
             idx++;
         }
 
+        public void SetKernel(float[] kernel)
+        {
+            _Kernel = kernel;
+        }
+
+        public void SetGaussianKernel()
+        {
+            int kidx = 0;
+            _Kernel[kidx++] = 1; _Kernel[kidx++] = 4; _Kernel[kidx++] = 7; _Kernel[kidx++] = 4; _Kernel[kidx++] = 1;
+            _Kernel[kidx++] = 4; _Kernel[kidx++] = 16; _Kernel[kidx++] = 26; _Kernel[kidx++] = 16; _Kernel[kidx++] = 4;
+            _Kernel[kidx++] = 7; _Kernel[kidx++] = 26; _Kernel[kidx++] = 41; _Kernel[kidx++] = 26; _Kernel[kidx++] = 7;
+            _Kernel[kidx++] = 4; _Kernel[kidx++] = 16; _Kernel[kidx++] = 26; _Kernel[kidx++] = 16; _Kernel[kidx++] = 4;
+            _Kernel[kidx++] = 1; _Kernel[kidx++] = 4; _Kernel[kidx++] = 7; _Kernel[kidx++] = 4; _Kernel[kidx++] = 1;
+        }
+        
         WriteableBitmap _WriteableBitmap;
         public void Render()
         {
