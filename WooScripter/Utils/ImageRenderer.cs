@@ -77,17 +77,17 @@ namespace WooScripter
             SetCamera(cameraXML);
         }
 
-        public void GetMinMax()
+        private void GetMinMax(float[] renderBuffer, int renderWidth, int renderHeight)
         {
             _MinColour = new Colour(1000000.0f, 1000000.0f, 1000000.0f);
             _MaxColour = new Colour(0.0f, 0.0f, 0.0f);
 
-            for (int y = 0; y < _Height; y++)
+            for (int y = 0; y < renderHeight; y++)
             {
-                for (int x = 0; x < _Width; x++)
+                for (int x = 0; x < renderWidth; x++)
                 {
-                    int idx = (x + y * _Width) * 3;
-                    float red = _Buffer[idx], green = _Buffer[idx+1], blue = _Buffer[idx+2];
+                    int idx = (x + y * renderWidth) * 3;
+                    float red = renderBuffer[idx], green = renderBuffer[idx + 1], blue = renderBuffer[idx + 2];
                     
                     if (red < _MinColour._Red) _MinColour._Red = red;
                     if (green < _MinColour._Green) _MinColour._Green = green;
@@ -98,11 +98,14 @@ namespace WooScripter
                     if (blue > _MaxColour._Blue) _MaxColour._Blue = blue;
                 }
             }
+
+            _MaxValue = Math.Max(_MaxColour._Red, Math.Max(_MaxColour._Green, _MaxColour._Blue));
         }
 
         public enum Transfer { Ramp, Exposure, Tone, Gamma };
         public Transfer _TransferType;
-        public double _MaxValue;
+        public double _MaxValue=1;
+        public double _RampValue;
         public double _ExposureFactor;
         public float _ToneFactor;
         public float _GammaFactor;
@@ -117,9 +120,9 @@ namespace WooScripter
                     int red, green, blue;
                     if (_TransferType == Transfer.Ramp)
                     {
-                        red = (int)(_Buffer[(x + y * width) * 3] * 255.99f / _MaxValue);
-                        green = (int)(_Buffer[(x + y * width) * 3 + 1] * 255.99f / _MaxValue);
-                        blue = (int)(_Buffer[(x + y * width) * 3 + 2] * 255.99f / _MaxValue);
+                        red = (int)(_Buffer[(x + y * width) * 3] * 255.99f / _RampValue);
+                        green = (int)(_Buffer[(x + y * width) * 3 + 1] * 255.99f / _RampValue);
+                        blue = (int)(_Buffer[(x + y * width) * 3 + 2] * 255.99f / _RampValue);
                     }
                     else if (_TransferType == Transfer.Exposure)
                     {
@@ -227,14 +230,11 @@ namespace WooScripter
         {
             if (boostPower != 1)
             {
-                for (int by = 0; by < height; by++)
+                double maxV = _MaxValue<0.001f ? 1 : _MaxValue;
+                double boostP = _BoostPower;
+                for (int i = 0; i < width * height * 3; i++)
                 {
-                    for (int bx = 0; bx < width; bx++)
-                    {
-                        boostBuffer[(by * width + bx) * 3] = (float)Math.Pow(sourceBuffer[(by * width + bx) * 3], _BoostPower);
-                        boostBuffer[(by * width + bx) * 3 + 1] = (float)Math.Pow(sourceBuffer[(by * width + bx) * 3 + 1], _BoostPower);
-                        boostBuffer[(by * width + bx) * 3 + 2] = (float)Math.Pow(sourceBuffer[(by * width + bx) * 3 + 2], _BoostPower);
-                    }
+                    boostBuffer[i] = (float)Math.Pow(sourceBuffer[i] / maxV, boostP);
                 }
             }
             else
@@ -281,9 +281,10 @@ namespace WooScripter
                         targetBuffer[(x + y * width) * 3 + 2] = totalb / totalweighting;
                     }
                 }
-                float[] temp = boostBuffer;
-                boostBuffer = targetBuffer;
-                targetBuffer = temp;
+                for (int i = 0; i < width * height * 3; i++)
+                {
+                    boostBuffer[i] = targetBuffer[i];
+                }
             }
 
             // divide through
@@ -319,18 +320,20 @@ namespace WooScripter
 
             if (highQuality)
             {
-                float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
+                GetMinMax(renderBuffer, _RenderWidth, _RenderHeight);
 
+                float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
                 float[] boostBuffer = new float[_RenderHeight * _RenderWidth * 3];
+
                 PostProcess(targetBuffer, renderBuffer, boostBuffer, _Kernel, 2.0f, 0.8f, 0.2f, 5, _RenderWidth, _RenderHeight);
                 renderBuffer = targetBuffer;
             }
+            else
+            {
+                GetMinMax(renderBuffer, _RenderWidth, _RenderHeight);
+            }
 
             ZoomCopy(renderBuffer, _RenderWidth, _RenderHeight, _Buffer, _Width, _Height);
-
-            GetMinMax();
-
-//            _MaxValue = Math.Max(_MaxColour._Red, Math.Max(_MaxColour._Green, _MaxColour._Blue));
 
             TransferFloatToInt();
             idx++;
@@ -374,9 +377,8 @@ namespace WooScripter
                 SyncRender(renderBuffer);
                 ZoomCopy(renderBuffer, _RenderWidth, _RenderHeight, _Buffer, _Width, _Height);
 
-                GetMinMax();
-
-                _MaxValue = Math.Max(_MaxColour._Red, Math.Max(_MaxColour._Green, _MaxColour._Blue));
+                GetMinMax(renderBuffer, _RenderWidth, _RenderHeight);
+                _RampValue = _MaxValue;
                 _TransferType = Transfer.Ramp;
 
                 TransferFloatToInt();

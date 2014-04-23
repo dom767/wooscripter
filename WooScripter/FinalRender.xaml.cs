@@ -138,7 +138,7 @@ namespace WooScripter
 
         // Using a DependencyProperty as the backing store for _BoostPower.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty _BoostPowerProperty =
-            DependencyProperty.Register("_BoostPower", typeof(double), typeof(FinalRender), new UIPropertyMetadata(1.0));
+            DependencyProperty.Register("_BoostPower", typeof(double), typeof(FinalRender), new UIPropertyMetadata(10.0));
 
         public double _SourceWeight
         {
@@ -148,7 +148,7 @@ namespace WooScripter
 
         // Using a DependencyProperty as the backing store for _SourceWeight.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty _SourceWeightProperty =
-            DependencyProperty.Register("_SourceWeight", typeof(double), typeof(FinalRender), new UIPropertyMetadata(0.0));
+            DependencyProperty.Register("_SourceWeight", typeof(double), typeof(FinalRender), new UIPropertyMetadata(0.9));
 
         public double _TargetWeight
         {
@@ -158,7 +158,7 @@ namespace WooScripter
 
         // Using a DependencyProperty as the backing store for _TargetWeight.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty _TargetWeightProperty =
-            DependencyProperty.Register("_TargetWeight", typeof(double), typeof(FinalRender), new UIPropertyMetadata(1.0));
+            DependencyProperty.Register("_TargetWeight", typeof(double), typeof(FinalRender), new UIPropertyMetadata(0.1));
 
         string _XML = @"";
         Scene _Scene;
@@ -261,7 +261,7 @@ namespace WooScripter
             else
                 _ImageRenderer._TransferType = ImageRenderer.Transfer.Ramp;
 
-            _ImageRenderer._MaxValue = _MaxValue;
+            _ImageRenderer._RampValue = _MaxValue;
             _ImageRenderer._ExposureFactor = _Factor;
             _ImageRenderer._ToneFactor = (float)_ToneFactor;
             _ImageRenderer._GammaFactor = (float)_GammaFactor;
