@@ -249,29 +249,30 @@ namespace WooScripter
                     for (int x = 0; x < width; x++)
                     {
                         int patchStartX = x - 2;
-                        patchStartX = Math.Max(0, patchStartX) - (x - 2);
+                        patchStartX = Math.Max(0, patchStartX) - x;
                         int patchEndX = x + 2;
-                        patchEndX = Math.Min(patchEndX, width - 1) - (x - 2);
+                        patchEndX = Math.Min(patchEndX, width-1) - x;
                         int patchStartY = y - 2;
-                        patchStartY = Math.Max(0, patchStartY) - (y - 2);
+                        patchStartY = Math.Max(0, patchStartY) - y;
                         int patchEndY = y + 2;
-                        patchEndY = Math.Min(patchEndY, height - 1) - (y - 2);
+                        patchEndY = Math.Min(patchEndY, height-1) - y;
 
                         // iterate over a patch
                         float totalr = 0;
                         float totalg = 0;
                         float totalb = 0;
                         float totalweighting = 0;
-                        for (int py = patchStartY; py < patchEndY; py++)
+                        for (int py = patchStartY; py <= patchEndY; py++)
                         {
-                            for (int px = patchStartX; px < patchEndX; px++)
+                            for (int px = patchStartX; px <= patchEndX; px++)
                             {
-                                int rx = px + (x - 2);
-                                int ry = py + (y - 2);
-                                totalr += boostBuffer[(ry * width + rx) * 3] * kernel[py * 5 + px];
-                                totalg += boostBuffer[(ry * width + rx) * 3 + 1] * kernel[py * 5 + px];
-                                totalb += boostBuffer[(ry * width + rx) * 3 + 2] * kernel[py * 5 + px];
-                                totalweighting += kernel[py * 5 + px];
+                                int rx = px + x;
+                                int ry = py + y;
+                                float kernelW = kernel[(py+2) * 5 + px+2];
+                                totalr += boostBuffer[(ry * width + rx) * 3] * kernelW;
+                                totalg += boostBuffer[(ry * width + rx) * 3 + 1] * kernelW;
+                                totalb += boostBuffer[(ry * width + rx) * 3 + 2] * kernelW;
+                                totalweighting += kernelW;
                             }
                         }
 
