@@ -1,5 +1,24 @@
 Wooscripter, started by Dom Penfold, now up and open to the general public. Note that coretracer.dll is my own raytracer which is not currently available on github. A release version is included in this project's bin folder.
 
+v0.97
+- Save PNG and also a JPG when storing images (JPG for web, PNG for lossless)
+- Additional support for distance functions
+- Added a Kaleidoscopic IFS fractal distance primitive
+- Bug fix for "=" operator working incorrectly on pos following rotation and scale changes
+- App settings for storing camera settings after shutdown
+- Field of View (FOV) now editable in main window
+- Added Spherical lens support (1=true fisheye)
+- Changed render window to better support non-16:9 ratio renders (imagerenderer adds borders now instead of stretching)
+- Added additional tone mapping functions (gamma and simple tone map)
+- Added postprocess filter with 5x5 kernel
+- Added support for bloom filters (source values are passed through a gamma function before postprocess)
+- Fixed a bug in the raytracer where the 35th object in the scene sometimes disappears...
+
+v0.96
+- Added Menger Primitive (configurable menger cube, fast intersectio approach)
+- Added support for distance functions
+- Updated help window to show distance function help
+
 v0.95
 - Fixed a major memory leak in the raytracer, stability seems far better now
 - Added nanoblock script sample to the installer

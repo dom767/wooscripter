@@ -1,0 +1,237 @@
+rule main {
+pos.x -= 4
+pos.z -= 4
+
+call(primitives)
+pos.z += 2
+call(materials)
+pos.z += 2
+call(rotate)
+pos.z += 2
+call(scale)
+pos.z += 2
+call(calltricks)
+} 
+
+rule primitives {
+// This rule instantiates each of the basic primitives available in Wootracer
+
+call(box)
+pos.x += 2
+call(sphere)
+pos.x += 2
+call(cylinder)
+pos.x += 2
+pos.y += 0.5
+call(circle)
+pos.y -= 0.5
+pos.x += 2
+call(menger)
+}
+
+rule materials {
+// This example bloc shows typical material setups you might want to use
+// when developing objects.
+
+// flat diffuse material, no reflection
+diff = vec(1,0.7,0.3)
+spec = vec(0,0,0)
+refl = vec(0,0,0)
+emi = vec(0,0,0)
+gloss = 1
+power = 1
+call(sphere)
+
+// reflective specular material
+pos.x += 2
+diff = vec(0.3,1,0.7)
+spec = vec(0.4,0.4,0.4)
+refl = vec(0.4,0.4,0.4)
+emi = vec(0,0,0)
+gloss = 1
+power = 50
+call(sphere)
+
+// emissive material with diffuse lighting
+pos.x += 2
+diff = vec(1,1,1)
+spec = vec(0,0,0)
+refl = vec(0,0,0)
+emi = vec(1,1,1)
+gloss = 1
+power = 50
+call(sphere)
+
+// lacquered surface (reflection + spec coloured by diff)
+pos.x += 2
+diff = vec(0.4,0.7,1)
+spec = vec(0.4,0.7,1)
+refl = vec(0.4,0.7,1)
+emi = vec(0,0,0)
+gloss = 1
+power = 50
+call(sphere)
+
+// imperfect reflections
+pos.x += 2
+diff = vec(0.7,1,0.3)
+spec = vec(0.4,0.4,0.4)
+refl = vec(0.4,0.4,0.4)
+emi = vec(0,0,0)
+gloss = 0.97
+power = 50
+call(sphere)
+}
+
+rule rotate {
+// Quickly going through what happens when you rotate around each
+// rotation axis, followed by a random rotation on all 3 axes
+
+// standard cube
+call(box)
+pos.x += 2
+
+// 45 degrees around x axis
+push()
+rx += 45
+call(box)
+pop()
+pos.x += 2
+
+// 45 degrees around y axis
+push()
+ry += 45
+call(box)
+pop()
+pos.x += 2
+
+// 45 degrees around z axis
+push()
+rz += 45
+call(box)
+pop()
+pos.x += 2
+
+// -45 to 45 degrees around all axes
+push()
+rx += -45:45 // <<= this is the syntax for a ranged number (-45 to 45)
+ry += -45:45
+rz += -45:45
+call(box)
+pop()
+}
+
+rule scale {
+// This sample rule scales a sphere around each axis
+
+// standard sphere
+call(sphere)
+pos.x += 2
+
+// 0.5 scale on x axis
+push()
+scale.x = 0.5
+call(sphere)
+pop()
+pos.x += 2
+
+// 0.5 scale on x axis
+push()
+scale.y = 0.5
+call(sphere)
+pop()
+pos.x += 2
+
+// 0.5 scale on x axis
+push()
+scale.z = 0.5
+call(sphere)
+pop()
+pos.x += 2
+
+// 0.2 to 2 scale on all axes
+push()
+scale.x = 0.2:2
+scale.y = 0.2:2
+scale.z = 0.2:2
+call(sphere)
+pop()
+}
+
+rule calltricks
+{
+// Quick example of how to instantiate multiple objects
+
+// tower repeat
+push()
+repeat(iterative_tower, 10)
+pop()
+pos.x += 2
+
+// tower recursion
+recursions = 10
+call(recursive_tower)
+pos.x += 2
+
+// tower x3
+push()
+scale = vec(0.5, 0.5, 0.5)
+repeat(tower_segment, 3)
+pop()
+pos.x += 2
+
+// tower loop
+push()
+scale = vec(0.5, 0.5, 0.5)
+repeat(loop, 36)
+pop()
+pos.x += 2
+
+// tree
+push()
+scale = vec(0.5, 0.5, 0.5)
+recursions = 4
+call(tower_branch)
+pop()
+pos.x += 2
+}
+
+rule iterative_tower
+{
+call (box)
+pos.y += 1
+ry += 15
+scale *= vec(0.9,0.9,0.9)
+}
+
+rule recursive_tower
+{
+call (box)
+pos.y += 1
+ry += 15
+scale *= vec(0.9,0.9,0.9)
+call(recursive_tower)
+}
+
+rule tower_segment
+{
+repeat(iterative_tower, 10)
+rx += 40
+rz += 40
+}
+
+rule loop
+{
+call(box)
+pos.z += 0.5
+rx += 10
+}
+
+rule tower_branch
+{
+repeat(iterative_tower,10)
+rz-=30
+call(tower_branch)
+rz+=50
+call(tower_branch)
+}

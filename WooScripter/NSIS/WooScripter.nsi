@@ -55,7 +55,7 @@ Section "WooScripter (required)"
   CreateDirectory $DOCUMENTS\WooScripter\Scripts\Scene
 
   ; examples
-  File /oname=WooScripter\Scripts\Background\scratch.woo "..\Scripts\Background\plain_white_circle.woo"
+  File /oname=WooScripter\Scripts\Background\scratch.woo "..\Scripts\Background\boxes.woo"
   File /oname=WooScripter\Scripts\Background\plain_white_circle.woo "..\Scripts\Background\plain_white_circle.woo"
   File /oname=WooScripter\Scripts\Background\boxes.woo "..\Scripts\Background\boxes.woo"
 
@@ -67,7 +67,8 @@ Section "WooScripter (required)"
   File /oname=WooScripter\Scripts\Lighting\ringoflight.woo "..\Scripts\Lighting\ringoflight.woo"
   File /oname=WooScripter\Scripts\Lighting\sunset.woo "..\Scripts\Lighting\sunset.woo"
 
-  File /oname=WooScripter\Scripts\Scene\scratch.woo "..\Scripts\Scene\simplebox.woo"
+  File /oname=WooScripter\Scripts\Scene\scratch.woo "..\Scripts\Scene\examples.woo"
+  File /oname=WooScripter\Scripts\Scene\examples.woo "..\Scripts\Scene\examples.woo"
   File /oname=WooScripter\Scripts\Scene\simplebox.woo "..\Scripts\Scene\simplebox.woo"
   File /oname=WooScripter\Scripts\Scene\hairyball.woo "..\Scripts\Scene\hairyball.woo"
   File /oname=WooScripter\Scripts\Scene\spiral.woo "..\Scripts\Scene\spiral.woo"
