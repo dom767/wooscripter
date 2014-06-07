@@ -10,6 +10,7 @@ namespace WooScripter.Objects.WooScript
         double EvaluateFloat(double arg1, double arg2);
         Vector3 EvaluateVector(Vector3 arg1, Vector3 arg2);
         string GetSymbol();
+        int GetPrecedence();
         Op CreateNew();
     }
 

@@ -60,7 +60,20 @@ namespace WooScripter.Objects.WooScript
                 FloatOperation flop = new FloatOperation();
                 flop.Parse(ref program);
                 flop._Argument1 = ret;
-                flop._Argument2 = ExpressionBuilder.Parse(ref program);
+                Expression arg2 = ExpressionBuilder.Parse(ref program);
+                flop._Argument2 = arg2;
+
+                // operator precedence check
+                if (arg2 is FloatOperation)
+                {
+                    if ((arg2 as FloatOperation).GetPrecedence() < flop.GetPrecedence())
+                    {
+                        // shuffle args
+                        flop._Argument2 = (arg2 as FloatOperation)._Argument1;
+                        (arg2 as FloatOperation)._Argument1 = flop;
+                        flop = (arg2 as FloatOperation);
+                    }
+                }
 
                 if (flop._Argument1.GetExpressionType() != flop._Argument2.GetExpressionType())
                     throw new ParseException("Mismatch argument types on operation");
@@ -139,6 +152,11 @@ namespace WooScripter.Objects.WooScript
         public Vector3 EvaluateVector(ref WooState state)
         {
             return _Op.EvaluateVector(_Argument1.EvaluateVector(ref state), _Argument2.EvaluateVector(ref state));
+        }
+
+        public int GetPrecedence()
+        {
+            return _Op.GetPrecedence();
         }
     };
 

@@ -35,6 +35,10 @@ namespace WooScripter.Objects.WooScript
         public double _DistanceScale = 1.0f;
         public Vector3 _DistanceOffset = new Vector3(0,0,0);
         public int _DistanceIterations = 200;
+        public string _DiffuseFunction = "";
+        public string _SpecularFunction = "";
+        public string _EmissiveFunction = "";
+        public string _ReflectiveFunction = "";
 
         public WooState()
         {
@@ -117,6 +121,10 @@ namespace WooScripter.Objects.WooScript
             clone._DistanceScale = this._DistanceScale;
             clone._DistanceOffset = this._DistanceOffset.Clone();
             clone._DistanceIterations = this._DistanceIterations;
+            clone._DiffuseFunction = this._DiffuseFunction;
+            clone._SpecularFunction = this._SpecularFunction;
+            clone._EmissiveFunction = this._EmissiveFunction;
+            clone._ReflectiveFunction = this._ReflectiveFunction;
             return clone;
         }
         void SetSelectedValue(ref Vector3 target, string selector, double value)

@@ -104,6 +104,7 @@
     <Compile Include="Objects\WooScript\FinalCallFunction.cs" />
     <Compile Include="Objects\WooScript\Function.cs" />
     <Compile Include="Objects\WooScript\LightFunction.cs" />
+    <Compile Include="Objects\WooScript\MaterialFunction.cs" />
     <Compile Include="Objects\WooScript\MengerRule.cs" />
     <Compile Include="Objects\WooScript\MulOp.cs" />
     <Compile Include="Objects\WooScript\PushPopFunction.cs" />

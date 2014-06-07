@@ -181,12 +181,12 @@ namespace WooScripter.Objects
             throw new ParseException("Unrecognised token : " + token);
         }
 
-        public static bool ValidateEstimator(string estimator)
+        public static bool ValidateEstimator(string estimator, int type)
         {
             string[] lines = new string[1];
             lines[0] = estimator;
 
-            ValidateType(ref lines, 1);
+            ValidateType(ref lines, type);
 
             return true;
         }

@@ -487,6 +487,10 @@ namespace WooScripter.Objects.WooScript
             _NullFunctions.Add(new BackgroundFunction());
             _NullFunctions.Add(new MengerPatternFunction());
             _NullFunctions.Add(new DistanceFunctionFunction());
+            _NullFunctions.Add(new DiffuseFunctionFunction());
+            _NullFunctions.Add(new SpecularFunctionFunction());
+            _NullFunctions.Add(new EmissiveFunctionFunction());
+            _NullFunctions.Add(new ReflectiveFunctionFunction());
 
             _VecFunctions.Add(new VectorConstructorFunction());
             _VecFunctions.Add(new VectorNormaliseFunction());

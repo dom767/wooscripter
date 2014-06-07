@@ -12,7 +12,7 @@ namespace WooScripter.Objects.WooScript
         public void Parse(ref string[] program)
         {
             _DistanceFunction = ParseUtils.GetToken(ref program);
-            Distance.ValidateEstimator(_DistanceFunction);
+            Distance.ValidateEstimator(_DistanceFunction, 1);
         }
 
         public void Execute(ref WooState state)

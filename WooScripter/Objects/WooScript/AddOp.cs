@@ -28,5 +28,10 @@ namespace WooScripter.Objects.WooScript
         {
             return new AddOp();
         }
+
+        public int GetPrecedence()
+        {
+            return 2;
+        }
     }
 }
