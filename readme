@@ -1,5 +1,14 @@
 Wooscripter, started by Dom Penfold, now up and open to the general public. Note that coretracer.dll is my own raytracer which is not currently available on github. A release version is included in this project's bin folder.
 
+v0.98
+- Added support for mandelbox and mandelbulb distance estimators
+- Added boxfold, spherefold and outerspherefold support for distance estimation
+- Moved postprocess filtering into the C++ codebase for performance reasons
+- Changed wooscript functions for call, repeat, branch, push and pop
+- Main window has additional information on camera position and target
+- Manual option for exposure settings
+- Changed the way distance estimation functions are specified in scripts
+
 v0.97
 - Save PNG and also a JPG when storing images (JPG for web, PNG for lossless)
 - Additional support for distance functions
