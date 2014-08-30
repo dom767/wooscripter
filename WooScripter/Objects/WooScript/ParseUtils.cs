@@ -11,7 +11,7 @@ namespace WooScripter.Objects.WooScript
         {
             char[] whitespace = new char[] { ' ' };
             char[] specialChars = new char[] { ',', '(', ')', '{', '}' };
-            char[] opChars = new char[] { '/', '*', '-', '+', '=' };
+            char[] opChars = new char[] { '/', '*', '<', '>', '|', '&', '-', '+', '=' };
 
             do
             {
@@ -60,6 +60,11 @@ namespace WooScripter.Objects.WooScript
                                 length = opName.Length;
                         }
                     }
+                    if (lines[0].IndexOf("<") == 0
+                        || lines[0].IndexOf(">") == 0)
+                        length = 1;
+                    if (lines[0].IndexOf("!=") == 0)
+                        length = 2;
                     // nah
                     tokenEnd = length;
                 }
@@ -89,7 +94,7 @@ namespace WooScripter.Objects.WooScript
 
         public static string PeekToken(string[] lines)
         {
-            string[] tempLines = lines.Clone() as string[];
+                string[] tempLines = lines.Clone() as string[];
             string token = ParseUtils.GetToken(ref tempLines);
             return token;
         }

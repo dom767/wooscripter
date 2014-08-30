@@ -12,7 +12,7 @@ namespace WooScripter.Objects.WooScript
         public void Parse(ref string[] program)
         {
             _DiffuseFunction = ParseUtils.GetToken(ref program);
-            Distance.ValidateEstimator(_DiffuseFunction, 0);
+            ShaderScript.ValidateEstimator(_DiffuseFunction, 0);
         }
 
         public void Execute(ref WooState state)
@@ -38,7 +38,7 @@ namespace WooScripter.Objects.WooScript
         public void Parse(ref string[] program)
         {
             _SpecularFunction = ParseUtils.GetToken(ref program);
-            Distance.ValidateEstimator(_SpecularFunction, 0);
+            ShaderScript.ValidateEstimator(_SpecularFunction, 0);
         }
 
         public void Execute(ref WooState state)
@@ -64,7 +64,7 @@ namespace WooScripter.Objects.WooScript
         public void Parse(ref string[] program)
         {
             _EmissiveFunction = ParseUtils.GetToken(ref program);
-            Distance.ValidateEstimator(_EmissiveFunction, 0);
+            ShaderScript.ValidateEstimator(_EmissiveFunction, 0);
         }
 
         public void Execute(ref WooState state)
@@ -90,7 +90,7 @@ namespace WooScripter.Objects.WooScript
         public void Parse(ref string[] program)
         {
             _ReflectiveFunction = ParseUtils.GetToken(ref program);
-            Distance.ValidateEstimator(_ReflectiveFunction, 0);
+            ShaderScript.ValidateEstimator(_ReflectiveFunction, 0);
         }
 
         public void Execute(ref WooState state)

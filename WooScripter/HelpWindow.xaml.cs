@@ -33,8 +33,8 @@ namespace WooScripter
 
             string distanceHelpText;
 
-            distanceHelpText = Distance.GetHelpText();
-            helpText += System.Environment.NewLine + "Distance Estimation primitives : " + System.Environment.NewLine + distanceHelpText;
+            distanceHelpText = ShaderScript.GetHelpText();
+            helpText += System.Environment.NewLine + "Shader Functions : " + System.Environment.NewLine + distanceHelpText;
 
             textBox1.Text = helpText;
         }

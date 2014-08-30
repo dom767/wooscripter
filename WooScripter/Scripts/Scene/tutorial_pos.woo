@@ -1,9 +1,9 @@
 rule main {
-call(box)
+box
 pos.x += 2
-call(sphere)
+sphere
 pos.z += 2
-call(cylinder)
+cylinder
 pos.y += 2
-call(spherelight)
+spherelight
 }

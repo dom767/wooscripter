@@ -6,6 +6,6 @@ rule main {
 pos = vec(-10, 7.5, 7.5)
 scale = vec(15, 15, 15)
 diff = vec(100, 100, 100)
-call(spherelight)
+spherelight
 background(vec(0,0,0))
 }

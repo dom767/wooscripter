@@ -19,8 +19,8 @@ namespace WooScripter.Objects.WooScript
             if (state._Recursions > 0 || !state.GetRule(_Callee).CanRecurse())
             {
                 state._Recursions--;
-                WooState newState = state.Clone();
-                state.GetRule(_Callee).Execute(ref newState);
+//                WooState newState = state.Clone();
+                state.GetRule(_Callee).Execute(ref state);
                 state._Recursions++;
             }
         }

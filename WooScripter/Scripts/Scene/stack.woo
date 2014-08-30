@@ -1,10 +1,10 @@
 rule main {
 power+=1
-repeat(step, 35)
+repeat(35) { step }
 }
 
 rule step {
-call (roundsq)
+{roundsq}
 scale*=vec(0.93,0.93,0.93)
 pos.y += 1
 ry += 14
@@ -18,16 +18,16 @@ pos.z += 4.5
 rx += 90
 rz -= 90
 
-repeat (side, 4)
+repeat (4) {side}
 } 
 
 rule side
 {
-call(sphere)
+sphere
 pos.y += 0.5
 rz += 90
 scale *= vec(1, 9, 1)
-call(cylinder)
+cylinder
 scale *= vec(1, 1 / 9, 1)
 pos.y += 8.5
 }

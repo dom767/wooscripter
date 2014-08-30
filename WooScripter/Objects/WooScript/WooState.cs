@@ -25,6 +25,7 @@ namespace WooScripter.Objects.WooScript
         public Vector3 _v3 = new Vector3(0, 0, 0);
         public Matrix3 _Rotation;
         public List<Rule> _Rules;
+        public List<Shader> _Shaders;
         public int _Recursions = 10;
         public WooState _PreviousState;
         public bool _Preview = false;
@@ -35,6 +36,7 @@ namespace WooScripter.Objects.WooScript
         public double _DistanceScale = 1.0f;
         public Vector3 _DistanceOffset = new Vector3(0,0,0);
         public int _DistanceIterations = 200;
+        public double _StepSize = 0.7;
         public string _DiffuseFunction = "";
         public string _SpecularFunction = "";
         public string _EmissiveFunction = "";
@@ -86,6 +88,18 @@ namespace WooScripter.Objects.WooScript
             }
             throw new EvaluateException("Tried to call rule " + name + ", but it doesn't exist...");
         }
+        public Shader GetShader(string token)
+        {
+            foreach (Shader shader in _Shaders)
+            {
+                if (shader._Name.Equals(token, StringComparison.Ordinal))
+                {
+                    return shader;
+                }
+            }
+
+            throw new ParseException("No matching shader found \"" + token + "\"");
+        }
         public Random _Random;
         public XElement _Parent;
         public WooState Clone()
@@ -106,6 +120,7 @@ namespace WooScripter.Objects.WooScript
             clone._Power = this._Power;
             clone._Gloss = this._Gloss;
             clone._Rules = this._Rules;
+            clone._Shaders = this._Shaders;
             clone._Random = this._Random;
             clone._Parent = this._Parent;
             clone._Rotation = this._Rotation.Clone();
@@ -121,6 +136,7 @@ namespace WooScripter.Objects.WooScript
             clone._DistanceScale = this._DistanceScale;
             clone._DistanceOffset = this._DistanceOffset.Clone();
             clone._DistanceIterations = this._DistanceIterations;
+            clone._StepSize = this._StepSize;
             clone._DiffuseFunction = this._DiffuseFunction;
             clone._SpecularFunction = this._SpecularFunction;
             clone._EmissiveFunction = this._EmissiveFunction;
@@ -196,6 +212,8 @@ namespace WooScripter.Objects.WooScript
                     return _DistanceIterations;
                 if (target.Equals("distancescale", StringComparison.Ordinal))
                     return _DistanceScale;
+                if (target.Equals("stepsize", StringComparison.Ordinal))
+                    return _StepSize;
             }
             throw new ParseException("no matching target for \"" + target + "\"");
         }
@@ -343,6 +361,10 @@ namespace WooScripter.Objects.WooScript
                 if (target.Equals("distanceiterations", StringComparison.Ordinal))
                 {
                     _DistanceIterations = (int)(value+0.5);
+                }
+                if (target.Equals("stepsize", StringComparison.Ordinal))
+                {
+                    _StepSize = value;
                 }
             }
         }

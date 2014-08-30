@@ -60,6 +60,9 @@ namespace WooScripter
         [DllImport(@"coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetViewport(string description);
 
+        [DllImport(@"coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void PostProcess(float[] targetBuffer, float[] sourceBuffer, double maxValue, int iterations, float[] kernel, float boostPower, float targetweighting, float sourceweighting, int width, int height);
+        
         public ImageRenderer(System.Windows.Controls.Image image, string xml, int renderWidth, int renderHeight, bool continuous)
         {
             _Image = image;
@@ -226,7 +229,7 @@ namespace WooScripter
 
         int idx = 0;
 
-        public void PostProcess(float[] targetBuffer, float[] sourceBuffer, float[] boostBuffer, float[] kernel, float boostPower, float kernelweighting, float sourceweighting, int iterations, int width, int height)
+/*        public void PostProcess(float[] targetBuffer, float[] sourceBuffer, float[] boostBuffer, float[] kernel, float boostPower, float kernelweighting, float sourceweighting, int iterations, int width, int height)
         {
             if (boostPower != 1)
             {
@@ -299,7 +302,7 @@ namespace WooScripter
                 }
             }
         }
-
+*/
         public void SetPostProcess(int iterations, float boostPower, float sourceWeight, float targetWeight)
         {
             _Iterations = iterations;
@@ -313,6 +316,18 @@ namespace WooScripter
         float _BoostPower;
         float _SourceWeight;
         float _TargetWeight;
+        bool _FixedExposure;
+        float _ExposureValue;
+
+        public void SetExposureValue(float exposureValue)
+        {
+            _ExposureValue = exposureValue;
+        }
+
+        public void SetFixedExposure(bool fixedExposure)
+        {
+            _FixedExposure = fixedExposure;
+        }
 
         public void TransferLatest(bool highQuality)
         {
@@ -324,9 +339,10 @@ namespace WooScripter
                 GetMinMax(renderBuffer, _RenderWidth, _RenderHeight);
 
                 float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
-                float[] boostBuffer = new float[_RenderHeight * _RenderWidth * 3];
+                PostProcess(targetBuffer, renderBuffer, _MaxValue, _Iterations, _Kernel, _BoostPower, _TargetWeight, _SourceWeight, _RenderWidth, _RenderHeight);
+//                float[] boostBuffer = new float[_RenderHeight * _RenderWidth * 3];
 
-                PostProcess(targetBuffer, renderBuffer, boostBuffer, _Kernel, 2.0f, 0.8f, 0.2f, 5, _RenderWidth, _RenderHeight);
+//                PostProcess(targetBuffer, renderBuffer, boostBuffer, _Kernel, 2.0f, 0.8f, 0.2f, 5, _RenderWidth, _RenderHeight);
                 renderBuffer = targetBuffer;
             }
             else
@@ -378,9 +394,17 @@ namespace WooScripter
                 SyncRender(renderBuffer);
                 ZoomCopy(renderBuffer, _RenderWidth, _RenderHeight, _Buffer, _Width, _Height);
 
-                GetMinMax(renderBuffer, _RenderWidth, _RenderHeight);
-                _RampValue = _MaxValue;
-                _TransferType = Transfer.Ramp;
+                if (_FixedExposure)
+                {
+                    _RampValue = _ExposureValue;
+                    _TransferType = Transfer.Ramp;
+                }
+                else
+                {
+                    GetMinMax(renderBuffer, _RenderWidth, _RenderHeight);
+                    _RampValue = _MaxValue;
+                    _TransferType = Transfer.Ramp;
+                }
 
                 TransferFloatToInt();
             }

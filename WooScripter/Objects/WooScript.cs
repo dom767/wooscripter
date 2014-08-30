@@ -21,12 +21,16 @@ namespace WooScripter.Objects.WooScript
     {
         assignOp,
         Op,
+        ConditionalOp,
+        BooleanOp,
+        UnaryBooleanOp,
         vecFunction,
         floatFunction,
         nullFunction,
         vecVar,
         floatVar,
         floatNum,
+        rule,
         unknown
     }
 
@@ -34,9 +38,15 @@ namespace WooScripter.Objects.WooScript
     public class WooScript : RenderObject
     {
         public string _Program;
+        public static List<string> _RuleNames = new List<string>();
+        public static List<string> _ShaderNames = new List<string>();
         public List<Rule> _Rules = new List<Rule>();
+        public List<Shader> _Shaders = new List<Shader>();
         public static List<Op> _Operators = new List<Op>();
         public static List<AssignOp> _AssignOperators = new List<AssignOp>();
+        public static List<ConditionalOp> _ConditionalOperators = new List<ConditionalOp>();
+        public static List<BooleanOp> _BooleanOperators = new List<BooleanOp>();
+        public static List<UnaryBooleanOp> _UnaryBooleanOperators = new List<UnaryBooleanOp>();
         public static List<string> _VecVariables = new List<string>();
         public static List<string> _FloatVariables = new List<string>();
         public static List<NullFunction> _NullFunctions = new List<NullFunction>();
@@ -159,11 +169,76 @@ namespace WooScripter.Objects.WooScript
             return false;
         }
 
+        public static bool IsBooleanOp(string token)
+        {
+            foreach (BooleanOp op in _BooleanOperators)
+            {
+                if (op.GetSymbol().Equals(token, StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsUnaryBooleanOp(string token)
+        {
+            foreach (UnaryBooleanOp op in _UnaryBooleanOperators)
+            {
+                if (op.GetSymbol().Equals(token, StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsConditionalOp(string token)
+        {
+            foreach (ConditionalOp op in _ConditionalOperators)
+            {
+                if (op.GetSymbol().Equals(token, StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool IsNullFunction(string token)
         {
             foreach (Function nf in _NullFunctions)
             {
                 if (nf.GetSymbol().Equals(token, StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsRule(string token)
+        {
+            foreach (string ruleName in _RuleNames)
+            {
+                if (ruleName.Equals(token, StringComparison.Ordinal))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsShader(string token)
+        {
+            foreach (string shaderName in _ShaderNames)
+            {
+                if (shaderName.Equals(token, StringComparison.Ordinal))
                 {
                     return true;
                 }
@@ -297,6 +372,11 @@ namespace WooScripter.Objects.WooScript
             TokenType ret = TokenType.unknown;
             int matches=0;
 
+            if (IsRule(token))
+            {
+                matches++;
+                ret = TokenType.rule;
+            }
             if (IsNullFunction(token))
             {
                 matches++;
@@ -317,6 +397,21 @@ namespace WooScripter.Objects.WooScript
                 matches++;
                 ret = TokenType.Op;
             }
+            if (IsUnaryBooleanOp(token))
+            {
+                matches++;
+                ret = TokenType.UnaryBooleanOp;
+            }
+            if (IsBooleanOp(token))
+            {
+                matches++;
+                ret = TokenType.BooleanOp;
+            }
+            if (IsConditionalOp(token))
+            {
+                matches++;
+                ret = TokenType.ConditionalOp;
+            }
             if (IsFloatNumber(token))
             {
                 matches++;
@@ -332,22 +427,6 @@ namespace WooScripter.Objects.WooScript
                 matches++;
                 ret = TokenType.floatFunction;
             }
-            /*            if (IsAssignOp(token))
-                        {
-                            matches++;
-                            ret = TokenType.assignOp;
-                        }
-                        if (IsVecVariable(token))
-                        {
-                            matches++;
-                            ret = TokenType.vecVar;
-                        }
-                        if (IsFloatFunction(token))
-                        {
-                            matches++;
-                            ret = TokenType.floatFunction;
-                        }
-            */
             if (matches > 1)
                 throw new ParseException("Name clash for token \"" + token + "\"");
 
@@ -366,6 +445,14 @@ namespace WooScripter.Objects.WooScript
             _Operators.Add(new MulOp());
             _Operators.Add(new AddOp());
             _Operators.Add(new SubOp());
+
+            _ConditionalOperators.Add(new LessOp());
+            _ConditionalOperators.Add(new GreaterOp());
+
+            _BooleanOperators.Add(new AndOp());
+            _BooleanOperators.Add(new OrOp());
+
+            _UnaryBooleanOperators.Add(new NotOp());
         }
 
         static void AddVariables()
@@ -392,6 +479,7 @@ namespace WooScripter.Objects.WooScript
             _FloatVariables.Add("distanceminimum");
             _FloatVariables.Add("distancescale");
             _FloatVariables.Add("distanceiterations");
+            _FloatVariables.Add("stepsize");
         }
 
         public static NullFunction GetNullFunction(string name)
@@ -472,14 +560,53 @@ namespace WooScripter.Objects.WooScript
             throw new ParseException("No matching assign operation found \"" + token + "\"");
         }
 
+        public static UnaryBooleanOp GetUnaryBooleanOp(string token)
+        {
+            foreach (UnaryBooleanOp Op in _UnaryBooleanOperators)
+            {
+                if (Op.GetSymbol().Equals(token, StringComparison.Ordinal))
+                {
+                    return Op.CreateNew() as UnaryBooleanOp;
+                }
+            }
+
+            throw new ParseException("No matching unary boolean operation found \"" + token + "\"");
+        }
+
+        public static BooleanOp GetBooleanOp(string token)
+        {
+            foreach (BooleanOp Op in _BooleanOperators)
+            {
+                if (Op.GetSymbol().Equals(token, StringComparison.Ordinal))
+                {
+                    return Op.CreateNew() as BooleanOp;
+                }
+            }
+
+            throw new ParseException("No matching boolean operation found \"" + token + "\"");
+        }
+
+        public static ConditionalOp GetConditionalOp(string token)
+        {
+            foreach (ConditionalOp Op in _ConditionalOperators)
+            {
+                if (Op.GetSymbol().Equals(token, StringComparison.Ordinal))
+                {
+                    return Op.CreateNew() as ConditionalOp;
+                }
+            }
+
+            throw new ParseException("No matching boolean operation found \"" + token + "\"");
+        }
+
         static void AddFunctions()
         {
-            _NullFunctions.Add(new CallFunction());
-            _NullFunctions.Add(new RepeatFunction());
-            _NullFunctions.Add(new BranchFunction());
-            _NullFunctions.Add(new FinalCallFunction());
-            _NullFunctions.Add(new PushFunction());
-            _NullFunctions.Add(new PopFunction());
+//            _NullFunctions.Add(new CallFunction());
+//            _NullFunctions.Add(new RepeatFunction());
+//            _NullFunctions.Add(new BranchFunction());
+//            _NullFunctions.Add(new FinalCallFunction());
+//            _NullFunctions.Add(new PushFunction());
+//            _NullFunctions.Add(new PopFunction());
             _NullFunctions.Add(new DirectionalLightFunction());
             _NullFunctions.Add(new PointLightFunction());
             _NullFunctions.Add(new WorldLightFunction());
@@ -516,18 +643,25 @@ namespace WooScripter.Objects.WooScript
         {
             Rule boxRule = new BoxRule("box");
             _Rules.Add(boxRule);
+            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
             Rule sphereRule = new SphereRule("sphere");
             _Rules.Add(sphereRule);
+            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
             Rule circleRule = new CircleRule("circle");
             _Rules.Add(circleRule);
+            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
             Rule sphereLightRule = new SphereLightRule("spherelight");
             _Rules.Add(sphereLightRule);
+            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
             Rule cylinderRule = new CylinderRule("cylinder");
             _Rules.Add(cylinderRule);
+            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
             Rule mengerRule = new MengerRule("menger");
             _Rules.Add(mengerRule);
+            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
             Rule distanceRule = new DistanceRule("distance");
             _Rules.Add(distanceRule);
+            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
         }
 
         public string GetHelpText()
@@ -583,6 +717,9 @@ namespace WooScripter.Objects.WooScript
         public void Reset()
         {
             _Rules.Clear();
+            _Shaders.Clear();
+            _RuleNames.Clear();
+            _ShaderNames.Clear();
             _Operators.Clear();
             _AssignOperators.Clear();
             _VecVariables.Clear();
@@ -597,10 +734,60 @@ namespace WooScripter.Objects.WooScript
             _Log.Clear();
         }
 
+        public void ConsumeRule(ref string[] program)
+        {
+            string token = ParseUtils.GetToken(ref program);
+
+            if (!token.Equals("{", StringComparison.Ordinal))
+                throw new ParseException("rules/shaders not currently supported with arguments, expected {, found " + token + " instead.");
+            int braces = 1;
+            while (braces > 0)
+            {
+                token = ParseUtils.GetToken(ref program);
+                if (token.Equals("{", StringComparison.Ordinal))
+                    braces++;
+                if (token.Equals("}", StringComparison.Ordinal))
+                    braces--;
+                if (token.Equals("rule", StringComparison.Ordinal))
+                    throw new ParseException("missing }, found " + token + " instead.");
+                if (token.Equals("shader", StringComparison.Ordinal))
+                    throw new ParseException("missing }, found " + token + " instead.");
+            }
+        }
+
         public void ParseProgram(ref string[] program)
         {
             string token;
 
+            // pre parse
+            string[] preprogram = program.Clone() as string[];
+            do
+            {
+                token = ParseUtils.GetToken(ref preprogram);
+
+                if (string.Compare(token, "rule", true) == 0)
+                {
+                    string rulename = ParseUtils.GetToken(ref preprogram);
+                    _Log.AddMsg("Preparser found rule " + rulename);
+                    _RuleNames.Add(rulename);
+                    ConsumeRule(ref preprogram);
+                }
+                else if (string.Compare(token, "shader", true) == 0)
+                {
+                    string shadername = ParseUtils.GetToken(ref preprogram);
+                    _Log.AddMsg("Preparser found shader " + shadername);
+                    _ShaderNames.Add(shadername);
+                    ConsumeRule(ref preprogram);
+                }
+                else
+                {
+                    if (token.Length > 0)
+                        throw new ParseException("Global statements must start with \"rule\".");
+                }
+            }
+            while (token.Length > 0);
+
+            // full parse
             do
             {
                 token = ParseUtils.GetToken(ref program);
@@ -614,6 +801,16 @@ namespace WooScripter.Objects.WooScript
                     newRule.Parse(ref program);
                     _Log.UnIndent();
                     _Rules.Add(newRule);
+                }
+                else if (string.Compare(token, "shader", true) == 0)
+                {
+                    string shadername = ParseUtils.GetToken(ref program);
+                    _Log.AddMsg("Found shader " + shadername);
+                    Shader newShader = new Shader(shadername);
+                    _Log.Indent();
+                    newShader.Parse(ref program);
+                    _Log.UnIndent();
+                    _Shaders.Add(newShader);
                 }
                 else
                 {
@@ -675,6 +872,7 @@ namespace WooScripter.Objects.WooScript
                     {
                         WooState state = new WooState();
                         state._Rules = _Rules;
+                        state._Shaders = _Shaders;
                         state._Random = new Random(10);//_Seed);
                         state._Parent = parent;
                         state._Preview = preview;

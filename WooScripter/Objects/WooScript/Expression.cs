@@ -130,7 +130,7 @@ namespace WooScripter.Objects.WooScript
     {
         public Expression _Argument1;
         public Expression _Argument2;
-        VarType _Type;
+//        VarType _Type;
         public Op _Op;
 
         public void Parse(ref string[] program)

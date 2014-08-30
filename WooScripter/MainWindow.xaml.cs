@@ -73,9 +73,89 @@ namespace WooScripter
         public static readonly DependencyProperty _SphericalProperty =
             DependencyProperty.Register("_Spherical", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)0));
 
+        public double _Exposure
+        {
+            get { return (double)GetValue(_ExposureProperty); }
+            set { SetValue(_ExposureProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _Depth.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _ExposureProperty =
+            DependencyProperty.Register("_Exposure", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)0));
+
+        public double _CamPosX
+        {
+            get { return (double)GetValue(_CamPosXProperty); }
+            set { SetValue(_CamPosXProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _Depth.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _CamPosXProperty =
+            DependencyProperty.Register("_CamPosX", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)0));
+
+        public double _CamPosY
+        {
+            get { return (double)GetValue(_CamPosYProperty); }
+            set { SetValue(_CamPosYProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _Depth.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _CamPosYProperty =
+            DependencyProperty.Register("_CamPosY", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)0));
+
+        public double _CamPosZ
+        {
+            get { return (double)GetValue(_CamPosZProperty); }
+            set { SetValue(_CamPosZProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _Depth.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _CamPosZProperty =
+            DependencyProperty.Register("_CamPosZ", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)0));
+
+        public double _CamTagX
+        {
+            get { return (double)GetValue(_CamTagXProperty); }
+            set { SetValue(_CamTagXProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _Depth.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _CamTagXProperty =
+            DependencyProperty.Register("_CamTagX", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)0));
+
+        public double _CamTagY
+        {
+            get { return (double)GetValue(_CamTagYProperty); }
+            set { SetValue(_CamTagYProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _Depth.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _CamTagYProperty =
+            DependencyProperty.Register("_CamTagY", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)0));
+
+        public double _CamTagZ
+        {
+            get { return (double)GetValue(_CamTagZProperty); }
+            set { SetValue(_CamTagZProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for _Depth.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty _CamTagZProperty =
+            DependencyProperty.Register("_CamTagZ", typeof(double), typeof(MainWindow), new UIPropertyMetadata((double)0));
+            
+        private void UpdateCameraUI()
+        {
+            _CamPosX = _Camera._Position.x;
+            _CamPosY = _Camera._Position.y;
+            _CamPosZ = _Camera._Position.z;
+            _CamTagX = _Camera._Target.x;
+            _CamTagY = _Camera._Target.y;
+            _CamTagZ = _Camera._Target.z;
+        }
         private void InitialiseCamera()
         {
             _Camera = new Camera(_AppSettings._CameraFrom, _AppSettings._CameraTo, _AppSettings._FOV, _AppSettings._Spherical);
+            UpdateCameraUI();
             _FocusDistance = (_Camera._Target - _Camera._Position).Magnitude();
             _ApertureSize = _AppSettings._ApertureSize;
             _FOV = _AppSettings._FOV;
@@ -159,12 +239,11 @@ namespace WooScripter
 
             InitialiseTestScene();
 
-            Distance.ReadDistanceSchema();
+            ShaderScript.ReadDistanceSchema();
 
             Compile();
         }
 
-        string _DistanceSchema;
         ImageRenderer _ImageRenderer;
         private void button2_Click(object sender, RoutedEventArgs e)
         {
@@ -178,15 +257,21 @@ namespace WooScripter
 
         private void Preview(bool preview)
         {
+            _ImageRenderer.SetFixedExposure(!(autoExposure.IsChecked.HasValue && autoExposure.IsChecked.Value));
+            _ImageRenderer.SetExposureValue((float)_Exposure);
             if (!preview)
             {
-                _ImageRenderer = new ImageRenderer(image1, BuildXML(false), 480, 270, false);
+                _ImageRenderer = new ImageRenderer(image1, BuildXML(false), 480, 270, false);   
                 _ImageRenderer.Render();
                 _ImageRenderer = new ImageRenderer(image1, BuildXML(true), (int)((float)480 * _Scale), (int)((float)270 * _Scale), false);
             }
             else
             {
                 _ImageRenderer.Render();
+            }
+            if ((autoExposure.IsChecked.HasValue && autoExposure.IsChecked.Value))
+            {
+                _Exposure = _ImageRenderer._MaxValue;
             }
         }
 
@@ -318,6 +403,7 @@ namespace WooScripter
                 _Camera._Position.Add(newup);
             }
             */
+            UpdateCameraUI();
             _FocusDistance = (_Camera._Target - _Camera._Position).Magnitude();
             _Camera._FOV = _FOV;
             _Camera._Spherical = _Spherical;
@@ -372,6 +458,7 @@ namespace WooScripter
             dir.Normalise();
             dir *= _FocusDistance;
             _Camera._Target = _Camera._Position + dir;
+            UpdateCameraUI();
 
             _ImageDrag = true;
 
@@ -409,6 +496,7 @@ namespace WooScripter
                 newdir *= length;
 
                 _Camera._Target = _Camera._Position + newdir;
+                UpdateCameraUI();
 
                 if (!_Timer.IsEnabled)
                     _Timer.Start();

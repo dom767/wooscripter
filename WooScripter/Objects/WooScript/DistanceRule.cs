@@ -8,16 +8,32 @@ namespace WooScripter.Objects.WooScript
     class DistanceFunctionFunction : NullFunction
     {
         string _DistanceFunction;
+        bool _ShaderMode;
 
         public void Parse(ref string[] program)
         {
             _DistanceFunction = ParseUtils.GetToken(ref program);
-            Distance.ValidateEstimator(_DistanceFunction, 1);
+            if (WooScript.IsShader(_DistanceFunction))
+            {
+                _ShaderMode = true;
+            }
+            else
+            {
+                ShaderScript.ValidateEstimator(_DistanceFunction, 1);
+                _ShaderMode = false;
+            }
         }
 
         public void Execute(ref WooState state)
         {
-            state._DistanceFunction = _DistanceFunction;
+            if (_ShaderMode)
+            {
+                state._DistanceFunction = state.GetShader(_DistanceFunction).Evaluate(state);
+            }
+            else
+            {
+                state._DistanceFunction = "set(distance, " + _DistanceFunction + ")";
+            }
         }
 
         public string GetSymbol()
@@ -61,7 +77,8 @@ namespace WooScripter.Objects.WooScript
                 state._DistanceMinimum,
                 state._DistanceScale,
                 state._DistanceOffset,
-                state._DistanceIterations);
+                state._DistanceIterations,
+                state._StepSize);
             newDistance._Material = GenerateMaterial(state);
             newDistance.CreateElement(state._Preview, state._Parent);
         }
