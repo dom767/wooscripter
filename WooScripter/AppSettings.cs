@@ -40,7 +40,7 @@ namespace WooScripter
                     xmls.Serialize(sw, this);
                     sw.Close();
                 }
-                catch (Exception e)
+                catch (Exception /*e*/)
                 {
                     // lets not get overexcited...
                 }
@@ -56,8 +56,9 @@ namespace WooScripter
                     using (StreamReader sr = new StreamReader(filename))
                     {
                         XmlSerializer xmls = new XmlSerializer(typeof(AppSettings));
-                        return xmls.Deserialize(sr) as AppSettings;
+                        AppSettings ret = xmls.Deserialize(sr) as AppSettings;
                         sr.Close();
+                        return ret;
                     }
                 }
                 catch (Exception)
