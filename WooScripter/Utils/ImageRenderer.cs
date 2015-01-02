@@ -340,9 +340,6 @@ namespace WooScripter
 
                 float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
                 PostProcess(targetBuffer, renderBuffer, _MaxValue, _Iterations, _Kernel, _BoostPower, _TargetWeight, _SourceWeight, _RenderWidth, _RenderHeight);
-//                float[] boostBuffer = new float[_RenderHeight * _RenderWidth * 3];
-
-//                PostProcess(targetBuffer, renderBuffer, boostBuffer, _Kernel, 2.0f, 0.8f, 0.2f, 5, _RenderWidth, _RenderHeight);
                 renderBuffer = targetBuffer;
             }
             else
@@ -421,6 +418,12 @@ namespace WooScripter
             // Save image
             float[] renderBuffer = new float[_RenderHeight * _RenderWidth * 3];
             SyncRender(renderBuffer);
+
+            //postpro
+            float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
+            PostProcess(targetBuffer, renderBuffer, _MaxValue, _Iterations, _Kernel, _BoostPower, _TargetWeight, _SourceWeight, _RenderWidth, _RenderHeight);
+            renderBuffer = targetBuffer;
+            
             _Buffer = new float[_RenderHeight * _RenderWidth * 3];
             ZoomCopy(renderBuffer, _RenderWidth, _RenderHeight, _Buffer, _RenderWidth, _RenderHeight);
 
