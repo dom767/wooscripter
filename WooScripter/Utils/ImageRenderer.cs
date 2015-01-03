@@ -423,7 +423,8 @@ namespace WooScripter
             float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
             PostProcess(targetBuffer, renderBuffer, _MaxValue, _Iterations, _Kernel, _BoostPower, _TargetWeight, _SourceWeight, _RenderWidth, _RenderHeight);
             renderBuffer = targetBuffer;
-            
+
+            float[] oldBuffer = _Buffer;
             _Buffer = new float[_RenderHeight * _RenderWidth * 3];
             ZoomCopy(renderBuffer, _RenderWidth, _RenderHeight, _Buffer, _RenderWidth, _RenderHeight);
 
@@ -442,6 +443,7 @@ namespace WooScripter
                         pixels[(x + y * _RenderWidth)*4 + 0]));
                 }
             }
+            _Buffer = oldBuffer;
 
             string store = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\WooScripter\\Exports";
             if (!System.IO.Directory.Exists(store))
