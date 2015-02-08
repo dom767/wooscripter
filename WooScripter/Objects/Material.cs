@@ -23,10 +23,7 @@ namespace WooScripter
             _EmissiveColour = new CFConstant(0.0f, 0.0f, 0.0f);
             _Reflectivity = new CFConstant(0.3f, 0.3f, 0.3f);
             _AbsorptionColour = new CFConstant(0.0f, 0.0f, 0.0f);
-            _DiffuseFunction = "";
-            _SpecularFunction = "";
-            _EmissiveFunction = "";
-            _ReflectiveFunction = "";
+            _MaterialFunction = "";
         }
 
         public Material(Material rhs)
@@ -41,10 +38,7 @@ namespace WooScripter
             _EmissiveColour = rhs._EmissiveColour.Clone();
             _Reflectivity = rhs._Reflectivity.Clone();
             _AbsorptionColour = rhs._AbsorptionColour.Clone();
-            _DiffuseFunction = rhs._DiffuseFunction;
-            _SpecularFunction = rhs._SpecularFunction;
-            _EmissiveFunction = rhs._EmissiveFunction;
-            _ReflectiveFunction = rhs._ReflectiveFunction;
+            _MaterialFunction = rhs._MaterialFunction;
         }
 
         public XElement CreateElement(bool preview)
@@ -78,18 +72,12 @@ namespace WooScripter
                     _AbsorptionColour.CreateElement("ABSORPTIONCOLOUR"));
             }
 
-            if (_DiffuseFunction.Length > 0) mat.Add(new XAttribute("diffuseFunction", _DiffuseFunction));
-            if (_SpecularFunction.Length > 0) mat.Add(new XAttribute("specularFunction", _SpecularFunction));
-            if (_EmissiveFunction.Length > 0) mat.Add(new XAttribute("emissiveFunction", _EmissiveFunction));
-            if (_ReflectiveFunction.Length > 0) mat.Add(new XAttribute("reflectiveFunction", _ReflectiveFunction));
+            if (_MaterialFunction.Length > 0) mat.Add(new XAttribute("materialFunction", _MaterialFunction));
 
             return mat;
         }
 
-        public string _DiffuseFunction;
-        public string _SpecularFunction;
-        public string _EmissiveFunction;
-        public string _ReflectiveFunction;
+        public string _MaterialFunction;
         public ColourFunction _DiffuseColour;
         public ColourFunction _SpecularColour;
         public ColourFunction _EmissiveColour;

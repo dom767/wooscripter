@@ -37,10 +37,7 @@ namespace WooScripter.Objects.WooScript
         public Vector3 _DistanceOffset = new Vector3(0,0,0);
         public int _DistanceIterations = 200;
         public double _StepSize = 0.7;
-        public string _DiffuseFunction = "";
-        public string _SpecularFunction = "";
-        public string _EmissiveFunction = "";
-        public string _ReflectiveFunction = "";
+        public string _MaterialFunction = "";
 
         public WooState()
         {
@@ -137,10 +134,7 @@ namespace WooScripter.Objects.WooScript
             clone._DistanceOffset = this._DistanceOffset.Clone();
             clone._DistanceIterations = this._DistanceIterations;
             clone._StepSize = this._StepSize;
-            clone._DiffuseFunction = this._DiffuseFunction;
-            clone._SpecularFunction = this._SpecularFunction;
-            clone._EmissiveFunction = this._EmissiveFunction;
-            clone._ReflectiveFunction = this._ReflectiveFunction;
+            clone._MaterialFunction = this._MaterialFunction;
             return clone;
         }
         void SetSelectedValue(ref Vector3 target, string selector, double value)

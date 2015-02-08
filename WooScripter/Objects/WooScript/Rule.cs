@@ -48,10 +48,7 @@ namespace WooScripter.Objects.WooScript
             specular._Colour = state._Spec;
             ret._SpecularPower = (float)state._Power;
             ret._Shininess = (float)state._Gloss;
-            ret._DiffuseFunction = state._DiffuseFunction;
-            ret._SpecularFunction = state._SpecularFunction;
-            ret._EmissiveFunction = state._EmissiveFunction;
-            ret._ReflectiveFunction = state._ReflectiveFunction;
+            ret._MaterialFunction = state._MaterialFunction;
             return ret;
         }
     }
