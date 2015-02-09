@@ -14,6 +14,7 @@ namespace WooScripter.Objects.WooScript
         public SEType _Type;
         public string _String;
         public List<ScriptElement> _Arguments = new List<ScriptElement>();
+        public bool _Reorderable;
 
         public string Evaluate(WooState state)
         {
@@ -52,14 +53,14 @@ namespace WooScripter.Objects.WooScript
         {
             public int _Index;
             public string _Name;
-            public int _Type;
+            public SEType _Type;
         }
         public class DistFunc
         {
             public void Read(XmlReader reader)
             {
-                if (reader.Name == "FLOATFUNC") _ReturnType = 1;
-                else _ReturnType = 0;
+                if (reader.Name == "FLOATFUNC") _ReturnType = SEType.FloatVar;
+                else _ReturnType = SEType.VectorVar;
 
                 reader.MoveToNextAttribute();
                 if (reader.NodeType == XmlNodeType.Attribute && reader.Name == "name")
@@ -87,13 +88,10 @@ namespace WooScripter.Objects.WooScript
                             switch (reader.Value)
                             {
                                 case "vec":
-                                    param._Type = 0;
+                                    param._Type = SEType.VectorVar;
                                     break;
                                 case "float":
-                                    param._Type = 1;
-                                    break;
-                                case "rawfloat":
-                                    param._Type = 2;
+                                    param._Type = SEType.FloatVar;
                                     break;
                             }
                         }
@@ -103,7 +101,7 @@ namespace WooScripter.Objects.WooScript
                 }
 
             }
-            public int _ReturnType;
+            public SEType _ReturnType;
             public string _Name;
             public List<DistParam> _DistParams;
         };
@@ -151,6 +149,7 @@ namespace WooScripter.Objects.WooScript
             return double.TryParse(token, out val);
         }
 
+
         public static bool IsFunction(string token)
         {
             foreach (DistFunc df in _DistFunc)
@@ -161,6 +160,18 @@ namespace WooScripter.Objects.WooScript
                 }
             }
             return false;
+        }
+
+        public static DistFunc GetFunction(string token)
+        {
+            foreach (DistFunc df in _DistFunc)
+            {
+                if (df._Name.Equals(token, StringComparison.Ordinal))
+                {
+                    return df;
+                }
+            }
+            throw new ParseException("Missing distance function looking up \"" + token + "\"");
         }
 
         public static bool IsAssignOp(string token)
@@ -176,6 +187,36 @@ namespace WooScripter.Objects.WooScript
             if (token.Equals("+=", StringComparison.Ordinal))
                 return true;
             return false;
+        }
+
+        public static bool IsOperator(string token)
+        {
+            if (token.Equals("+", StringComparison.Ordinal))
+                return true;
+            if (token.Equals("-", StringComparison.Ordinal))
+                return true;
+            if (token.Equals("/", StringComparison.Ordinal))
+                return true;
+            if (token.Equals("*", StringComparison.Ordinal))
+                return true;
+            if (token.Equals("%", StringComparison.Ordinal))
+                return true;
+            return false;
+        }
+
+        public static int GetPrecedence(string token)
+        {
+            if (token.Equals("add", StringComparison.Ordinal))
+                return 5;
+            if (token.Equals("sub", StringComparison.Ordinal))
+                return 4;
+            if (token.Equals("div", StringComparison.Ordinal))
+                return 2;
+            if (token.Equals("mul", StringComparison.Ordinal))
+                return 3;
+            if (token.Equals("mod", StringComparison.Ordinal))
+                return 1;
+            return -1;
         }
 
         public static List<DistFunc> _DistFunc = new List<DistFunc>();
@@ -211,16 +252,63 @@ namespace WooScripter.Objects.WooScript
             return ret;
         }
 
-        public static ScriptElement ParseFunction(ref string[] program)
+        public static void ValidateFunction(ScriptElement func)
+        {
+            bool foundFunction = false;
+            bool validNumParams = false;
+            bool validTypeParams = false;
+            foreach (DistFunc df in _DistFunc)
+            {
+                if (df._Name.Equals(func._String, StringComparison.Ordinal))
+                {
+                    foundFunction = true;
+                    if (df._DistParams.Count == func._Arguments.Count)
+                    {
+                        validNumParams = true;
+                        bool functionParamsValid = true;
+                        for (int i = 0; i < df._DistParams.Count; i++)
+                        {
+                            if (df._DistParams.ElementAt(i)._Type != func._Arguments.ElementAt(i)._Type)
+                                functionParamsValid = false;
+                        }
+                        if (functionParamsValid)
+                        {
+                            validTypeParams = true;
+                            func._Type = df._ReturnType;
+                        }
+                    }
+                }
+            }
+            if (!foundFunction)
+                throw new ParseException("Missing distance function looking up \"" + func._String + "\"");
+            if (!validNumParams)
+                throw new ParseException("No matching version of function \"" + func._String + "\" found expecting " + func._Arguments.Count + " parameters");
+            if (!validTypeParams)
+                throw new ParseException("Type mismatch on args for function \"" + func._String + "\"");
+        }
+
+        public static ScriptElement ParseExpression(ref string[] program)
         {
             ScriptElement ret = new ScriptElement();
             string token = ParseUtils.GetToken(ref program);
+
+            ret._Reorderable = false;
+
             if (token.Equals("-", StringComparison.Ordinal))
             {
                 token += ParseUtils.GetToken(ref program);
-            } 
+            }
             
-            if (IsFloatVar(token))
+            if (token.Equals("(", StringComparison.Ordinal))
+            {
+                ret = ParseExpression(ref program);
+                ret._Reorderable = false;
+
+                token = ParseUtils.GetToken(ref program);
+                if (!token.Equals(")", StringComparison.Ordinal))
+                    throw new ParseException("Missing closebracket on bracketed expression, found" + token);
+            }
+            else if (IsFloatVar(token))
             {
                 ret._Type = SEType.FloatVar;
                 ret._String = token;
@@ -232,12 +320,35 @@ namespace WooScripter.Objects.WooScript
             }
             else if (IsFloatNum(token))
             {
-                ret._Type = SEType.Num;
+                ret._Type = SEType.FloatVar;
                 ret._String = token;
+            }
+            else if (token.IndexOf('.') > -1)
+            {
+                int dotPosition = token.IndexOf('.');
+
+                ret._Type = SEType.VectorVar;
+                ret._String = token.Substring(0, dotPosition);
+
+                ScriptElement getter = new ScriptElement();
+
+                string index = token.Substring(dotPosition + 1);
+
+                if (index.Equals("x", StringComparison.Ordinal))
+                    getter._String = "getx";
+                else if (index.Equals("y", StringComparison.Ordinal))
+                    getter._String = "getx";
+                else if (index.Equals("z", StringComparison.Ordinal))
+                    getter._String = "getx";
+                else
+                    throw new ParseException("Invalid subindex " + index);
+
+                getter._Arguments.Add(ret);
+                getter._Type = SEType.FloatVar;
+                ret = getter;
             }
             else if (IsFunction(token))
             {
-                ret._Type = SEType.Func;
                 ret._String = token;
 
                 string openBracket = ParseUtils.PeekToken(program);
@@ -245,13 +356,13 @@ namespace WooScripter.Objects.WooScript
                 {
                     openBracket = ParseUtils.GetToken(ref program);
 
-                    ret._Arguments.Add(ParseFunction(ref program));
+                    ret._Arguments.Add(ParseExpression(ref program));
 
                     string comma = ParseUtils.PeekToken(program);
                     while (comma.Equals(",", StringComparison.Ordinal))
                     {
                         comma = ParseUtils.GetToken(ref program);
-                        ret._Arguments.Add(ParseFunction(ref program));
+                        ret._Arguments.Add(ParseExpression(ref program));
                         comma = ParseUtils.PeekToken(program);
                     }
 
@@ -259,11 +370,62 @@ namespace WooScripter.Objects.WooScript
                     if (!closeBracket.Equals(")", StringComparison.Ordinal))
                         throw new ParseException("Expected close bracket, found \"" + token + "\"");
                 }
+
+                ValidateFunction(ret);
             }
             else
             {
                 throw new ParseException("Unrecognised token found \"" + token + "\"");
             }
+
+            string opCode = ParseUtils.PeekToken(program);
+            if (IsOperator(opCode))
+            {
+                opCode = ParseUtils.GetToken(ref program);
+                ScriptElement opElement = new ScriptElement();
+
+                if (opCode.Equals("+", StringComparison.Ordinal))
+                    opElement._String = "add";
+                if (opCode.Equals("-", StringComparison.Ordinal))
+                    opElement._String = "sub";
+                if (opCode.Equals("*", StringComparison.Ordinal))
+                    opElement._String = "mul";
+                if (opCode.Equals("/", StringComparison.Ordinal))
+                    opElement._String = "div";
+                if (opCode.Equals("%", StringComparison.Ordinal))
+                    opElement._String = "mod";
+
+                opElement._Type = ret._Type;
+                opElement._Arguments.Add(ret);
+
+                ScriptElement arg2 = ParseExpression(ref program);
+                opElement._Arguments.Add(arg2);
+
+                if (arg2._Reorderable)
+                {
+                    if (GetPrecedence(opElement._String) < GetPrecedence(arg2._String))
+                    {
+                        ScriptElement Arg1Arg1 = ret;
+                        ScriptElement Arg2Arg1 = arg2._Arguments.ElementAt(0);
+                        ScriptElement Arg2Arg2 = arg2._Arguments.ElementAt(1);
+
+                        arg2._Arguments.Clear();
+                        arg2._Arguments.Add(opElement);
+                        arg2._Arguments.Add(Arg2Arg2);
+                        opElement._Arguments.Clear();
+                        opElement._Arguments.Add(Arg1Arg1);
+                        opElement._Arguments.Add(Arg2Arg1);
+                            
+                        opElement = arg2;
+                    }
+                }
+
+                ret = opElement;
+                ret._Reorderable = true;
+
+                ValidateFunction(opElement);
+            }
+
             return ret;
         }
         
@@ -299,7 +461,7 @@ namespace WooScripter.Objects.WooScript
                 }
             }
         }
-
+        /*
         public static void ValidateType(ref string[] lines, int type)
         {
             string token = ParseUtils.GetToken(ref lines);
@@ -344,8 +506,8 @@ namespace WooScripter.Objects.WooScript
             }
 
             throw new ParseException("Unrecognised token : " + token);
-        }
-
+        }*/
+/*
         public static bool ValidateEstimator(string estimator, int type)
         {
             string[] lines = new string[1];
@@ -354,7 +516,7 @@ namespace WooScripter.Objects.WooScript
             ValidateType(ref lines, type);
 
             return true;
-        }
+        }*/
     };
 
     public class ShaderStatement
@@ -377,7 +539,7 @@ namespace WooScripter.Objects.WooScript
             if (!ShaderScript.IsAssignOp(_AssignOp))
                 throw new ParseException("Expected \"" + _AssignOp + "\" to be an assignment operation");
 
-            _Argument = ShaderScript.ParseFunction(ref program);
+            _Argument = ShaderScript.ParseExpression(ref program);
         }
 
         public string Evaluate(WooState state)

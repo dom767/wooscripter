@@ -19,7 +19,6 @@ namespace WooScripter.Objects.WooScript
             }
             else
             {
-                ShaderScript.ValidateEstimator(_DistanceFunction, 1);
                 _ShaderMode = false;
             }
         }

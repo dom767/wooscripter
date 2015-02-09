@@ -11,10 +11,18 @@ namespace WooScripter.Objects.WooScript
 
         public void Parse(ref string[] program)
         {
-            _MaterialFunction = ParseUtils.GetToken(ref program);
-            if (!WooScript.IsShader(_MaterialFunction))
+            string token = ParseUtils.GetToken(ref program);
+            if (token.Length>0)
             {
-                throw new ParseException("materialfunction call expected a shader, sadly " + _MaterialFunction + " isn't one...");
+                _MaterialFunction = token;
+                if (!WooScript.IsShader(_MaterialFunction))
+                {
+                    throw new ParseException("materialfunction call expected a shader, sadly " + _MaterialFunction + " isn't one...");
+                }
+            }
+            else
+            {
+                _MaterialFunction = "";
             }
         }
 
