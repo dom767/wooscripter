@@ -140,9 +140,10 @@ namespace WooScripter
                         float blueIn = _Buffer[(x + y * width) * 3 + 2];
                         float luminance = redIn * 0.2126f + greenIn * 0.7152f + blueIn * 0.0722f;
                         float luminanceOut = _GammaFactor * (float)Math.Pow((double)luminance, (double)_GammaContrast);
-                        float multiplier = luminanceOut / luminance;
+                        float multiplier = luminance>0 ? (luminanceOut / luminance) : 0;
                         red = (int)(redIn * multiplier * 255.99f);
                         green = (int)(greenIn * multiplier * 255.99f);
+
                         blue = (int)(blueIn * multiplier * 255.99f);
                     }
                     else // Tone
@@ -152,7 +153,7 @@ namespace WooScripter
                         float blueIn = _Buffer[(x + y * width) * 3 + 2] * _ToneFactor;
                         float luminance = redIn * 0.2126f + greenIn * 0.7152f + blueIn * 0.0722f;
                         float luminanceOut = luminance / (1.0f + luminance);
-                        float multiplier = luminanceOut/luminance;
+                        float multiplier = luminance > 0 ? (luminanceOut / luminance) : 0;
                         red = (int)(redIn * multiplier * 255.99f);
                         green = (int)(greenIn * multiplier * 255.99f);
                         blue = (int)(blueIn * multiplier * 255.99f);
