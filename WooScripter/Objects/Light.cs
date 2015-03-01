@@ -221,7 +221,7 @@ namespace WooScripter
             mat._DiffuseColour = new CFConstant(0, 0, 0);
             mat._SpecularColour = new CFConstant(0, 0, 0);
             mat._Reflectivity = new CFConstant(0, 0, 0);
-            float attenuation = 1 / (_Radius * _Radius);
+            float attenuation = 1;
             mat._EmissiveColour = new CFConstant(_Colour._Red * attenuation, _Colour._Green * attenuation, _Colour._Blue * attenuation);
 
             Sphere sphere = new Sphere();
