@@ -337,9 +337,9 @@ namespace WooScripter.Objects.WooScript
                 if (index.Equals("x", StringComparison.Ordinal))
                     getter._String = "getx";
                 else if (index.Equals("y", StringComparison.Ordinal))
-                    getter._String = "getx";
+                    getter._String = "gety";
                 else if (index.Equals("z", StringComparison.Ordinal))
-                    getter._String = "getx";
+                    getter._String = "getz";
                 else
                     throw new ParseException("Invalid subindex " + index);
 
