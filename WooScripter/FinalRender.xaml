@@ -9,8 +9,7 @@
         <CheckBox Content="Enable Anti Aliasing" Height="16" HorizontalAlignment="Left" Margin="15,577,0,0" Name="checkBox1" VerticalAlignment="Top" Checked="checkBox1_Checked" Unchecked="checkBox1_Unchecked" />
         <CheckBox Content="Enable Depth of Field" Height="16" HorizontalAlignment="Left" Margin="15,599,0,0" Name="checkBox2" VerticalAlignment="Top" Width="149" Checked="checkBox2_Checked" Unchecked="checkBox2_Unchecked" />
         <CheckBox Content="Enable PathTracer" Height="16" HorizontalAlignment="Left" Margin="15,621,0,0" Name="checkBox3" VerticalAlignment="Top" Width="169" Checked="checkBox3_Checked" Unchecked="checkBox3_Unchecked" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="124,643,0,0" Name="textBox11" Text="{Binding Path=_SamplesPerPixel}" VerticalAlignment="Top" Width="40" />
-        <Label Content="Samples per pixel" Height="25" HorizontalAlignment="Left" Margin="15,641,0,0" Name="label7" VerticalAlignment="Top" />
+        <CheckBox Content="Enable Caustics" Height="16" HorizontalAlignment="Left" Margin="15,643,0,0" Name="checkBox4" VerticalAlignment="Top" Width="169" Checked="checkBox4_Checked" Unchecked="checkBox4_Unchecked" />
         <GroupBox Header="Resolution" Height="138" HorizontalAlignment="Left" Margin="204,541,0,0" Name="groupBox1" VerticalAlignment="Top" Width="115">
             <Grid>
                 <RadioButton Content="480 x 270" GroupName="Resolution" Height="18" HorizontalAlignment="Left" Margin="6,6,0,0" Name="radioButton3" VerticalAlignment="Top" Width="85" />

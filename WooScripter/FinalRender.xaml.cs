@@ -190,6 +190,8 @@ namespace WooScripter
                 checkBox2.IsChecked = true;
             if (_Scene._PathTracer)
                 checkBox3.IsChecked = true;
+            if (_Scene._Caustics)
+                checkBox4.IsChecked = true;
             _SamplesPerPixel = _Camera._MinSamples;
 
             SetGaussian();
@@ -316,6 +318,16 @@ namespace WooScripter
         private void checkBox3_Unchecked(object sender, RoutedEventArgs e)
         {
             _Scene._PathTracer = false;
+        }
+
+        private void checkBox4_Checked(object sender, RoutedEventArgs e)
+        {
+            _Scene._Caustics = true;
+        }
+
+        private void checkBox4_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _Scene._Caustics = false;
         }
 
         private void radioButton6_Checked(object sender, RoutedEventArgs e)
