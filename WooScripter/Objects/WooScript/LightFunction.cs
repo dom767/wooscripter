@@ -47,8 +47,6 @@ namespace WooScripter.Objects.WooScript
         {
             Vector3 colourVec = _ColourExpr.EvaluateVector(ref state);
             Colour colour = new Colour(colourVec.x, colourVec.y, colourVec.z);
-            colour.Clamp(0, 1);
-
             Vector3 direction = _DirectionExpr.EvaluateVector(ref state);
 
             double area = _AreaExpr.EvaluateFloat(ref state);
