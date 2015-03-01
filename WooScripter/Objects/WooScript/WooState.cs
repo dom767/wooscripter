@@ -36,6 +36,7 @@ namespace WooScripter.Objects.WooScript
         public double _DistanceScale = 1.0f;
         public Vector3 _DistanceOffset = new Vector3(0,0,0);
         public int _DistanceIterations = 200;
+        public Vector3 _DistanceExtents = new Vector3(1, 1, 1);
         public double _StepSize = 0.7;
         public string _MaterialFunction = "";
 
@@ -133,6 +134,7 @@ namespace WooScripter.Objects.WooScript
             clone._DistanceScale = this._DistanceScale;
             clone._DistanceOffset = this._DistanceOffset.Clone();
             clone._DistanceIterations = this._DistanceIterations;
+            clone._DistanceExtents = this._DistanceExtents;
             clone._StepSize = this._StepSize;
             clone._MaterialFunction = this._MaterialFunction;
             return clone;
@@ -247,6 +249,8 @@ namespace WooScripter.Objects.WooScript
                     return new Vector3(_v3);
                 if (target.Equals("distanceoffset", StringComparison.Ordinal))
                     return new Vector3(_DistanceOffset);
+                if (target.Equals("distanceextents", StringComparison.Ordinal))
+                    return new Vector3(_DistanceExtents);
             }
             throw new ParseException("no matching target for \"" + target + "\"");
         }
@@ -298,6 +302,8 @@ namespace WooScripter.Objects.WooScript
                     SetValueInternal(new Vector3(_v3), varname, selector, value, overrideState);
                 else if (varname.Equals("distanceoffset", StringComparison.Ordinal))
                     SetValueInternal(new Vector3(_DistanceOffset), varname, selector, value, overrideState);
+                else if (varname.Equals("distanceextents", StringComparison.Ordinal))
+                    SetValueInternal(new Vector3(_DistanceExtents), varname, selector, value, overrideState);
             }
             else
             {
@@ -467,6 +473,12 @@ namespace WooScripter.Objects.WooScript
                 _DistanceOffset.x = arg.x;
                 _DistanceOffset.y = arg.y;
                 _DistanceOffset.z = arg.z;
+            }
+            if (varname.Equals("distanceextents", StringComparison.Ordinal))
+            {
+                _DistanceExtents.x = arg.x;
+                _DistanceExtents.y = arg.y;
+                _DistanceExtents.z = arg.z;
             }
         }
     };

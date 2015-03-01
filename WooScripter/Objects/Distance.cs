@@ -19,6 +19,7 @@ namespace WooScripter.Objects
         public double _DistanceScale;
         public Vector3 _DistanceOffset;
         public int _DistanceIterations;
+        public Vector3 _DistanceExtents;
         public double _StepSize;
 
         public Distance(Vector3 centre,
@@ -29,6 +30,7 @@ namespace WooScripter.Objects
             double distanceScale,
             Vector3 distanceOffset,
             int distanceIterations,
+            Vector3 distanceExtents,
             double stepSize)
         {
             _Material = new Material();
@@ -43,6 +45,7 @@ namespace WooScripter.Objects
             _DistanceScale = distanceScale;
             _DistanceOffset = distanceOffset;
             _DistanceIterations = distanceIterations;
+            _DistanceExtents = distanceExtents;
             _StepSize = stepSize;
         }
 
@@ -55,6 +58,7 @@ namespace WooScripter.Objects
                 new XAttribute("distancescale", _DistanceScale),
                 new XAttribute("distanceoffset", _DistanceOffset),
                 new XAttribute("distanceiterations", _DistanceIterations),
+                new XAttribute("distanceextents", _DistanceExtents),
                 new XAttribute("stepsize", _StepSize),
                 new XAttribute("position", _Position),
                 new XAttribute("scale", _Scale),

@@ -468,6 +468,7 @@ namespace WooScripter.Objects.WooScript
             _VecVariables.Add("v2");
             _VecVariables.Add("v3");
             _VecVariables.Add("distanceoffset");
+            _VecVariables.Add("distanceextents");
 
             _FloatVariables.Add("gloss");
             _FloatVariables.Add("power");

@@ -77,6 +77,7 @@ namespace WooScripter.Objects.WooScript
                 state._DistanceScale,
                 state._DistanceOffset,
                 state._DistanceIterations,
+                state._DistanceExtents,
                 state._StepSize);
             newDistance._Material = GenerateMaterial(state);
             newDistance.CreateElement(state._Preview, state._Parent);
