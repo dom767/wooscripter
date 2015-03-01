@@ -15,6 +15,7 @@ namespace WooScripter
         }
         Camera _Camera;
         public bool _PathTracer = false;
+        public bool _Caustics = false;
         List<RenderObject> _RenderObjects = new List<RenderObject>();
         List<Light> _Lights = new List<Light>();
         Background _Background = new Background();
@@ -27,6 +28,11 @@ namespace WooScripter
                 ret.Add(new XAttribute("pathTracer", 1));
             else
                 ret.Add(new XAttribute("pathTracer", 0));
+
+            if (_Caustics && !preview)
+                ret.Add(new XAttribute("caustics", true));
+            else
+                ret.Add(new XAttribute("caustics", false));
 
             foreach (Light light in _Lights)
             {
