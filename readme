@@ -1,5 +1,20 @@
 Wooscripter, started by Dom Penfold, now up and open to the general public. Note that coretracer.dll is my own raytracer which is not currently available on github. A release version is included in this project's bin folder.
 
+v1.01
+- Improved pathtracer
+ . vastly reduced noise
+ . correct biased sampler
+ . caustics optional flag (reduce noise when off)
+- Distance estimator improvements
+ . fixed vector selectors .y and .z (doh!)
+ . support distance extents render optimisation
+ . new maths functions (cos, sin, tan, sqrt, power)
+ . new primitive macros (capsule, cylinder)
+ . new noise function (turb3d)
+ . new experimental fold function (rotationfold)
+- Improved worldlight sampler to reduce noise on low iteration counts
+- 2d sampler support + file caching
+
 v1.0
 - Extended shader language to support .x, .y, .z, +, -, /, *, % and operator precedence
 - Fixed a divby0 for dark scenes
