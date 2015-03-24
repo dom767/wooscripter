@@ -19,6 +19,7 @@ namespace WooScripter
         List<RenderObject> _RenderObjects = new List<RenderObject>();
         List<Light> _Lights = new List<Light>();
         Background _Background = new Background();
+        public int _Recursions = 3;
 
         public XElement CreateElement(bool preview)
         {
@@ -33,6 +34,8 @@ namespace WooScripter
                 ret.Add(new XAttribute("caustics", true));
             else
                 ret.Add(new XAttribute("caustics", false));
+
+            ret.Add(new XAttribute("recursions", _Recursions));
 
             foreach (Light light in _Lights)
             {

@@ -462,6 +462,7 @@ namespace WooScripter.Objects.WooScript
             _VecVariables.Add("refl");
             _VecVariables.Add("emi");
             _VecVariables.Add("spec");
+            _VecVariables.Add("abs");
             _VecVariables.Add("scale");
             _VecVariables.Add("v0");
             _VecVariables.Add("v1");
@@ -472,6 +473,8 @@ namespace WooScripter.Objects.WooScript
 
             _FloatVariables.Add("gloss");
             _FloatVariables.Add("power");
+            _FloatVariables.Add("opacity");
+            _FloatVariables.Add("refractiveindex");
             _FloatVariables.Add("recursions");
             _FloatVariables.Add("rx");
             _FloatVariables.Add("ry");
@@ -481,6 +484,7 @@ namespace WooScripter.Objects.WooScript
             _FloatVariables.Add("distancescale");
             _FloatVariables.Add("distanceiterations");
             _FloatVariables.Add("stepsize");
+            _FloatVariables.Add("depth");
         }
 
         public static NullFunction GetNullFunction(string name)
@@ -659,6 +663,9 @@ namespace WooScripter.Objects.WooScript
             _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
             Rule distanceRule = new DistanceRule("distance");
             _Rules.Add(distanceRule);
+            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
+            Rule svoRule = new SVORule("svo");
+            _Rules.Add(svoRule);
             _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
         }
 

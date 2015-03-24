@@ -16,8 +16,11 @@ namespace WooScripter.Objects.WooScript
         public Colour _Refl = new Colour(0.3, 0.3, 0.3);
         public Colour _Emi = new Colour(0, 0, 0);
         public Colour _Spec = new Colour(0.4, 0.4, 0.4);
+        public Colour _Abs = new Colour(0.1, 0.1, 0.1);
         public double _Power = 8;
         public double _Gloss = 1;
+        public double _Opacity = 1;
+        public double _RefractiveIndex = 1;
         public Vector3 _Scale = new Vector3(1, 1, 1);
         public Vector3 _v0 = new Vector3(0, 0, 0);
         public Vector3 _v1 = new Vector3(0, 0, 0);
@@ -31,7 +34,7 @@ namespace WooScripter.Objects.WooScript
         public bool _Preview = false;
         public int _MengerIterations = 4;
         public int[] _MengerPattern = new int[27];
-        public string _DistanceFunction = "sphere(pos, vec(0,0,0), 1)";
+        public string _DistanceFunction = "set(distance, sphere(pos, vec(0,0,0), 1))";
         public double _DistanceMinimum = 0.01f;
         public double _DistanceScale = 1.0f;
         public Vector3 _DistanceOffset = new Vector3(0,0,0);
@@ -39,6 +42,7 @@ namespace WooScripter.Objects.WooScript
         public Vector3 _DistanceExtents = new Vector3(1, 1, 1);
         public double _StepSize = 0.7;
         public string _MaterialFunction = "";
+        public int _Depth = 4;
 
         public WooState()
         {
@@ -111,12 +115,15 @@ namespace WooScripter.Objects.WooScript
             clone._Refl = this._Refl.Clone();
             clone._Emi = this._Emi.Clone();
             clone._Spec = this._Spec.Clone();
+            clone._Abs = this._Abs.Clone();
             clone._v0 = this._v0.Clone();
             clone._v1 = this._v1.Clone();
             clone._v2 = this._v2.Clone();
             clone._v3 = this._v3.Clone();
             clone._Power = this._Power;
             clone._Gloss = this._Gloss;
+            clone._Opacity = this._Opacity;
+            clone._RefractiveIndex = this._RefractiveIndex;
             clone._Rules = this._Rules;
             clone._Shaders = this._Shaders;
             clone._Random = this._Random;
@@ -137,6 +144,7 @@ namespace WooScripter.Objects.WooScript
             clone._DistanceExtents = this._DistanceExtents;
             clone._StepSize = this._StepSize;
             clone._MaterialFunction = this._MaterialFunction;
+            clone._Depth = this._Depth;
             return clone;
         }
         void SetSelectedValue(ref Vector3 target, string selector, double value)
@@ -198,6 +206,10 @@ namespace WooScripter.Objects.WooScript
                     return _Power;
                 if (target.Equals("gloss", StringComparison.Ordinal))
                     return _Gloss;
+                if (target.Equals("opacity", StringComparison.Ordinal))
+                    return _Opacity;
+                if (target.Equals("refractiveindex", StringComparison.Ordinal))
+                    return _RefractiveIndex;
                 if (target.Equals("recursions", StringComparison.Ordinal))
                     return _Recursions;
                 if (target.Equals("mengeriterations", StringComparison.Ordinal))
@@ -210,6 +222,8 @@ namespace WooScripter.Objects.WooScript
                     return _DistanceScale;
                 if (target.Equals("stepsize", StringComparison.Ordinal))
                     return _StepSize;
+                if (target.Equals("depth", StringComparison.Ordinal))
+                    return _Depth;
             }
             throw new ParseException("no matching target for \"" + target + "\"");
         }
@@ -239,6 +253,8 @@ namespace WooScripter.Objects.WooScript
                     return new Vector3(_Emi);
                 if (target.Equals("spec", StringComparison.Ordinal))
                     return new Vector3(_Spec);
+                if (target.Equals("abs", StringComparison.Ordinal))
+                    return new Vector3(_Abs);
                 if (target.Equals("v0", StringComparison.Ordinal))
                     return new Vector3(_v0);
                 if (target.Equals("v1", StringComparison.Ordinal))
@@ -292,6 +308,8 @@ namespace WooScripter.Objects.WooScript
                     SetValueInternal(new Vector3(_Emi), varname, selector, value, overrideState);
                 else if (varname.Equals("spec", StringComparison.Ordinal))
                     SetValueInternal(new Vector3(_Spec), varname, selector, value, overrideState);
+                else if (varname.Equals("abs", StringComparison.Ordinal))
+                    SetValueInternal(new Vector3(_Abs), varname, selector, value, overrideState);
                 else if (varname.Equals("v0", StringComparison.Ordinal))
                     SetValueInternal(new Vector3(_v0), varname, selector, value, overrideState);
                 else if (varname.Equals("v1", StringComparison.Ordinal))
@@ -342,6 +360,14 @@ namespace WooScripter.Objects.WooScript
                 {
                     _Gloss = value;
                 }
+                if (target.Equals("opacity", StringComparison.Ordinal))
+                {
+                    _Opacity = value;
+                }
+                if (target.Equals("refractiveindex", StringComparison.Ordinal))
+                {
+                    _RefractiveIndex = value;
+                }
                 if (target.Equals("recursions", StringComparison.Ordinal))
                 {
                     _Recursions = (int)(value + 0.5);
@@ -365,6 +391,10 @@ namespace WooScripter.Objects.WooScript
                 if (target.Equals("stepsize", StringComparison.Ordinal))
                 {
                     _StepSize = value;
+                }
+                if (target.Equals("depth", StringComparison.Ordinal))
+                {
+                    _Depth = (int)(value+0.5);
                 }
             }
         }
@@ -443,6 +473,12 @@ namespace WooScripter.Objects.WooScript
                 _Spec._Red = arg.x;
                 _Spec._Green = arg.y;
                 _Spec._Blue = arg.z;
+            }
+            if (varname.Equals("abs", StringComparison.Ordinal))
+            {
+                _Abs._Red = arg.x;
+                _Abs._Green = arg.y;
+                _Abs._Blue = arg.z;
             }
             if (varname.Equals("v0", StringComparison.Ordinal))
             {

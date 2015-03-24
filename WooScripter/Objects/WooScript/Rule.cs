@@ -46,6 +46,10 @@ namespace WooScripter.Objects.WooScript
             emissive._Colour = state._Emi;
             CFConstant specular = ret._SpecularColour as CFConstant;
             specular._Colour = state._Spec;
+            CFConstant absorption = ret._AbsorptionColour as CFConstant;
+            absorption._Colour = state._Abs;
+            ret._Opacity = (float)state._Opacity;
+            ret._RefractiveIndex = (float)state._RefractiveIndex;
             ret._SpecularPower = (float)state._Power;
             ret._Shininess = (float)state._Gloss;
             ret._MaterialFunction = state._MaterialFunction;

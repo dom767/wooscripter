@@ -93,6 +93,7 @@
     <Compile Include="Objects\Light.cs" />
     <Compile Include="Objects\Material.cs" />
     <Compile Include="Objects\Menger.cs" />
+    <Compile Include="Objects\PostProcess.cs" />
     <Compile Include="Objects\RenderObject.cs" />
     <Compile Include="Objects\Scene.cs" />
     <Compile Include="Objects\Sphere.cs" />
@@ -132,9 +133,14 @@
     <Compile Include="Objects\WooScript\SphereRule.cs" />
     <Compile Include="Objects\WooScript\Statement.cs" />
     <Compile Include="Objects\WooScript\SubOp.cs" />
+    <Compile Include="Objects\SVO.cs" />
+    <Compile Include="Objects\WooScript\SVORule.cs" />
     <Compile Include="Objects\WooScript\TanFloatFunction.cs" />
     <Compile Include="Objects\WooScript\VecAssignStatement.cs" />
     <Compile Include="Objects\WooScript\WooState.cs" />
+    <Compile Include="PostProcessSettings.xaml.cs">
+      <DependentUpon>PostProcessSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
@@ -161,6 +167,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PostProcessSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Splash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
