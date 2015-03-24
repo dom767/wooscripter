@@ -32,6 +32,7 @@ namespace WooScripter
         WooScript _SceneScript;
         WooScript _LightingScript;
         Scene _Scene;
+        PostProcess _PostProcess;
 
         public double _FocusDistance
         {
@@ -227,6 +228,9 @@ namespace WooScripter
 
             _SettingsLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\WooScripter\\Settings.xml";
             _AppSettings = AppSettings.Load(_SettingsLocation);
+
+            // initialise post process settings
+            _PostProcess = new PostProcess();
 
             // starting camera settings
             InitialiseCamera();
@@ -517,7 +521,7 @@ namespace WooScripter
             _Camera._ApertureSize = (float)_ApertureSize;
             _Camera._FOV = (float)_FOV;
             _Camera._Spherical = (float)_Spherical;
-            FinalRender ownedWindow = new FinalRender(ref _Scene, ref _Camera);
+            FinalRender ownedWindow = new FinalRender(ref _Scene, ref _Camera, ref _PostProcess);
 
             ownedWindow.Owner = Window.GetWindow(this);
             ownedWindow.ShowDialog();

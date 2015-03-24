@@ -62,7 +62,10 @@ namespace WooScripter
 
         [DllImport(@"coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void PostProcess(float[] targetBuffer, float[] sourceBuffer, double maxValue, int iterations, float[] kernel, float boostPower, float targetweighting, float sourceweighting, int width, int height);
-        
+
+        [DllImport(@"coretracer.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void GaussianBlur(float[] targetBuffer, float[] sourceBuffer, double maxValue, int size, float boostPower, float targetweighting, float sourceweighting, int width, int height);
+
         public ImageRenderer(System.Windows.Controls.Image image, string xml, int renderWidth, int renderHeight, bool continuous)
         {
             _Image = image;
@@ -70,8 +73,7 @@ namespace WooScripter
             _RenderWidth = renderWidth;
             _RenderHeight = renderHeight;
             _Continuous = continuous;
-            _Kernel = new float[25];
-            SetGaussianKernel();
+            _PostProcess = new PostProcess();
             InitialiseRender(_XML);
         }
 
@@ -304,19 +306,13 @@ namespace WooScripter
             }
         }
 */
-        public void SetPostProcess(int iterations, float boostPower, float sourceWeight, float targetWeight)
+        public void SetPostProcess(PostProcess postprocess)
         {
-            _Iterations = iterations;
-            _BoostPower = boostPower;
-            _SourceWeight = sourceWeight;
-            _TargetWeight = targetWeight;
+            _PostProcess = postprocess;
         }
 
-        float[] _Kernel;
-        int _Iterations;
-        float _BoostPower;
-        float _SourceWeight;
-        float _TargetWeight;
+        PostProcess _PostProcess;
+        
         bool _FixedExposure;
         float _ExposureValue;
 
@@ -339,9 +335,36 @@ namespace WooScripter
             {
                 GetMinMax(renderBuffer, _RenderWidth, _RenderHeight);
 
-                float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
-                PostProcess(targetBuffer, renderBuffer, _MaxValue, _Iterations, _Kernel, _BoostPower, _TargetWeight, _SourceWeight, _RenderWidth, _RenderHeight);
-                renderBuffer = targetBuffer;
+                if (_PostProcess._SettingsFastGaussian._Enabled)
+                {
+                    float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
+                    GaussianBlur(targetBuffer,
+                        renderBuffer,
+                        _MaxValue,
+                        _PostProcess._SettingsFastGaussian._Width,
+                        (float)_PostProcess._SettingsFastGaussian._BoostPower,
+                        (float)_PostProcess._SettingsFastGaussian._TargetWeight,
+                        (float)_PostProcess._SettingsFastGaussian._SourceWeight,
+                        _RenderWidth,
+                        _RenderHeight);
+                    renderBuffer = targetBuffer;
+                }
+
+                if (_PostProcess._Settings5x5._Enabled)
+                {
+                    float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
+                    PostProcess(targetBuffer,
+                        renderBuffer,
+                        _MaxValue,
+                        _PostProcess._Settings5x5._Iterations,
+                        _PostProcess._Settings5x5._Kernel,
+                        (float)_PostProcess._Settings5x5._BoostPower,
+                        (float)_PostProcess._Settings5x5._TargetWeight,
+                        (float)_PostProcess._Settings5x5._SourceWeight,
+                        _RenderWidth,
+                        _RenderHeight);
+                    renderBuffer = targetBuffer;
+                }
             }
             else
             {
@@ -352,21 +375,6 @@ namespace WooScripter
 
             TransferFloatToInt();
             idx++;
-        }
-
-        public void SetKernel(float[] kernel)
-        {
-            _Kernel = kernel;
-        }
-
-        public void SetGaussianKernel()
-        {
-            int kidx = 0;
-            _Kernel[kidx++] = 1; _Kernel[kidx++] = 4; _Kernel[kidx++] = 7; _Kernel[kidx++] = 4; _Kernel[kidx++] = 1;
-            _Kernel[kidx++] = 4; _Kernel[kidx++] = 16; _Kernel[kidx++] = 26; _Kernel[kidx++] = 16; _Kernel[kidx++] = 4;
-            _Kernel[kidx++] = 7; _Kernel[kidx++] = 26; _Kernel[kidx++] = 41; _Kernel[kidx++] = 26; _Kernel[kidx++] = 7;
-            _Kernel[kidx++] = 4; _Kernel[kidx++] = 16; _Kernel[kidx++] = 26; _Kernel[kidx++] = 16; _Kernel[kidx++] = 4;
-            _Kernel[kidx++] = 1; _Kernel[kidx++] = 4; _Kernel[kidx++] = 7; _Kernel[kidx++] = 4; _Kernel[kidx++] = 1;
         }
         
         WriteableBitmap _WriteableBitmap;
@@ -420,10 +428,39 @@ namespace WooScripter
             float[] renderBuffer = new float[_RenderHeight * _RenderWidth * 3];
             SyncRender(renderBuffer);
 
+            GetMinMax(renderBuffer, _RenderWidth, _RenderHeight);
+
             //postpro
-            float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
-            PostProcess(targetBuffer, renderBuffer, _MaxValue, _Iterations, _Kernel, _BoostPower, _TargetWeight, _SourceWeight, _RenderWidth, _RenderHeight);
-            renderBuffer = targetBuffer;
+            if (_PostProcess._SettingsFastGaussian._Enabled)
+            {
+                float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
+                GaussianBlur(targetBuffer,
+                    renderBuffer,
+                    _MaxValue,
+                    _PostProcess._SettingsFastGaussian._Width,
+                    (float)_PostProcess._SettingsFastGaussian._BoostPower,
+                    (float)_PostProcess._SettingsFastGaussian._TargetWeight,
+                    (float)_PostProcess._SettingsFastGaussian._SourceWeight,
+                    _RenderWidth,
+                    _RenderHeight);
+                renderBuffer = targetBuffer;
+            }
+
+            if (_PostProcess._Settings5x5._Enabled)
+            {
+                float[] targetBuffer = new float[_RenderHeight * _RenderWidth * 3];
+                PostProcess(targetBuffer,
+                    renderBuffer,
+                    _MaxValue,
+                    _PostProcess._Settings5x5._Iterations,
+                    _PostProcess._Settings5x5._Kernel,
+                    (float)_PostProcess._Settings5x5._BoostPower,
+                    (float)_PostProcess._Settings5x5._TargetWeight,
+                    (float)_PostProcess._Settings5x5._SourceWeight,
+                    _RenderWidth,
+                    _RenderHeight);
+                renderBuffer = targetBuffer;
+            }
 
             float[] oldBuffer = _Buffer;
             _Buffer = new float[_RenderHeight * _RenderWidth * 3];
