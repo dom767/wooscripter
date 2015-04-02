@@ -474,6 +474,7 @@ namespace WooScripter.Objects.WooScript
             _FloatVariables.Add("gloss");
             _FloatVariables.Add("power");
             _FloatVariables.Add("opacity");
+            _FloatVariables.Add("density");
             _FloatVariables.Add("refractiveindex");
             _FloatVariables.Add("recursions");
             _FloatVariables.Add("rx");

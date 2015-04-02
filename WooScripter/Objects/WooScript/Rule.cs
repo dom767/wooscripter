@@ -49,6 +49,7 @@ namespace WooScripter.Objects.WooScript
             CFConstant absorption = ret._AbsorptionColour as CFConstant;
             absorption._Colour = state._Abs;
             ret._Opacity = (float)state._Opacity;
+            ret._Density = (float)state._Density;
             ret._RefractiveIndex = (float)state._RefractiveIndex;
             ret._SpecularPower = (float)state._Power;
             ret._Shininess = (float)state._Gloss;
