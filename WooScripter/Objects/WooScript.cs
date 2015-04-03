@@ -474,6 +474,7 @@ namespace WooScripter.Objects.WooScript
             _FloatVariables.Add("gloss");
             _FloatVariables.Add("power");
             _FloatVariables.Add("opacity");
+            _FloatVariables.Add("density");
             _FloatVariables.Add("refractiveindex");
             _FloatVariables.Add("recursions");
             _FloatVariables.Add("rx");
@@ -625,6 +626,7 @@ namespace WooScripter.Objects.WooScript
             _VecFunctions.Add(new VectorNormaliseFunction());
 
             _FloatFunctions.Add(new CosFloatFunction());
+            _FloatFunctions.Add(new SinFloatFunction());
 
 /*            _NullFunctions.Add("final");
             _NullFunctions.Add("repeat");
