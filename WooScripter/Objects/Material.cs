@@ -51,7 +51,7 @@ namespace WooScripter
                     new XAttribute("specularPower", 0),
                     new XAttribute("opacity", 1),
                     new XAttribute("density", 1),
-                    new XAttribute("shininess", 0),
+                    new XAttribute("shininess", 1),
                     new XAttribute("refractiveIndex", 1),
                     _DiffuseColour.CreateElement("DIFFUSECOLOUR"),
                     black.CreateElement("SPECULARCOLOUR"),
