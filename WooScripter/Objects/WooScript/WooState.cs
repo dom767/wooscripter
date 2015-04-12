@@ -21,6 +21,7 @@ namespace WooScripter.Objects.WooScript
         public double _Gloss = 1;
         public double _Opacity = 1;
         public double _Density = 1;
+        public double _TintDensity = 0.1;
         public double _RefractiveIndex = 1;
         public Vector3 _Scale = new Vector3(1, 1, 1);
         public Vector3 _v0 = new Vector3(0, 0, 0);
@@ -125,6 +126,7 @@ namespace WooScripter.Objects.WooScript
             clone._Gloss = this._Gloss;
             clone._Opacity = this._Opacity;
             clone._Density = this._Density;
+            clone._TintDensity = this._TintDensity;
             clone._RefractiveIndex = this._RefractiveIndex;
             clone._Rules = this._Rules;
             clone._Shaders = this._Shaders;
@@ -212,6 +214,8 @@ namespace WooScripter.Objects.WooScript
                     return _Opacity;
                 if (target.Equals("density", StringComparison.Ordinal))
                     return _Density;
+                if (target.Equals("tintdensity", StringComparison.Ordinal))
+                    return _TintDensity;
                 if (target.Equals("refractiveindex", StringComparison.Ordinal))
                     return _RefractiveIndex;
                 if (target.Equals("recursions", StringComparison.Ordinal))
@@ -371,6 +375,10 @@ namespace WooScripter.Objects.WooScript
                 if (target.Equals("density", StringComparison.Ordinal))
                 {
                     _Density = value;
+                }
+                if (target.Equals("tintdensity", StringComparison.Ordinal))
+                {
+                    _TintDensity = value;
                 }
                 if (target.Equals("refractiveindex", StringComparison.Ordinal))
                 {

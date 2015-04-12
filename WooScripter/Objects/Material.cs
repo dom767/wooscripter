@@ -17,6 +17,7 @@ namespace WooScripter
             _Opacity = 1.0f;
             _RefractiveIndex = 1.0f;
             _Density = 1.0f;
+            _TintDensity = 0.1f;
             _Shininess = 1.0f;
             _DiffuseColour = new CFConstant(1.0f, 0.5f, 0.0f);
             _SpecularColour = new CFConstant(1.0f, 1.0f, 1.0f);
@@ -32,6 +33,7 @@ namespace WooScripter
             _Opacity = rhs._Opacity;
             _RefractiveIndex = rhs._RefractiveIndex;
             _Density = rhs._Density;
+            _TintDensity = rhs._TintDensity;
             _Shininess = rhs._Shininess;
             _DiffuseColour = rhs._DiffuseColour.Clone();
             _SpecularColour = rhs._SpecularColour.Clone();
@@ -48,9 +50,10 @@ namespace WooScripter
             {
                 ColourFunction black = new CFConstant(0, 0, 0);
                 mat = new XElement("MATERIAL",
-                    new XAttribute("specularPower", 0),
+                    new XAttribute("specularPower", 10),
                     new XAttribute("opacity", 1),
                     new XAttribute("density", 1),
+                    new XAttribute("tintdensity", 0.1),
                     new XAttribute("shininess", 1),
                     new XAttribute("refractiveIndex", 1),
                     _DiffuseColour.CreateElement("DIFFUSECOLOUR"),
@@ -65,6 +68,7 @@ namespace WooScripter
                     new XAttribute("specularPower", _SpecularPower),
                     new XAttribute("opacity", _Opacity),
                     new XAttribute("density", _Density),
+                    new XAttribute("tintdensity", _TintDensity),
                     new XAttribute("shininess", _Shininess),
                     new XAttribute("refractiveIndex", _RefractiveIndex),
                     _DiffuseColour.CreateElement("DIFFUSECOLOUR"),
@@ -89,6 +93,7 @@ namespace WooScripter
         public float _Opacity;
         public float _RefractiveIndex;
         public float _Density;
+        public float _TintDensity;
         public float _Shininess;
     }
 }
