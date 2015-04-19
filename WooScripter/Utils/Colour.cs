@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,7 @@ namespace WooScripter
         
         public override string ToString()
         {
-            return _Red.ToString() + ", " + _Green.ToString() + ", " + _Blue.ToString();
+            return _Red.ToString(CultureInfo.InvariantCulture) + ", " + _Green.ToString(CultureInfo.InvariantCulture) + ", " + _Blue.ToString(CultureInfo.InvariantCulture);
         }
 
         public Colour Clone()

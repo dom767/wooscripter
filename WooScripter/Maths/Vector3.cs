@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace WooScripter
 
         public override string ToString()
         {
-            return x.ToString() + ", " + y.ToString() + ", " + z.ToString();
+            return x.ToString(CultureInfo.InvariantCulture) + ", " + y.ToString(CultureInfo.InvariantCulture) + ", " + z.ToString(CultureInfo.InvariantCulture);
         }
 
         public void Mul(Matrix3 mat)

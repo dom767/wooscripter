@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -127,31 +128,31 @@ namespace WooScripter
         {
             _KernelUpdating = true;
             int kidx = 0;
-            g11.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g12.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g13.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g14.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g15.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g21.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g22.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g23.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g24.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g25.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g31.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g32.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g33.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g34.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g35.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g41.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g42.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g43.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g44.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g45.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g51.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g52.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g53.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g54.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
-            g55.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString();
+            g11.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g12.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g13.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g14.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g15.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g21.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g22.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g23.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g24.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g25.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g31.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g32.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g33.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g34.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g35.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g41.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g42.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g43.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g44.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g45.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g51.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g52.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g53.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g54.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
+            g55.Text = _PostProcess._Settings5x5._Kernel[kidx++].ToString(CultureInfo.InvariantCulture);
             _KernelUpdating = false;
         }
 
@@ -207,7 +208,7 @@ namespace WooScripter
         {
             float[] kernel = new float[25];
             int kidx = 0;
-            float.TryParse(g11.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g11.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
             float.TryParse(g12.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
             float.TryParse(g13.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
             float.TryParse(g14.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);

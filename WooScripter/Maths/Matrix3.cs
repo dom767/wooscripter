@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -92,7 +93,7 @@ namespace WooScripter
             {
                 for (int x=0; x<3; x++)
                 {
-                    outputString += (_Component[y][x]).ToString();
+                    outputString += (_Component[y][x]).ToString(CultureInfo.InvariantCulture);
                     if (x!=2 || y!=2)
                         outputString += ", ";
                 }

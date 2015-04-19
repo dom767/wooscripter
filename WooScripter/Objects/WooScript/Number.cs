@@ -25,8 +25,8 @@ namespace WooScripter.Objects.WooScript
                 int opPos = data.IndexOf(':');
                 val1 = float.Parse(data.Substring(0, opPos), CultureInfo.InvariantCulture);
                 val2 = float.Parse(data.Substring(opPos + 1), CultureInfo.InvariantCulture);
-                log.AddMsg("Val1 : " + val1.ToString());
-                log.AddMsg("Val2 : " + val2.ToString());
+                log.AddMsg("Val1 : " + val1.ToString(CultureInfo.InvariantCulture));
+                log.AddMsg("Val2 : " + val2.ToString(CultureInfo.InvariantCulture));
             }
             else if (data.IndexOf('|') > 0)
             {
@@ -35,15 +35,15 @@ namespace WooScripter.Objects.WooScript
                 int opPos = data.IndexOf('|');
                 val1 = float.Parse(data.Substring(0, opPos), CultureInfo.InvariantCulture);
                 val2 = float.Parse(data.Substring(opPos + 1), CultureInfo.InvariantCulture);
-                log.AddMsg("Val1 : " + val1.ToString());
-                log.AddMsg("Val2 : " + val2.ToString());
+                log.AddMsg("Val1 : " + val1.ToString(CultureInfo.InvariantCulture));
+                log.AddMsg("Val2 : " + val2.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
                 _RangeType = RangeTypeT.Single;
                 log.AddMsg("Number type : Single Value");
                 val1 = float.Parse(data, CultureInfo.InvariantCulture);
-                log.AddMsg("Val1 : " + val1.ToString());
+                log.AddMsg("Val1 : " + val1.ToString(CultureInfo.InvariantCulture));
             }
         }
 
