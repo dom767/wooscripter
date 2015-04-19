@@ -209,32 +209,30 @@ namespace WooScripter
             float[] kernel = new float[25];
             int kidx = 0;
             float.TryParse(g11.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g12.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g13.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g14.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g15.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g21.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g22.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g23.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g24.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g25.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g31.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g32.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g33.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g34.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g35.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g41.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g42.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g43.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g44.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g45.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g51.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g52.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g53.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g54.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-            float.TryParse(g55.Text, out _PostProcess._Settings5x5._Kernel[kidx++]);
-
-            _PostProcess._Settings5x5._Kernel = kernel;
+            float.TryParse(g12.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g13.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g14.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g15.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g21.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g22.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g23.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g24.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g25.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g31.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g32.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g33.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g34.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g35.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g41.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g42.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g43.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g44.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g45.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g51.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g52.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g53.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g54.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
+            float.TryParse(g55.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out _PostProcess._Settings5x5._Kernel[kidx++]);
         }
 
         private void checkBox1_Checked(object sender, RoutedEventArgs e)
