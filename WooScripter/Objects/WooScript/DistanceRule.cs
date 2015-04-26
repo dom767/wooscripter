@@ -65,22 +65,26 @@ namespace WooScripter.Objects.WooScript
 
         public override void Execute(ref WooState state)
         {
-            Vector3 val = new Vector3(0.0, 0.5, 0.0);
-            val.y *= state._Scale.y;
-            val.Mul(state._Rotation);
+            if (state._Objects > 0)
+            {
+                state._Objects--;
+                Vector3 val = new Vector3(0.0, 0.5, 0.0);
+                val.y *= state._Scale.y;
+                val.Mul(state._Rotation);
 
-            Distance newDistance = new Distance(new Vector3(state._Position.x + val.x, state._Position.y + val.y, state._Position.z + val.z),
-                state._Scale * 0.5,
-                state._Rotation,
-                state._DistanceFunction,
-                state._DistanceMinimum,
-                state._DistanceScale,
-                state._DistanceOffset,
-                state._DistanceIterations,
-                state._DistanceExtents,
-                state._StepSize);
-            newDistance._Material = GenerateMaterial(state);
-            newDistance.CreateElement(state._Preview, state._Parent);
+                Distance newDistance = new Distance(new Vector3(state._Position.x + val.x, state._Position.y + val.y, state._Position.z + val.z),
+                    state._Scale * 0.5,
+                    state._Rotation,
+                    state._DistanceFunction,
+                    state._DistanceMinimum,
+                    state._DistanceScale,
+                    state._DistanceOffset,
+                    state._DistanceIterations,
+                    state._DistanceExtents,
+                    state._StepSize);
+                newDistance._Material = GenerateMaterial(state);
+                newDistance.CreateElement(state._Preview, state._Parent);
+            }
         }
     };
 }

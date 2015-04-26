@@ -24,13 +24,17 @@ namespace WooScripter.Objects.WooScript
 
         public override void Execute(ref WooState state)
         {
-            Vector3 val = new Vector3(0.0, 0.5, 0.0);
-            val.y *= state._Scale.y;
-            val.Mul(state._Rotation);
+            if (state._Objects > 0)
+            {
+                state._Objects--;
+                Vector3 val = new Vector3(0.0, 0.5, 0.0);
+                val.y *= state._Scale.y;
+                val.Mul(state._Rotation);
 
-            Cylinder newCylinder = new Cylinder(new Vector3(state._Position.x + val.x, state._Position.y + val.y, state._Position.z + val.z), state._Scale * 0.5, state._Rotation);
-            newCylinder._Material = GenerateMaterial(state);
-            newCylinder.CreateElement(state._Preview, state._Parent);
+                Cylinder newCylinder = new Cylinder(new Vector3(state._Position.x + val.x, state._Position.y + val.y, state._Position.z + val.z), state._Scale * 0.5, state._Rotation);
+                newCylinder._Material = GenerateMaterial(state);
+                newCylinder.CreateElement(state._Preview, state._Parent);
+            }
         }
     }
 }

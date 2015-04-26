@@ -59,17 +59,21 @@ namespace WooScripter.Objects.WooScript
 
         public override void Execute(ref WooState state)
         {
-            Vector3 val = new Vector3(0.0, 0.5, 0.0);
-            val.y *= state._Scale.y;
-            val.Mul(state._Rotation);
+            if (state._Objects > 0)
+            {
+                state._Objects--;
+                Vector3 val = new Vector3(0.0, 0.5, 0.0);
+                val.y *= state._Scale.y;
+                val.Mul(state._Rotation);
 
-            Menger newMenger = new Menger(new Vector3(state._Position.x + val.x, state._Position.y + val.y, state._Position.z + val.z),
-                state._Scale,
-                state._Rotation,
-                state._MengerIterations,
-                state._MengerPattern);
-            newMenger._Material = GenerateMaterial(state);
-            newMenger.CreateElement(state._Preview, state._Parent);
+                Menger newMenger = new Menger(new Vector3(state._Position.x + val.x, state._Position.y + val.y, state._Position.z + val.z),
+                    state._Scale,
+                    state._Rotation,
+                    state._MengerIterations,
+                    state._MengerPattern);
+                newMenger._Material = GenerateMaterial(state);
+                newMenger.CreateElement(state._Preview, state._Parent);
+            }
         }
     }
 }

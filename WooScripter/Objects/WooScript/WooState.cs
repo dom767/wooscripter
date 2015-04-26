@@ -32,6 +32,7 @@ namespace WooScripter.Objects.WooScript
         public List<Rule> _Rules;
         public List<Shader> _Shaders;
         public int _Recursions = 10;
+        public int _Objects = 10000;
         public WooState _PreviousState;
         public bool _Preview = false;
         public int _MengerIterations = 4;
@@ -135,6 +136,7 @@ namespace WooScripter.Objects.WooScript
             clone._Rotation = this._Rotation.Clone();
             clone._Scale = new Vector3(this._Scale);
             clone._Recursions = this._Recursions;
+            clone._Objects = this._Objects;
             clone._PreviousState = this._PreviousState;
             clone._Preview = this._Preview;
             clone._MengerIterations = this._MengerIterations;
@@ -220,6 +222,8 @@ namespace WooScripter.Objects.WooScript
                     return _RefractiveIndex;
                 if (target.Equals("recursions", StringComparison.Ordinal))
                     return _Recursions;
+                if (target.Equals("objects", StringComparison.Ordinal))
+                    return _Objects;
                 if (target.Equals("mengeriterations", StringComparison.Ordinal))
                     return _MengerIterations;
                 if (target.Equals("distanceminimum", StringComparison.Ordinal))
@@ -387,6 +391,10 @@ namespace WooScripter.Objects.WooScript
                 if (target.Equals("recursions", StringComparison.Ordinal))
                 {
                     _Recursions = (int)(value + 0.5);
+                }
+                if (target.Equals("objects", StringComparison.Ordinal))
+                {
+                    _Objects = (int)(value + 0.5);
                 }
                 if (target.Equals("mengeriterations", StringComparison.Ordinal))
                 {
