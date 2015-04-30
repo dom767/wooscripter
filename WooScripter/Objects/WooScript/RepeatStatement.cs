@@ -38,7 +38,7 @@ namespace WooScripter.Objects.WooScript
             for (int i = 0; i < _Expression.EvaluateFloat(ref state); i++)
             {
                 _RepeatBlock.Execute(ref state);
-                if (cycles++ > 256)
+                if (cycles++ > 10000)
                     return;
             }
         }

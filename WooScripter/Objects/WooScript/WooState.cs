@@ -236,8 +236,111 @@ namespace WooScripter.Objects.WooScript
                     return _StepSize;
                 if (target.Equals("depth", StringComparison.Ordinal))
                     return _Depth;
+                if (IsFloatVariable(target))
+                    return GetFloatValue(target);
             }
             throw new ParseException("no matching target for \"" + target + "\"");
+        }
+
+        public class VectorVariable
+        {
+            public VectorVariable(string name, Vector3 value)
+            {
+                _Name = name;
+                _Value = value;
+            }
+
+            public string _Name;
+            public Vector3 _Value;
+        }
+        List<VectorVariable> _VectorVariable = new List<VectorVariable>();
+        public void AddVector(string name, Vector3 vec)
+        {
+            _VectorVariable.Add(new VectorVariable(name, vec));
+        }
+        public void RemoveVector(string name)
+        {
+            var itemToRemove = _VectorVariable.Single(r => r._Name == name);
+            _VectorVariable.Remove(itemToRemove);
+        }
+        public bool IsVectorVariable(string name)
+        {
+            foreach (VectorVariable vecvar in _VectorVariable)
+            {
+                if (vecvar._Name.Equals(name, StringComparison.Ordinal))
+                    return true;
+            }
+            return false;
+        }
+        public Vector3 GetVectorValue(string name)
+        {
+            foreach (VectorVariable vecvar in _VectorVariable)
+            {
+                if (vecvar._Name.Equals(name, StringComparison.Ordinal))
+                    return vecvar._Value;
+            }
+            throw new EvaluateException("Tried to get the value of vector " + name + ", but it doesn't exist...");
+        }
+        public void SetVectorValue(string name, Vector3 value)
+        {
+            foreach (VectorVariable vecvar in _VectorVariable)
+            {
+                if (vecvar._Name.Equals(name, StringComparison.Ordinal))
+                {
+                    vecvar._Value = value;
+                    return;
+                }
+            }
+            throw new EvaluateException("Tried to set the value of vector " + name + ", but it doesn't exist...");
+        }
+
+        public class FloatVariable
+        {
+            public FloatVariable(string name, double value)
+            {
+                _Name = name;
+                _Value = value;
+            }
+
+            public string _Name;
+            public double _Value;
+        }
+        List<FloatVariable> _FloatVariable = new List<FloatVariable>();
+        public void AddFloat(string name, double floatvalue)
+        {
+            _FloatVariable.Add(new FloatVariable(name, floatvalue));
+        }
+        public void RemoveFloat(string name)
+        {
+            var itemToRemove = _FloatVariable.Single(r => r._Name == name);
+            _FloatVariable.Remove(itemToRemove);
+        }
+        public bool IsFloatVariable(string name)
+        {
+            foreach (FloatVariable floatvar in _FloatVariable)
+            {
+                if (floatvar._Name.Equals(name, StringComparison.Ordinal))
+                    return true;
+            }
+            return false;
+        }
+        public double GetFloatValue(string name)
+        {
+            foreach (FloatVariable floatvar in _FloatVariable)
+            {
+                if (floatvar._Name.Equals(name, StringComparison.Ordinal))
+                    return floatvar._Value;
+            }
+            throw new EvaluateException("Tried to get the value of float " + name + ", but it doesn't exist...");
+        }
+        public void SetFloatValue(string name, double value)
+        {
+            foreach (FloatVariable floatvar in _FloatVariable)
+            {
+                if (floatvar._Name.Equals(name, StringComparison.Ordinal))
+                    floatvar._Value = value;
+            }
+            throw new EvaluateException("Tried to set the value of float " + name + ", but it doesn't exist...");
         }
 
         public Vector3 GetValueVector(string target)
@@ -279,6 +382,8 @@ namespace WooScripter.Objects.WooScript
                     return new Vector3(_DistanceOffset);
                 if (target.Equals("distanceextents", StringComparison.Ordinal))
                     return new Vector3(_DistanceExtents);
+                if (IsVectorVariable(target))
+                    return GetVectorValue(target);
             }
             throw new ParseException("no matching target for \"" + target + "\"");
         }
@@ -334,6 +439,8 @@ namespace WooScripter.Objects.WooScript
                     SetValueInternal(new Vector3(_DistanceOffset), varname, selector, value, overrideState);
                 else if (varname.Equals("distanceextents", StringComparison.Ordinal))
                     SetValueInternal(new Vector3(_DistanceExtents), varname, selector, value, overrideState);
+                else if (IsVectorVariable(varname))
+                    SetValueInternal(GetVectorValue(varname), varname, selector, value, overrideState);
             }
             else
             {
@@ -419,6 +526,10 @@ namespace WooScripter.Objects.WooScript
                 if (target.Equals("depth", StringComparison.Ordinal))
                 {
                     _Depth = (int)(value+0.5);
+                }
+                if (IsFloatVariable(target))
+                {
+                    SetFloatValue(target, value);
                 }
             }
         }
@@ -539,6 +650,10 @@ namespace WooScripter.Objects.WooScript
                 _DistanceExtents.x = arg.x;
                 _DistanceExtents.y = arg.y;
                 _DistanceExtents.z = arg.z;
+            }
+            if (IsVectorVariable(varname))
+            {
+                SetVectorValue(varname, arg);
             }
         }
     };

@@ -34,11 +34,22 @@ namespace WooScripter.Objects.WooScript
         unknown
     }
 
+    public class RulePrototype
+    {
+        public RulePrototype(string name)
+        {
+            _Name = name;
+        }
+
+        public string _Name;
+        public List<Argument> _Args = new List<Argument>();
+    }
+
     [Serializable]
     public class WooScript : RenderObject
     {
         public string _Program;
-        public static List<string> _RuleNames = new List<string>();
+        public static List<RulePrototype> _RulePrototypes = new List<RulePrototype>();
         public static List<string> _ShaderNames = new List<string>();
         public List<Rule> _Rules = new List<Rule>();
         public List<Shader> _Shaders = new List<Shader>();
@@ -223,9 +234,9 @@ namespace WooScripter.Objects.WooScript
 
         public static bool IsRule(string token)
         {
-            foreach (string ruleName in _RuleNames)
+            foreach (RulePrototype ruleProto in _RulePrototypes)
             {
-                if (ruleName.Equals(token, StringComparison.Ordinal))
+                if (ruleProto._Name.Equals(token, StringComparison.Ordinal))
                 {
                     return true;
                 }
@@ -367,6 +378,36 @@ namespace WooScripter.Objects.WooScript
             return false;
         }
 
+        public static void ValidateName(string token)
+        {
+            if (IsRule(token))
+                throw new ParseException("Token " + token + " clashes with the name of an existing rule.");
+            if (IsShader(token))
+                throw new ParseException("Token " + token + " clashes with the name of an existing shader.");
+            if (IsFloatVariable(token))
+                throw new ParseException("Token " + token + " clashes with the name of an existing float variable.");
+            if (IsFloatNumber(token))
+                throw new ParseException("Token " + token + " clashes with the name of a floating point number.");
+            if (IsFloatFunction(token))
+                throw new ParseException("Token " + token + " clashes with the name of an existing function.");
+            if (IsVecFunction(token))
+                throw new ParseException("Token " + token + " clashes with the name of an existing function.");
+            if (IsVecVariable(token))
+                throw new ParseException("Token " + token + " clashes with the name of an existing vector variable.");
+            if (IsOp(token))
+                throw new ParseException("Token " + token + " clashes with the name of an existing operation.");
+            if (IsAssignOp(token))
+                throw new ParseException("Token " + token + " clashes with the name of an existing assignment operation.");
+            if (IsBooleanOp(token))
+                throw new ParseException("Token " + token + " clashes with the name of an existing boolean operation.");
+            if (IsConditionalOp(token))
+                throw new ParseException("Token " + token + " clashes with the name of an existing conditional operation.");
+            if (IsNullFunction(token))
+                throw new ParseException("Token " + token + " clashes with the name of an existing function.");
+            if (IsUnaryBooleanOp(token))
+                throw new ParseException("Token " + token + "clashes with the name of an existing boolean operation.");
+        }
+
         public static TokenType GetTokenType(string token)
         {
             TokenType ret = TokenType.unknown;
@@ -453,6 +494,26 @@ namespace WooScripter.Objects.WooScript
             _BooleanOperators.Add(new OrOp());
 
             _UnaryBooleanOperators.Add(new NotOp());
+        }
+
+        public static void AddVecVariable(string vecvar)
+        {
+            _VecVariables.Add(vecvar);
+        }
+
+        public static void AddFloatVariable(string floatvar)
+        {
+            _FloatVariables.Add(floatvar);
+        }
+
+        public static void RemoveVecVariable(string vecvar)
+        {
+            _VecVariables.Remove(vecvar);
+        }
+
+        public static void RemoveFloatVariable(string floatvar)
+        {
+            _FloatVariables.Remove(floatvar);
         }
 
         static void AddVariables()
@@ -606,6 +667,19 @@ namespace WooScripter.Objects.WooScript
             throw new ParseException("No matching boolean operation found \"" + token + "\"");
         }
 
+        public static RulePrototype GetRulePrototype(string token)
+        {
+            foreach (RulePrototype ruleProto in _RulePrototypes)
+            {
+                if (ruleProto._Name.Equals(token, StringComparison.Ordinal))
+                {
+                    return ruleProto;
+                }
+            }
+
+            throw new ParseException("No matching rule found \"" + token + "\"");
+        }
+
         static void AddFunctions()
         {
 //            _NullFunctions.Add(new CallFunction());
@@ -648,28 +722,28 @@ namespace WooScripter.Objects.WooScript
         {
             Rule boxRule = new BoxRule("box");
             _Rules.Add(boxRule);
-            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
+            _RulePrototypes.Add(new RulePrototype(_Rules[_Rules.Count - 1]._Name));
             Rule sphereRule = new SphereRule("sphere");
             _Rules.Add(sphereRule);
-            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
+            _RulePrototypes.Add(new RulePrototype(_Rules[_Rules.Count - 1]._Name));
             Rule circleRule = new CircleRule("circle");
             _Rules.Add(circleRule);
-            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
+            _RulePrototypes.Add(new RulePrototype(_Rules[_Rules.Count - 1]._Name));
             Rule sphereLightRule = new SphereLightRule("spherelight");
             _Rules.Add(sphereLightRule);
-            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
+            _RulePrototypes.Add(new RulePrototype(_Rules[_Rules.Count - 1]._Name));
             Rule cylinderRule = new CylinderRule("cylinder");
             _Rules.Add(cylinderRule);
-            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
+            _RulePrototypes.Add(new RulePrototype(_Rules[_Rules.Count - 1]._Name));
             Rule mengerRule = new MengerRule("menger");
             _Rules.Add(mengerRule);
-            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
+            _RulePrototypes.Add(new RulePrototype(_Rules[_Rules.Count - 1]._Name));
             Rule distanceRule = new DistanceRule("distance");
             _Rules.Add(distanceRule);
-            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
+            _RulePrototypes.Add(new RulePrototype(_Rules[_Rules.Count - 1]._Name));
             Rule svoRule = new SVORule("svo");
             _Rules.Add(svoRule);
-            _RuleNames.Add(_Rules[_Rules.Count - 1]._Name);
+            _RulePrototypes.Add(new RulePrototype(_Rules[_Rules.Count - 1]._Name));
         }
 
         public string GetHelpText()
@@ -726,7 +800,7 @@ namespace WooScripter.Objects.WooScript
         {
             _Rules.Clear();
             _Shaders.Clear();
-            _RuleNames.Clear();
+            _RulePrototypes.Clear();
             _ShaderNames.Clear();
             _Operators.Clear();
             _AssignOperators.Clear();
@@ -777,7 +851,37 @@ namespace WooScripter.Objects.WooScript
                 {
                     string rulename = ParseUtils.GetToken(ref preprogram);
                     _Log.AddMsg("Preparser found rule " + rulename);
-                    _RuleNames.Add(rulename);
+                    RulePrototype ruleproto = new RulePrototype(rulename);
+
+                    string itoken = ParseUtils.PeekToken(preprogram);
+                    if (itoken.Equals("(", StringComparison.Ordinal))
+                    {
+                        itoken = ParseUtils.GetToken(ref preprogram);
+                        do
+                        {
+                            itoken = ParseUtils.GetToken(ref preprogram); // type
+                            Argument arg = new Argument();
+                            if (itoken.Equals("float", StringComparison.Ordinal))
+                            {
+                                arg._Type = VarType.varFloat;
+                            }
+                            else if (itoken.Equals("vec", StringComparison.Ordinal))
+                            {
+                                arg._Type = VarType.varVector;
+                            }
+                            else
+                            {
+                                throw new ParseException("Expected type of parameter (float OR vec), not" + itoken);
+                            }
+                            arg._Name = ParseUtils.GetToken(ref preprogram); // name
+
+                            ruleproto._Args.Add(arg);
+
+                            itoken = ParseUtils.GetToken(ref preprogram); // , or )
+                        }
+                        while (itoken.Equals(",", StringComparison.Ordinal));
+                    }
+                    _RulePrototypes.Add(ruleproto);
                     ConsumeRule(ref preprogram);
                 }
                 else if (string.Compare(token, "shader", true) == 0)
