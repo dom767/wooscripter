@@ -702,6 +702,7 @@ namespace WooScripter.Objects.WooScript
 
             _FloatFunctions.Add(new CosFloatFunction());
             _FloatFunctions.Add(new SinFloatFunction());
+            _FloatFunctions.Add(new SqrtFunction());
 
 /*            _NullFunctions.Add("final");
             _NullFunctions.Add("repeat");
