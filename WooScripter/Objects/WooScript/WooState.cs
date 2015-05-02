@@ -151,6 +151,14 @@ namespace WooScripter.Objects.WooScript
             clone._StepSize = this._StepSize;
             clone._MaterialFunction = this._MaterialFunction;
             clone._Depth = this._Depth;
+            foreach (VectorVariable vecvar in _VectorVariable)
+            {
+                clone.AddVector(vecvar._Name, vecvar._Value);
+            }
+            foreach (FloatVariable floatvar in _FloatVariable)
+            {
+                clone.AddFloat(floatvar._Name, floatvar._Value);
+            }
             return clone;
         }
         void SetSelectedValue(ref Vector3 target, string selector, double value)
@@ -239,7 +247,7 @@ namespace WooScripter.Objects.WooScript
                 if (IsFloatVariable(target))
                     return GetFloatValue(target);
             }
-            throw new ParseException("no matching target for \"" + target + "\"");
+            throw new EvaluateException("no matching target for \"" + target + "\"");
         }
 
         public class VectorVariable
@@ -256,6 +264,8 @@ namespace WooScripter.Objects.WooScript
         List<VectorVariable> _VectorVariable = new List<VectorVariable>();
         public void AddVector(string name, Vector3 vec)
         {
+            if (IsVectorVariable(name))
+                throw new EvaluateException("Tried to add a vector that already exists in this scope.");
             _VectorVariable.Add(new VectorVariable(name, vec));
         }
         public void RemoveVector(string name)
@@ -308,6 +318,8 @@ namespace WooScripter.Objects.WooScript
         List<FloatVariable> _FloatVariable = new List<FloatVariable>();
         public void AddFloat(string name, double floatvalue)
         {
+            if (IsFloatVariable(name))
+                throw new EvaluateException("Tried to add a float that already exists in this scope.");
             _FloatVariable.Add(new FloatVariable(name, floatvalue));
         }
         public void RemoveFloat(string name)

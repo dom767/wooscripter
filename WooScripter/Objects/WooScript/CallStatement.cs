@@ -17,9 +17,11 @@ namespace WooScripter.Objects.WooScript
             WooScript._Log.AddMsg("Call Rule : " + ruleName);
 
             string openbracket = ParseUtils.PeekToken(program);
-            if (openbracket.Equals("(", StringComparison.Ordinal))
+            if (openbracket.Equals("(", StringComparison.Ordinal) || _RulePrototype._Args.Count()>0)
             {
                 openbracket = ParseUtils.GetToken(ref program);
+                if (!openbracket.Equals("(", StringComparison.Ordinal))
+                    throw new ParseException("rule called without required arguments, or syntax error. Found " + openbracket + ", expeceted \"(\" instead.");
                 
                 for (int i=0; i<_RulePrototype._Args.Count(); i++)
                 {
