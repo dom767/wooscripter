@@ -61,7 +61,9 @@ namespace WooScripter.Objects.WooScript
                         }
                     }
                     if (lines[0].IndexOf("<") == 0
-                        || lines[0].IndexOf(">") == 0)
+                        || lines[0].IndexOf(">") == 0
+                        || lines[0].IndexOf("&") == 0
+                        || lines[0].IndexOf("|") == 0)
                         length = 1;
                     if (lines[0].IndexOf("!=") == 0)
                         length = 2;

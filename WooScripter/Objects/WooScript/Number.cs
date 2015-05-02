@@ -23,8 +23,8 @@ namespace WooScripter.Objects.WooScript
                 _RangeType = RangeTypeT.Continuous;
                 log.AddMsg("Number type : Continuous range");
                 int opPos = data.IndexOf(':');
-                val1 = float.Parse(data.Substring(0, opPos), CultureInfo.InvariantCulture);
-                val2 = float.Parse(data.Substring(opPos + 1), CultureInfo.InvariantCulture);
+                val1 = StringToFloat(data.Substring(0, opPos));
+                val2 = StringToFloat(data.Substring(opPos + 1));
                 log.AddMsg("Val1 : " + val1.ToString(CultureInfo.InvariantCulture));
                 log.AddMsg("Val2 : " + val2.ToString(CultureInfo.InvariantCulture));
             }
@@ -33,8 +33,8 @@ namespace WooScripter.Objects.WooScript
                 _RangeType = RangeTypeT.Binary;
                 log.AddMsg("Number type : Binary Option");
                 int opPos = data.IndexOf('|');
-                val1 = float.Parse(data.Substring(0, opPos), CultureInfo.InvariantCulture);
-                val2 = float.Parse(data.Substring(opPos + 1), CultureInfo.InvariantCulture);
+                val1 = StringToFloat(data.Substring(0, opPos));
+                val2 = StringToFloat(data.Substring(opPos + 1));
                 log.AddMsg("Val1 : " + val1.ToString(CultureInfo.InvariantCulture));
                 log.AddMsg("Val2 : " + val2.ToString(CultureInfo.InvariantCulture));
             }
@@ -42,9 +42,17 @@ namespace WooScripter.Objects.WooScript
             {
                 _RangeType = RangeTypeT.Single;
                 log.AddMsg("Number type : Single Value");
-                val1 = float.Parse(data, CultureInfo.InvariantCulture);
+                val1 = StringToFloat(data);
                 log.AddMsg("Val1 : " + val1.ToString(CultureInfo.InvariantCulture));
             }
+        }
+
+        public float StringToFloat(string str)
+        {
+            float ret;
+            try { ret = float.Parse(str, CultureInfo.InvariantCulture); }
+            catch (FormatException) { throw new ParseException("Invalid value " + str + " for number"); }
+            return ret;
         }
 
         public double GetNumber(Random rand)
