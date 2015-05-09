@@ -19,8 +19,9 @@ namespace WooScripter
         public int _MinSamples;
         public int _MaxSamples;
         public double _Spherical;
+        public double _Stereographic;
 
-        public Camera(Vector3 position, Vector3 target, double fov, double spherical)
+        public Camera(Vector3 position, Vector3 target, double fov, double spherical, double stereographic)
         {
             _Position = position;
             _Target = target;
@@ -32,6 +33,7 @@ namespace WooScripter
             _MinSamples = 1;
             _MaxSamples = 1;
             _Spherical = spherical;
+            _Stereographic = stereographic;
         }
 
         public XElement CreateElement()
@@ -47,7 +49,8 @@ namespace WooScripter
                 new XAttribute("apertureSize", _ApertureSize),
                 new XAttribute("minSamples", _MinSamples),
                 new XAttribute("maxSamples", _MaxSamples),
-                new XAttribute("spherical", _Spherical));
+                new XAttribute("spherical", _Spherical),
+                new XAttribute("stereographic", _Stereographic));
         }
     }
 }

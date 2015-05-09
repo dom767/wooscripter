@@ -81,16 +81,18 @@
         <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _FOV, UpdateSourceTrigger=PropertyChanged}" Margin="98,348,0,0" x:Name="textBox4_Copy" VerticalAlignment="Top" Width="96" TextChanged="RefreshRender" />
         <Label Content="Spherical" Height="29" HorizontalAlignment="Left" Margin="0,372,0,0" x:Name="label3_Copy2" VerticalAlignment="Top" Width="93" />
         <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _Spherical, UpdateSourceTrigger=PropertyChanged}" Margin="98,378,0,0" x:Name="textBox4_Copy2" VerticalAlignment="Top" Width="96" TextChanged="RefreshRender" />
-        <Label Content="Exposure" Height="29" HorizontalAlignment="Left" Margin="0,402,0,0" x:Name="label3_Exposure" VerticalAlignment="Top" Width="93" />
-        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _Exposure, UpdateSourceTrigger=PropertyChanged}" Margin="98,408,0,0" x:Name="textBox5_Copy2" VerticalAlignment="Top" Width="96" TextChanged="RefreshRender" />
-        <CheckBox x:Name="autoExposure" IsChecked="True" Content="Auto" HorizontalAlignment="Left" Margin="199,414,0,0" VerticalAlignment="Top"/>
-        <Label Content="Camera Position" Height="28" HorizontalAlignment="Left" Margin="0,455,0,0" x:Name="label1_Copy" VerticalAlignment="Top" Width="106" />
-        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _CamPosX, UpdateSourceTrigger=PropertyChanged}" Margin="98,455,0,0" x:Name="camPosX" VerticalAlignment="Top" Width="32" TextChanged="RefreshRender" />
-        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _CamPosY, UpdateSourceTrigger=PropertyChanged}" Margin="130,455,0,0" x:Name="camPosY" VerticalAlignment="Top" Width="32" TextChanged="RefreshRender" />
-        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _CamPosZ, UpdateSourceTrigger=PropertyChanged}" Margin="162,455,0,0" x:Name="camPosZ" VerticalAlignment="Top" Width="32" TextChanged="RefreshRender" />
-        <Label Content="Camera Target" Height="28" HorizontalAlignment="Left" Margin="0,485,0,0" x:Name="label1_CamTarget" VerticalAlignment="Top" Width="91" />
-        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _CamTagX, UpdateSourceTrigger=PropertyChanged}" Margin="98,485,0,0" x:Name="camTargetX" VerticalAlignment="Top" Width="32" TextChanged="RefreshRender" />
-        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _CamTagY, UpdateSourceTrigger=PropertyChanged}" Margin="130,485,0,0" x:Name="camTargetY" VerticalAlignment="Top" Width="32" TextChanged="RefreshRender" />
-        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _CamTagZ, UpdateSourceTrigger=PropertyChanged}" Margin="162,485,0,0" x:Name="camTargetZ" VerticalAlignment="Top" Width="32" TextChanged="RefreshRender" />
+        <Label Content="Exposure" Height="29" HorizontalAlignment="Left" Margin="0,430,0,0" x:Name="label3_Exposure" VerticalAlignment="Top" Width="93" />
+        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _Exposure, UpdateSourceTrigger=PropertyChanged}" Margin="98,436,0,0" x:Name="textBox5_Copy2" VerticalAlignment="Top" Width="96" TextChanged="RefreshRender" />
+        <CheckBox x:Name="autoExposure" IsChecked="True" Content="Auto" HorizontalAlignment="Left" Margin="199,442,0,0" VerticalAlignment="Top"/>
+        <Label Content="Camera Position" Height="28" HorizontalAlignment="Left" Margin="0,491,0,0" x:Name="label1_Copy" VerticalAlignment="Top" Width="106" />
+        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _CamPosX, UpdateSourceTrigger=PropertyChanged}" Margin="98,491,0,0" x:Name="camPosX" VerticalAlignment="Top" Width="32" TextChanged="RefreshRender" />
+        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _CamPosY, UpdateSourceTrigger=PropertyChanged}" Margin="130,491,0,0" x:Name="camPosY" VerticalAlignment="Top" Width="32" TextChanged="RefreshRender" />
+        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _CamPosZ, UpdateSourceTrigger=PropertyChanged}" Margin="162,491,0,0" x:Name="camPosZ" VerticalAlignment="Top" Width="32" TextChanged="RefreshRender" />
+        <Label Content="Camera Target" Height="28" HorizontalAlignment="Left" Margin="0,521,0,0" x:Name="label1_CamTarget" VerticalAlignment="Top" Width="91" />
+        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _CamTagX, UpdateSourceTrigger=PropertyChanged}" Margin="98,521,0,0" x:Name="camTargetX" VerticalAlignment="Top" Width="32" TextChanged="RefreshRender" />
+        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _CamTagY, UpdateSourceTrigger=PropertyChanged}" Margin="130,521,0,0" x:Name="camTargetY" VerticalAlignment="Top" Width="32" TextChanged="RefreshRender" />
+        <TextBox Height="23" HorizontalAlignment="Left" Text="{Binding _CamTagZ, UpdateSourceTrigger=PropertyChanged}" Margin="162,521,0,0" x:Name="camTargetZ" VerticalAlignment="Top" Width="32" TextChanged="RefreshRender" />
+        <Label Content="Stereographic" Height="29" HorizontalAlignment="Left" Margin="0,401,0,0" Name="label2" VerticalAlignment="Top" Width="93" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="98,407,0,0" Name="textBox1" Text="{Binding _Stereographic, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="96" TextChanged="RefreshRender" />
     </Grid>
 </Window>
