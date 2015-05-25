@@ -15,10 +15,20 @@ namespace WooScripter.Objects.WooScript
         public string _String;
         public List<ScriptElement> _Arguments = new List<ScriptElement>();
         public bool _Reorderable;
+        public CodeBlock _Codeblock;
 
         public string Evaluate(WooState state)
         {
             string ret;
+
+            if (_Codeblock != null)
+            {
+                ret = "{";
+                ret += _Codeblock.Evaluate(state);
+                ret += "}";
+                return ret;
+            }
+
             ret = _String;
             if (_Arguments.Count() > 0)
             {
@@ -38,8 +48,9 @@ namespace WooScripter.Objects.WooScript
     {
         FloatVar,
         VectorVar,
+        CodeBlock,
         Num,
-        Func
+        Null
     };
 
     public class ShaderScript
@@ -60,7 +71,8 @@ namespace WooScripter.Objects.WooScript
             public void Read(XmlReader reader)
             {
                 if (reader.Name == "FLOATFUNC") _ReturnType = SEType.FloatVar;
-                else _ReturnType = SEType.VectorVar;
+                else if (reader.Name == "VECFUNC") _ReturnType = SEType.VectorVar;
+                else _ReturnType = SEType.Null;
 
                 reader.MoveToNextAttribute();
                 if (reader.NodeType == XmlNodeType.Attribute && reader.Name == "name")
@@ -139,6 +151,19 @@ namespace WooScripter.Objects.WooScript
                 if (fv._Name.Equals(token, StringComparison.Ordinal)
                     && fv._VarType == 0)
                     return true;
+            }
+            return false;
+        }
+
+        public static bool IsNullFunction(string token)
+        {
+            foreach (DistFunc df in _DistFunc)
+            {
+                if (df._Name.Equals(token, StringComparison.Ordinal)
+                    && df._ReturnType == SEType.Null)
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -290,17 +315,19 @@ namespace WooScripter.Objects.WooScript
         public static ScriptElement ParseExpression(ref string[] program)
         {
             ScriptElement ret = new ScriptElement();
-            string token = ParseUtils.GetToken(ref program);
+            string token = ParseUtils.PeekToken(program);
 
             ret._Reorderable = false;
 
             if (token.Equals("-", StringComparison.Ordinal))
             {
-                token += ParseUtils.GetToken(ref program);
+                token = ParseUtils.GetToken(ref program);
+                token += ParseUtils.PeekToken(program);
             }
             
             if (token.Equals("(", StringComparison.Ordinal))
             {
+                token = ParseUtils.GetToken(ref program);
                 ret = ParseExpression(ref program);
                 ret._Reorderable = false;
 
@@ -310,21 +337,31 @@ namespace WooScripter.Objects.WooScript
             }
             else if (IsFloatVar(token))
             {
+                token = ParseUtils.GetToken(ref program);
                 ret._Type = SEType.FloatVar;
                 ret._String = token;
             }
             else if (IsVectorVar(token))
             {
+                token = ParseUtils.GetToken(ref program);
                 ret._Type = SEType.VectorVar;
                 ret._String = token;
             }
             else if (IsFloatNum(token))
             {
+                token = ParseUtils.GetToken(ref program);
                 ret._Type = SEType.FloatVar;
                 ret._String = token;
             }
+            else if (token.Equals("{"))
+            {
+                ret._Type = SEType.CodeBlock;
+                ret._Codeblock = new CodeBlock();
+                ret._Codeblock.Parse(ref program);
+            }
             else if (token.IndexOf('.') > -1)
             {
+                token = ParseUtils.GetToken(ref program);
                 int dotPosition = token.IndexOf('.');
 
                 ret._Type = SEType.VectorVar;
@@ -347,8 +384,32 @@ namespace WooScripter.Objects.WooScript
                 getter._Type = SEType.FloatVar;
                 ret = getter;
             }
+            else if (token.Equals("repeat", StringComparison.Ordinal))
+            {
+                token = ParseUtils.GetToken(ref program);
+                ret._String = token;
+
+                string openBracket = ParseUtils.PeekToken(program);
+                if (openBracket.Equals("(", StringComparison.Ordinal))
+                {
+                    openBracket = ParseUtils.GetToken(ref program);
+
+                    ret._Arguments.Add(ParseExpression(ref program));
+
+                    string closeBracket = ParseUtils.GetToken(ref program);
+                    if (!closeBracket.Equals(")", StringComparison.Ordinal))
+                        throw new ParseException("Expected close bracket, found \"" + token + "\"");
+                }
+                else
+                {
+                    throw new ParseException("repeat not followed by number, found \"" + token + "\", usage : repeat(x){}");
+                }
+
+                ret._Arguments.Add(ParseExpression(ref program));
+            }
             else if (IsFunction(token))
             {
+                token = ParseUtils.GetToken(ref program);
                 ret._String = token;
 
                 string openBracket = ParseUtils.PeekToken(program);
@@ -444,7 +505,7 @@ namespace WooScripter.Objects.WooScript
                     {
                         while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
                         {
-                            if (reader.NodeType == XmlNodeType.Element && (reader.Name == "FLOATFUNC" || reader.Name == "VECFUNC"))
+                            if (reader.NodeType == XmlNodeType.Element && (reader.Name == "FLOATFUNC" || reader.Name == "VECFUNC" || reader.Name == "NULLFUNC"))
                             {
                                 DistFunc newFunc = new DistFunc();
                                 newFunc.Read(reader);
@@ -524,54 +585,65 @@ namespace WooScripter.Objects.WooScript
         string _Target;
         string _AssignOp;
         ScriptElement _Argument;
+        bool _IsNull = true;
 
         public void Parse(ref string[] program)
         {
-            _Target = ParseUtils.GetToken(ref program);
+            _Target = ParseUtils.PeekToken(program);
+            bool isFloatVar = ShaderScript.IsFloatVar(_Target);
+            bool isVectorVar = ShaderScript.IsVectorVar(_Target);
+            bool isNullFunc = ShaderScript.IsNullFunction(_Target);
 
-            if (!ShaderScript.IsFloatVar(_Target) && !ShaderScript.IsVectorVar(_Target))
-                throw new ParseException("Expected \"" + _Target + "\" to be a float or vector variable");
-            WooScript._Log.AddMsg("Found target variable \"" + _Target + "\"");
-            WooScript._Log.Indent();
+            if (!isFloatVar && !isVectorVar && !isNullFunc)
+                throw new ParseException("Expected \"" + _Target + "\" to be a float or vector variable or a non-return function");
 
-            _AssignOp = ParseUtils.GetToken(ref program);
+            if (isFloatVar || isVectorVar)
+            {
+                _Target = ParseUtils.GetToken(ref program);
+                _IsNull = false;
+                WooScript._Log.AddMsg("Found target variable \"" + _Target + "\"");
+                WooScript._Log.Indent();
 
-            if (!ShaderScript.IsAssignOp(_AssignOp))
-                throw new ParseException("Expected \"" + _AssignOp + "\" to be an assignment operation");
+                _AssignOp = ParseUtils.GetToken(ref program);
+
+                if (!ShaderScript.IsAssignOp(_AssignOp))
+                    throw new ParseException("Expected \"" + _AssignOp + "\" to be an assignment operation");
+            }
 
             _Argument = ShaderScript.ParseExpression(ref program);
         }
 
         public string Evaluate(WooState state)
         {
-            if (_AssignOp.Equals("=", StringComparison.Ordinal))
-                return "set(" + _Target + ", " + _Argument.Evaluate(state) + ")";
-            if (_AssignOp.Equals("*=", StringComparison.Ordinal))
-                return "set(" + _Target + ", mul(" + _Target + ", " + _Argument.Evaluate(state) + "))";
-            if (_AssignOp.Equals("/=", StringComparison.Ordinal))
-                return "set(" + _Target + ", div(" + _Target + ", " + _Argument.Evaluate(state) + "))";
-            if (_AssignOp.Equals("-=", StringComparison.Ordinal))
-                return "set(" + _Target + ", sub(" + _Target + ", " + _Argument.Evaluate(state) + "))";
-            if (_AssignOp.Equals("+=", StringComparison.Ordinal))
-                return "set(" + _Target + ", add(" + _Target + ", " + _Argument.Evaluate(state) + "))";
+            if (_IsNull)
+                return _Argument.Evaluate(state);
+            else
+            {
+                if (_AssignOp.Equals("=", StringComparison.Ordinal))
+                    return "set(" + _Target + ", " + _Argument.Evaluate(state) + ")";
+                if (_AssignOp.Equals("*=", StringComparison.Ordinal))
+                    return "set(" + _Target + ", mul(" + _Target + ", " + _Argument.Evaluate(state) + "))";
+                if (_AssignOp.Equals("/=", StringComparison.Ordinal))
+                    return "set(" + _Target + ", div(" + _Target + ", " + _Argument.Evaluate(state) + "))";
+                if (_AssignOp.Equals("-=", StringComparison.Ordinal))
+                    return "set(" + _Target + ", sub(" + _Target + ", " + _Argument.Evaluate(state) + "))";
+                if (_AssignOp.Equals("+=", StringComparison.Ordinal))
+                    return "set(" + _Target + ", add(" + _Target + ", " + _Argument.Evaluate(state) + "))";
+            }
 
             throw new EvaluateException("Failed to evaluate shader statement");
         }
     }
 
-    public class Shader
+    public class CodeBlock
     {
-        public string _Name;
         List<ShaderStatement> _Statements = new List<ShaderStatement>();
-
-        public Shader(string name)
-        {
-            _Name = name;
-        }
 
         public void Parse(ref string[] program)
         {
             string openbrace = ParseUtils.GetToken(ref program);
+            if (!openbrace.Equals("{"))
+                throw new ParseException("Found \""+openbrace+"\", but expected \"{\".");
 
             string nexttoken = ParseUtils.PeekToken(program);
 
@@ -592,9 +664,30 @@ namespace WooScripter.Objects.WooScript
             string ret = "";
             foreach (ShaderStatement statement in _Statements)
             {
-                ret += statement.Evaluate(state); 
+                ret += statement.Evaluate(state);
             }
             return ret;
+        }
+    }
+
+    public class Shader
+    {
+        public string _Name;
+        CodeBlock _CodeBlock = new CodeBlock();
+
+        public Shader(string name)
+        {
+            _Name = name;
+        }
+
+        public void Parse(ref string[] program)
+        {
+            _CodeBlock.Parse(ref program);
+        }
+
+        public string Evaluate(WooState state)
+        {
+            return _CodeBlock.Evaluate(state);
         }
     }
 }
