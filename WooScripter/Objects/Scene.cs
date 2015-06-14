@@ -35,7 +35,7 @@ namespace WooScripter
             else
                 ret.Add(new XAttribute("caustics", false));
 
-            ret.Add(new XAttribute("recursions", _Recursions));
+            ret.Add(new XAttribute("recursions", preview ? 0 : _Recursions));
 
             foreach (Light light in _Lights)
             {
