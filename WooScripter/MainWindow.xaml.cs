@@ -211,7 +211,7 @@ namespace WooScripter
             previewCamera._DOFEnabled = false;
 
             XML += previewCamera.CreateElement().ToString();
-            XML += _Scene.CreateElement(preview).ToString();
+            XML += _Scene.CreateElement(preview, _SimpleLighting).ToString();
 
             _Scene._PathTracer = pt;
 
@@ -329,6 +329,8 @@ namespace WooScripter
         private void TriggerPreview()
         {
             _Scale = getPreviewResolution();
+            _Scene._Shadows = getShadowsEnabled();
+            _SimpleLighting = getSimpleLighting();
             _ImageRenderer = new ImageRenderer(image1, BuildXML(true), (int)((float)_Scale * 480), (int)((float)_Scale * 270), false);
             Preview(true);
         }
@@ -447,6 +449,7 @@ namespace WooScripter
         double _Yaw;
         Point _DragStart;
         float _Scale = 1;
+        bool _SimpleLighting = false;
         private void image1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Debug.WriteLine("LMBDown");
@@ -616,6 +619,16 @@ namespace WooScripter
             helpWindow.Show();            
         }
 
+        private bool getShadowsEnabled()
+        {
+            return (shadowsEnabled.IsChecked.HasValue && shadowsEnabled.IsChecked.Value);
+        }
+
+        private bool getSimpleLighting()
+        {
+            return (simpleLighting.IsChecked.HasValue && simpleLighting.IsChecked.Value);
+        }
+
         private float getPreviewResolution()
         {
             if (radioButton1.IsChecked.HasValue && radioButton1.IsChecked.Value)
@@ -660,7 +673,14 @@ namespace WooScripter
         {
             if (!_Timer.IsEnabled)
                 _Timer.Start();
+        }
 
+        private void RefreshRenderRouted(object sender, RoutedEventArgs e)
+        {
+            if (_Timer!=null && !_Timer.IsEnabled)
+                _Timer.Start();
+            if (this.IsLoaded)
+                TriggerPreview();
         }
     }
 }

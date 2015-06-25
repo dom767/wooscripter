@@ -16,12 +16,13 @@ namespace WooScripter
         Camera _Camera;
         public bool _PathTracer = false;
         public bool _Caustics = false;
+        public bool _Shadows = true;
         List<RenderObject> _RenderObjects = new List<RenderObject>();
         List<Light> _Lights = new List<Light>();
         Background _Background = new Background();
         public int _Recursions = 3;
 
-        public XElement CreateElement(bool preview)
+        public XElement CreateElement(bool preview, bool simpleLighting)
         {
             XElement ret = new XElement("SCENE");
 
@@ -35,16 +36,29 @@ namespace WooScripter
             else
                 ret.Add(new XAttribute("caustics", false));
 
-            ret.Add(new XAttribute("recursions", preview ? 0 : _Recursions));
+            if (_Shadows || !preview)
+                ret.Add(new XAttribute("shadows", true));
+            else
+                ret.Add(new XAttribute("shadows", false));
 
-            foreach (Light light in _Lights)
+            ret.Add(new XAttribute("recursions", preview ? 1 : _Recursions));
+
+            if (simpleLighting)
             {
-                light.CreateElement(ret);
+                DirectionalLight directional = new DirectionalLight(new Colour(1, 1, 1), new Vector3(-1, 1, -1), 0.0f, 1);
+                directional.CreateElement(ret, new Vector3(-1,1,-1));
+            }
+            else
+            {
+                foreach (Light light in _Lights)
+                {
+                    light.CreateElement(ret);
+                }
             }
 
-            foreach (RenderObject renderObject in _RenderObjects)
+            for (int i=0; i<(simpleLighting?2:3); i++)
             {
-                renderObject.CreateElement(preview, ret);
+                _RenderObjects[i].CreateElement(preview, ret);
             }
 
 //            _Background.CreateElement(ret);

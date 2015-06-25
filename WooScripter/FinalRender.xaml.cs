@@ -139,7 +139,7 @@ namespace WooScripter
         {
             _XML = @"<VIEWPORT width=" + image1.Width + @" height=" + image1.Height + @"/>";
             _XML += _Camera.CreateElement().ToString();
-            _XML += _Scene.CreateElement(false).ToString();
+            _XML += _Scene.CreateElement(false, false).ToString();
         }
 
         public FinalRender(ref Scene scene, ref Camera camera, ref PostProcess postprocess)
