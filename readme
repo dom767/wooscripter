@@ -1,5 +1,28 @@
 Wooscripter, started by Dom Penfold, now up and open to the general public. Note that coretracer.dll is my own raytracer which is not currently available on github. A release version is included in this project's bin folder.
 
+v1.02
+- Transparency support
+ . object tinting
+ . object colour
+ . optional caustics
+ . refraction
+ . fresnel
+ . transparency on distance estimators
+- Fast Gaussian postprocess filter
+- Distance extents can now be modified using distanceextents = vec(2,2,2)
+- Sparse Voxel Octree support (primitive svo)
+- New distance estimator functions
+ . sin function
+ . single fold
+ . repeat() syntax
+ . KIFS steps for menger, cube, tetrahedra
+ . vector min function
+- Culture invariance for Russian friends (thanks Vlad!)
+- Rule extensions
+ . argument passing for rules
+ . sqrt function
+- Preview window optimisations
+ 
 v1.01
 - Improved pathtracer
  . vastly reduced noise

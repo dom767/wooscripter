@@ -53,6 +53,10 @@ Section "WooScripter (required)"
   CreateDirectory $DOCUMENTS\WooScripter\Scripts\Background
   CreateDirectory $DOCUMENTS\WooScripter\Scripts\Lighting
   CreateDirectory $DOCUMENTS\WooScripter\Scripts\Scene
+  CreateDirectory $DOCUMENTS\WooScripter\Scripts\Scene\Tutorial
+  CreateDirectory $DOCUMENTS\WooScripter\Scripts\Scene\Nanoblocks
+  CreateDirectory $DOCUMENTS\WooScripter\Scripts\Scene\FunObjects
+  CreateDirectory $DOCUMENTS\WooScripter\Scripts\Scene\Fractal
 
   ; examples
   File /oname=WooScripter\Scripts\Background\scratch.woo "..\Scripts\Background\boxes.woo"
@@ -72,11 +76,16 @@ Section "WooScripter (required)"
   File /oname=WooScripter\Scripts\Scene\simplebox.woo "..\Scripts\Scene\simplebox.woo"
   File /oname=WooScripter\Scripts\Scene\hairyball.woo "..\Scripts\Scene\hairyball.woo"
   File /oname=WooScripter\Scripts\Scene\spiral.woo "..\Scripts\Scene\spiral.woo"
-  File /oname=WooScripter\Scripts\Scene\tutorial_pos.woo "..\Scripts\Scene\tutorial_pos.woo"
-  File /oname=WooScripter\Scripts\Scene\tutorial_rotate.woo "..\Scripts\Scene\tutorial_rotate.woo"
-  File /oname=WooScripter\Scripts\Scene\tutorial_scale.woo "..\Scripts\Scene\tutorial_scale.woo"
-  File /oname=WooScripter\Scripts\Scene\tutorial_smoothrotate.woo "..\Scripts\Scene\tutorial_smoothrotate.woo"
-  File /oname=WooScripter\Scripts\Scene\nanoblock_babyduck.woo "..\Scripts\Scene\nanoblock_babyduck.woo"
+  File /oname=WooScripter\Scripts\Scene\FunObjects\fragmentedsphere.woo "..\Scripts\Scene\FunObjects\fragmentedsphere.woo"
+  File /oname=WooScripter\Scripts\Scene\Tutorial\tutorial_pos.woo "..\Scripts\Scene\Tutorial\tutorial_pos.woo"
+  File /oname=WooScripter\Scripts\Scene\Tutorial\tutorial_rotate.woo "..\Scripts\Scene\Tutorial\tutorial_rotate.woo"
+  File /oname=WooScripter\Scripts\Scene\Tutorial\tutorial_scale.woo "..\Scripts\Scene\Tutorial\tutorial_scale.woo"
+  File /oname=WooScripter\Scripts\Scene\Tutorial\tutorial_smoothrotate.woo "..\Scripts\Scene\Tutorial\tutorial_smoothrotate.woo"
+  File /oname=WooScripter\Scripts\Scene\Nanoblocks\nanoblock_babyduck.woo "..\Scripts\Scene\Nanoblocks\nanoblock_babyduck.woo"
+  File /oname=WooScripter\Scripts\Scene\Nanoblocks\nanoblock_empire.woo "..\Scripts\Scene\Nanoblocks\nanoblock_empire.woo"
+  File /oname=WooScripter\Scripts\Scene\Nanoblocks\nanoblock_stmichel.woo "..\Scripts\Scene\Nanoblocks\nanoblock_stmichel.woo"
+  File /oname=WooScripter\Scripts\Scene\Fractal\kifs_hybrid.woo "..\Scripts\Scene\Fractal\kifs_hybrid.woo"
+  File /oname=WooScripter\Scripts\Scene\Fractal\kifs_hybrid_optimised.woo "..\Scripts\Scene\Fractal\kifs_hybrid_optimised.woo"
   File /oname=WooScripter\Scripts\Scene\distance.woo "..\Scripts\Scene\distance.woo"
   File /oname=WooScripter\Scripts\Scene\menger.woo "..\Scripts\Scene\menger.woo"
 
