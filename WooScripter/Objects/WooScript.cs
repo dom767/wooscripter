@@ -696,6 +696,12 @@ namespace WooScripter.Objects.WooScript
             _NullFunctions.Add(new MengerPatternFunction());
             _NullFunctions.Add(new DistanceFunctionFunction());
             _NullFunctions.Add(new MaterialFunctionFunction());
+            _NullFunctions.Add(new FractalReset());
+            _NullFunctions.Add(new FractalTetra());
+            _NullFunctions.Add(new FractalCuboid());
+            _NullFunctions.Add(new FractalMenger());
+            _NullFunctions.Add(new FractalMandelBox());
+            _NullFunctions.Add(new FractalMandelBulb());
 
             _VecFunctions.Add(new VectorConstructorFunction());
             _VecFunctions.Add(new VectorNormaliseFunction());
@@ -744,6 +750,9 @@ namespace WooScripter.Objects.WooScript
             _RulePrototypes.Add(new RulePrototype(_Rules[_Rules.Count - 1]._Name));
             Rule svoRule = new SVORule("svo");
             _Rules.Add(svoRule);
+            _RulePrototypes.Add(new RulePrototype(_Rules[_Rules.Count - 1]._Name));
+            Rule fractalRule = new FractalRule("fractal");
+            _Rules.Add(fractalRule);
             _RulePrototypes.Add(new RulePrototype(_Rules[_Rules.Count - 1]._Name));
         }
 

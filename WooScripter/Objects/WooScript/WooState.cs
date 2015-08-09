@@ -46,6 +46,7 @@ namespace WooScripter.Objects.WooScript
         public double _StepSize = 0.7;
         public string _MaterialFunction = "";
         public int _Depth = 4;
+        public List<FractalIteration> _FractalIterations = new List<FractalIteration>();
 
         public WooState()
         {
@@ -159,6 +160,7 @@ namespace WooScripter.Objects.WooScript
             {
                 clone.AddFloat(floatvar._Name, floatvar._Value);
             }
+            clone._FractalIterations = this._FractalIterations;
             return clone;
         }
         void SetSelectedValue(ref Vector3 target, string selector, double value)

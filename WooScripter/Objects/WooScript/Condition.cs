@@ -198,7 +198,7 @@ namespace WooScripter.Objects.WooScript
     public interface UnaryBooleanOp : ConditionalExpression
     {
         void Parse(ref string[] program);
-        bool Evaluate(ref WooState state);
+        new bool Evaluate(ref WooState state);
         string GetSymbol();
         int GetPrecedence();
         UnaryBooleanOp CreateNew();

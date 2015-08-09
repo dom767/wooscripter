@@ -90,6 +90,7 @@
     <Compile Include="Objects\Cube.cs" />
     <Compile Include="Objects\Cylinder.cs" />
     <Compile Include="Objects\Distance.cs" />
+    <Compile Include="Objects\Fractal.cs" />
     <Compile Include="Objects\Light.cs" />
     <Compile Include="Objects\Material.cs" />
     <Compile Include="Objects\Menger.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Objects\WooScript\Exception.cs" />
     <Compile Include="Objects\WooScript\Expression.cs" />
     <Compile Include="Objects\WooScript\FinalCallFunction.cs" />
+    <Compile Include="Objects\WooScript\FractalRule.cs" />
     <Compile Include="Objects\WooScript\Function.cs" />
     <Compile Include="Objects\WooScript\IfFunction.cs" />
     <Compile Include="Objects\WooScript\LightFunction.cs" />
