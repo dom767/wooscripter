@@ -349,7 +349,7 @@ namespace WooScripter.Objects.WooScript
             }
             else if (IsFloatNum(token))
             {
-                token = ParseUtils.GetToken(ref program);
+                string chuck = ParseUtils.GetToken(ref program);
                 ret._Type = SEType.FloatVar;
                 ret._String = token;
             }
