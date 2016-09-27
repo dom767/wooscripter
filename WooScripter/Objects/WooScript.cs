@@ -702,6 +702,8 @@ namespace WooScripter.Objects.WooScript
             _NullFunctions.Add(new FractalMenger());
             _NullFunctions.Add(new FractalMandelBox());
             _NullFunctions.Add(new FractalMandelBulb());
+            _NullFunctions.Add(new ResetRotation());
+            _NullFunctions.Add(new PointAt());
 
             _VecFunctions.Add(new VectorConstructorFunction());
             _VecFunctions.Add(new VectorNormaliseFunction());

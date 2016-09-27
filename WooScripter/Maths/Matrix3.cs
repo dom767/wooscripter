@@ -79,6 +79,7 @@ namespace WooScripter
 
             _Component = res;
         }
+
         public void MakeIdentity()
         {
             _Component[0][0] = _Component[1][1] = _Component[2][2] = 1.0;
@@ -86,6 +87,7 @@ namespace WooScripter
             _Component[1][0] = _Component[1][2] = 0.0;
             _Component[2][0] = _Component[2][1] = 0.0;
         }
+
         public override string ToString()
         {
             string outputString = "";
@@ -99,6 +101,19 @@ namespace WooScripter
                 }
             }
  	        return outputString;
+        }
+
+        public void PointAt(Vector3 from, Vector3 to, Vector3 up)
+        {
+            Vector3 dir = to - from;
+            dir.Normalise();
+            Vector3 right = up.Cross(dir);
+            right.Normalise();
+            up = dir.Cross(right);
+
+            _Component[0][0] = right.x; _Component[0][1] = right.y; _Component[0][2] = right.z;
+            _Component[1][0] = dir.x; _Component[1][1] = dir.y; _Component[1][2] = dir.z;
+            _Component[2][0] = up.x; _Component[2][1] = up.y; _Component[2][2] = up.z;
         }
     }
 }

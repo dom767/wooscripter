@@ -84,7 +84,7 @@ namespace WooScripter
             Vector3 ret = new Vector3();
             ret.x = y * arg.z - z * arg.y;
             ret.y = z * arg.x - x * arg.z;
-            ret.z = z * arg.y - y * arg.x;
+            ret.z = x * arg.y - y * arg.x;
             return ret;
         }
 

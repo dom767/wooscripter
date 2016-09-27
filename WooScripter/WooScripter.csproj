@@ -122,6 +122,7 @@
     <Compile Include="Objects\WooScript\PushPopFunction.cs" />
     <Compile Include="Objects\WooScript\RepeatFunction.cs" />
     <Compile Include="Objects\WooScript\RepeatStatement.cs" />
+    <Compile Include="Objects\WooScript\RotationHelper.cs" />
     <Compile Include="Objects\WooScript\Rule.cs" />
     <Compile Include="Objects\WooScript\RuleBlock.cs" />
     <Compile Include="Objects\WooScript\ScopeStatement.cs" />
